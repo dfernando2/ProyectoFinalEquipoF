@@ -1,0 +1,78 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class User {
+
+    private Long id;
+    private String name;
+    private String email;
+    private String password;
+    private Long dni;
+    private Role role;
+       }
+class Property {
+        private Long id;
+        private String address;
+        private String province;
+        private String location;
+        private Integer surface;
+        private Integer bathrooms;
+        private Integer bedrooms;
+        private Double price;
+        private String description;
+        private PropertyStatus status;
+        private PropertyType type;
+        @OneToMany
+        private List<ImageProperty> images;
+        @OneToMany
+        private List<Offer> offers;
+        @ManyToOne
+        private User user;
+        private boolean isRented;
+        private boolean isActive;
+        }
+class Offer {
+    private Long id;
+    private LocalDate creationDate;
+    @ManyToOne
+    private Property property;
+    @ManyToOne
+    private User user;
+    private Double price;
+    private OfferStatus offerStatus;
+    }
+class ImageUser {
+    private String id;
+    private String mime;
+    private String name;
+    private byte[] container;
+                }
+class ImageProperty {
+    private String id;
+    private String mime;
+    private String name;
+    @ManyToOne
+    private Property property;
+    private byte[] container;
+    }
+
+enum PropertyStatus {
+    FOR_SALE, FOR_RENT,
+    BOTH_STATUS, NONE;
+}
+enum PropertyType {
+    CASA, DEPARTAMENTO, CABAÑA, DUPLEX,
+    TRIPLEX, PH, COCHERA, DEPOSITO,
+    PISO, TERRENO, OFICINA,
+    LOTE, COMERCIO, CAMPO;
+}
+enum Role {
+    ADMIN, ENTITY, CLIENT, BOTHROLE;
+}
+enum OfferStatus {
+    CLIENT_OFFER, ENTITY_REJECTED, ENTITY_ACCEPTED, INACTIVE_OFFER,CLIENT_ACCEPTED;
+}
+
+
+
+@enduml
