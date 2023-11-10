@@ -26,7 +26,7 @@ public class PropertyService {
     UserRepository userRepository;
 
     @Transactional
-    public void createProperty(Long id, String address, String province, String location, Integer surface,
+    public void createProperty(String address, String province, String location, Integer surface,
                                Integer bathrooms, Integer bedrooms, Double price, String description,
                                PropertyStatus status, LocalDate createDate, PropertyType type, List<ImageProperty> images,
                                List<Offer> offers, String idUser, boolean isRented, boolean isActive){
@@ -68,7 +68,7 @@ public class PropertyService {
     }
 
 
-    public List<Property> list() {
+    public List<Property> listProperty() {
         List<Property> properties = new ArrayList();
         properties = propertyRepository.findAll();
         return properties;
@@ -93,7 +93,6 @@ public class PropertyService {
         if (propertyResponse.isPresent()) {
 
             Property property = propertyResponse.get();
-            property.setId(id);
             property.setAddress(address);
             property.setProvince(province);
             property.setLocation(location);
