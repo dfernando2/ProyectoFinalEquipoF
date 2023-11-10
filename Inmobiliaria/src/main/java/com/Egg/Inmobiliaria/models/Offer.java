@@ -1,5 +1,6 @@
 package com.Egg.Inmobiliaria.models;
 
+<<<<<<< HEAD
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
@@ -95,4 +96,7 @@ public class Offer {
         this.offerStatus = offerStatus;
     } 
     
+=======
+public class Offer {
+>>>>>>> 33e087e1e8946e9a3dca4618582ad1170e807405
 }

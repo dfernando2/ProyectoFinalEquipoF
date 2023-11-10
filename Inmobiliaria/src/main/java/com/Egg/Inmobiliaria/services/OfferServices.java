@@ -24,7 +24,6 @@ public class OfferServices {
     //@Autowired
     //private PropertyService propertyService;
 
-
     //Cambiar property y user por sus ID
     public void createOffer(Property property, User user, Double price){
 
