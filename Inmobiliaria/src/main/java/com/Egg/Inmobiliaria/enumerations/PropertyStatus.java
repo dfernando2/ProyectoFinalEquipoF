@@ -1,4 +1,4 @@
-package com.Egg.Inmobiliaria.enumeraciones;
+package com.Egg.Inmobiliaria.enumerations;
 
 public enum PropertyStatus {
     FOR_SALE, FOR_RENT,
