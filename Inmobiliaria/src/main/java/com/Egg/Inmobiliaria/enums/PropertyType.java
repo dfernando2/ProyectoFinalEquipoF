@@ -1,4 +1,4 @@
-package com.Egg.Inmobiliaria.enumeraciones;
+package com.Egg.Inmobiliaria.enums;
 
 public enum PropertyType {
     CASA, DEPARTAMENTO, CABAÑA, DUPLEX,
