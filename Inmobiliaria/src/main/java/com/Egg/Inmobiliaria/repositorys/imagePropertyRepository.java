@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.Egg.Inmobiliaria.repositorios;
+package com.Egg.Inmobiliaria.repositorys;
 
-import com.Egg.Inmobiliaria.entidades.ImageProperty;
+import com.Egg.Inmobiliaria.entitys.ImageProperty;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

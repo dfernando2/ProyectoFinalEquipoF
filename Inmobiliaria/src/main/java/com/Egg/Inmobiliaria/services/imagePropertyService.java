@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.Egg.Inmobiliaria.servicios;
+package com.Egg.Inmobiliaria.services;
 
-import com.Egg.Inmobiliaria.entidades.ImageProperty;
-import com.Egg.Inmobiliaria.excepciones.MiException;
-import com.Egg.Inmobiliaria.repositorios.imagePropertyRepository;
+import com.Egg.Inmobiliaria.entitys.ImageProperty;
+import com.Egg.Inmobiliaria.exceptions.MiException;
+import com.Egg.Inmobiliaria.repositorys.imagePropertyRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.Egg.Inmobiliaria.entidades;
+package com.Egg.Inmobiliaria.entitys;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
