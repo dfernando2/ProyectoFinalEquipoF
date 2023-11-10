@@ -10,6 +10,6 @@ public class InmobiliariaControlador {
 
     @GetMapping("/")
     public String navbar() {
-        return "inicio.html";
+        return "home.html";
     }
 }
