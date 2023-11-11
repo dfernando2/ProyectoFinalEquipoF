@@ -6,7 +6,9 @@ import com.Egg.Inmobiliaria.models.ImageProperty;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.User;
-import com.Egg.Inmobiliaria.repositorys.PropertyRepository;
+import com.Egg.Inmobiliaria.repositories.PropertyRepository;
+import com.Egg.Inmobiliaria.repositories.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

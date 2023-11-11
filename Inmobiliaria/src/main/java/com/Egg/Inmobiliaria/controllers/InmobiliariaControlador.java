@@ -1,4 +1,4 @@
-package com.Egg.Inmobiliaria.contolador;
+package com.Egg.Inmobiliaria.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

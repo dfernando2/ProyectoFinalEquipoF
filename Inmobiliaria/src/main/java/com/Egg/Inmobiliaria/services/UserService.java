@@ -1,9 +1,9 @@
 package com.Egg.Inmobiliaria.services;
 
-import com.Egg.Inmobiliaria.entities.ImageUser;
-import com.Egg.Inmobiliaria.entities.User;
-import com.Egg.Inmobiliaria.enumerations.Role;
+import com.Egg.Inmobiliaria.models.ImageUser;
+import com.Egg.Inmobiliaria.enums.Role;
 import com.Egg.Inmobiliaria.exceptions.MiException;
+import com.Egg.Inmobiliaria.models.User;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,7 @@ public class UserService {
         }
     }
     
-    public User getOne(String id) {
+    public User getOne(Long id) {
         return userRepository.getOne(id);
     }
     
