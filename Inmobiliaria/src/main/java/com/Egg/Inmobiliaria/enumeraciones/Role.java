@@ -1,4 +1,4 @@
-package com.Egg.Inmobiliaria.enums;
+package com.Egg.Inmobiliaria.enumeraciones;
 
 public enum Role {
     ADMIN, ENTITY, CLIENT, BOTHROLE;
