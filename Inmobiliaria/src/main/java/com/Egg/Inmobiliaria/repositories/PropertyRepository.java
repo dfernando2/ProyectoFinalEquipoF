@@ -1,4 +1,4 @@
-package com.Egg.Inmobiliaria.repositorys;
+package com.Egg.Inmobiliaria.repositories;
 
 import com.Egg.Inmobiliaria.enums.PropertyType;
 import com.Egg.Inmobiliaria.models.Property;

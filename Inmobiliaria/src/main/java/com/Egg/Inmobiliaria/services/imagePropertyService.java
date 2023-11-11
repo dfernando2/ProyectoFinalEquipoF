@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.Egg.Inmobiliaria.services;
 
-import com.Egg.Inmobiliaria.entitys.ImageProperty;
 import com.Egg.Inmobiliaria.exceptions.MiException;
-import com.Egg.Inmobiliaria.repositorys.imagePropertyRepository;
+import com.Egg.Inmobiliaria.models.ImageProperty;
+import com.Egg.Inmobiliaria.repositories.imagePropertyRepository;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- *
- * @author cosas
- */
+
 @Service
 public class imagePropertyService {
 

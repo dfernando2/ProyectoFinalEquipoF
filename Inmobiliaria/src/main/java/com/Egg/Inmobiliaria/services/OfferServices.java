@@ -10,7 +10,7 @@ import com.Egg.Inmobiliaria.enums.OfferStatus;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.User;
-import com.Egg.Inmobiliaria.repositorys.IOfferRepository;
+import com.Egg.Inmobiliaria.repositories.IOfferRepository;
 
 @Service
 public class OfferServices {

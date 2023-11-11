@@ -1,11 +1,7 @@
 package com.Egg.Inmobiliaria.models;
 
-<<<<<<< HEAD
-public class Property {
-=======
 import com.Egg.Inmobiliaria.enums.PropertyStatus;
 import com.Egg.Inmobiliaria.enums.PropertyType;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -197,5 +193,4 @@ public class Property {
     public void setActive(boolean active) {
         isActive = active;
     }
->>>>>>> 33e087e1e8946e9a3dca4618582ad1170e807405
 }
