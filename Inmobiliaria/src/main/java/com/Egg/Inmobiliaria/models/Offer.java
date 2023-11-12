@@ -1,44 +1,28 @@
 package com.Egg.Inmobiliaria.models;
-
-import java.time.LocalDate;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.Date;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
-
 import com.Egg.Inmobiliaria.enums.OfferStatus;
 
 @Entity
 public class Offer {
-
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name="uuid", strategy="uuid2")    
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     @Temporal(TemporalType.DATE)
-    private LocalDate creationDate;
-
+    private Date creationDate;
     @ManyToOne
     private Property property;
-
     @ManyToOne
     private User user;
-
     private Double price;
-    
     private OfferStatus offerStatus;
 
-    
     public Offer() {
     }    
 
-    public Offer(Long id, LocalDate creationDate, Property property, User user, Double price, OfferStatus offerStatus) {
+    public Offer(Long id, Date creationDate, Property property, User user, Double price, OfferStatus offerStatus) {
         this.id = id;
         this.creationDate = creationDate;
         this.property = property;
@@ -55,11 +39,11 @@ public class Offer {
         this.id = id;
     }
 
-    public LocalDate getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 

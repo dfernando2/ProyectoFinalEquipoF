@@ -1,22 +1,17 @@
 package com.Egg.Inmobiliaria.models;
 
 import com.Egg.Inmobiliaria.enums.Role;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+
+import javax.persistence.*;
+
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class User {
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private String name;
     private String email;
     private String password;
@@ -27,6 +22,20 @@ public class User {
     
     @Enumerated(EnumType.STRING)
     private Role rol;
+
+    public User() {
+    }
+
+    public User(Long id, String name, String email,
+                String password, Long dni, ImageUser image, Role rol) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.dni = dni;
+        this.image = image;
+        this.rol = rol;
+    }
 
     public Long getId() {
         return id;

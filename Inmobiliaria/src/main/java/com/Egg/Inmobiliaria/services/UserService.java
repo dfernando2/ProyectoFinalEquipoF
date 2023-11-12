@@ -1,9 +1,10 @@
 package com.Egg.Inmobiliaria.services;
-
 import com.Egg.Inmobiliaria.models.ImageUser;
 import com.Egg.Inmobiliaria.enums.Role;
 import com.Egg.Inmobiliaria.exceptions.MiException;
+import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.User;
+import com.Egg.Inmobiliaria.repositories.ImageUserRepository;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,43 +13,56 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 @Service
 public class UserService {
-
     @Autowired
     private UserRepository userRepository;
-    
     @Autowired
-    private ImageService imageService;
+    private ImageUserService imageUserService;
+    @Autowired
+    private ImageUserRepository imageUserRepository;
+    @Transactional
+    public void create(MultipartFile file, Long id, String name, String email,
+                         Long dni, String password, String password2) throws MiException {
 
-    @Transactional
-    public void register(MultipartFile file, String idUser, String name, String email, Long dni, String password, String password2) throws MiException {
-        
-        validar(name, email, dni, password, password2);
-        
-       User user = new User();
+        validate(name, email, dni, password, password2);
+
+        Optional <User> userResponse = userRepository.findById(id);
+
+        User user = new User();
        
-       user.setName(name);
-       user.setEmail(email);
-       user.setDni(dni);
-       user.setPassword(password);
-       user.setRol(Role.BOTHROLE);
-       
-       ImageUser image = imageService.save(file);
-       
-       user.setImage(image);
-       
-       userRepository.save(user);
-        
+        user.setName(name);
+        user.setEmail(email);
+        user.setDni(dni);
+        user.setPassword(password);
+        user.setRol(Role.BOTHROLE);
+
+
+        ImageUser imageUser = imageUserService.create(file);
+        user.setImage(imageUser);
+
+        userRepository.save(user);
     }
-    
+
+    public User getOne(Long id) {
+        return userRepository.getOne(id);
+    }
+
+    public List<User> listUser() {
+
+        List<User> users = new ArrayList();
+        users = userRepository.findAll();
+
+        return users;
+    }
     @Transactional
-    public void update(MultipartFile file, String idUser, Long dni, String name, String email, String password, String password2) throws MiException {
+    public void update(MultipartFile file, Long id, Long dni, String name, String email,
+                       String password, String password2) throws MiException {
     
-        validar(name, email, dni, password, password2);
+        validate(name, email, dni, password, password2);
         
-        Optional<User> answer = userRepository.findById(idUser);
+        Optional<User> answer = userRepository.findById(id);
+
         if (answer.isPresent()) {
         
             User user = answer.get();
@@ -57,37 +71,15 @@ public class UserService {
             user.setPassword(password);
             user.setRol(Role.BOTHROLE);
             
-            String idImage = null;
-            
-            if (user.getImage() != null) {
-                
-                idImage = user.getImage().getId();
-                
-            }
-            
-            ImageUser image = imageService.update(file, idImage);
-            
-            user.setImage(image);
+            ImageUser imageUser = imageUserService.create(file);
+            user.setImage(imageUser);
+
             userRepository.save(user);
-        
         }
     }
-    
-    public User getOne(Long id) {
-        return userRepository.getOne(id);
-    }
-    
+
     @Transactional
-    public List<User> userList() {
-        
-        List<User> users = new ArrayList();
-        users = userRepository.findAll();
-        
-        return users;
-    }
-    
-    @Transactional
-    public void cambiarRol(String id) {
+    public void changeRol(Long id) {
         Optional<User> answer = userRepository.findById(id);
         
         if (answer.isPresent()) {
@@ -106,7 +98,7 @@ public class UserService {
         
     }
 
-    public void validar(String name, String email, Long dni, String password, String password2) throws MiException {
+    public void validate(String name, String email, Long dni, String password, String password2) throws MiException {
 
         if (name.isEmpty() || name == null) {
             throw new MiException("El nombre no puede ser nulo o estar vacio");

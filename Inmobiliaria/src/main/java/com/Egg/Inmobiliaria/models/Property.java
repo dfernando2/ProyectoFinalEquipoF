@@ -2,8 +2,10 @@ package com.Egg.Inmobiliaria.models;
 
 import com.Egg.Inmobiliaria.enums.PropertyStatus;
 import com.Egg.Inmobiliaria.enums.PropertyType;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,7 +23,7 @@ public class Property {
     private String description;
     private PropertyStatus status;
     @Temporal(TemporalType.DATE)
-    private LocalDate createDate;
+    private Date createDate;
     private PropertyType type;
     @OneToMany
     private List<ImageProperty> images;
@@ -37,7 +39,7 @@ public class Property {
 
     public Property(Long id, String address, String province, String location, Integer surface,
                     Integer bathrooms, Integer bedrooms, Double price, String description,
-                    PropertyStatus status, LocalDate createDate, PropertyType type, List<ImageProperty> images,
+                    PropertyStatus status, Date createDate, PropertyType type, List<ImageProperty> images,
                     List<Offer> offers, User user, boolean isRented, boolean isActive) {
         this.id = id;
         this.address = address;
@@ -138,11 +140,11 @@ public class Property {
         this.status = status;
     }
 
-    public LocalDate getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(LocalDate createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 

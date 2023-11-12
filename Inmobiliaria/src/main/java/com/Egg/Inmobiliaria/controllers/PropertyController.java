@@ -9,7 +9,6 @@ import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.User;
 import com.Egg.Inmobiliaria.services.PropertyService;
 import com.Egg.Inmobiliaria.services.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -17,9 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,7 +41,7 @@ public class PropertyController {
     @GetMapping("/record") //localhost:8080/property/record
     public String record(ModelMap modelo) {
 
-        List<User> user = userservice.listUser();
+        List<User> users = userservice.listUser();
 
         modelo.addAttribute("users", users);
 
@@ -58,22 +55,20 @@ public class PropertyController {
                            @RequestParam(value = "bedrooms", defaultValue = "0")Integer bedrooms,
                            @RequestParam(value = "price", defaultValue = "0")Double price,
                            @RequestParam String description, @RequestParam PropertyStatus status,
-                           @RequestParam LocalDate createDate, @RequestParam PropertyType type,
-                           @RequestParam(required=false)List<ImageProperty> images,
-                           @RequestParam(required=false) List<Offer> offers, @RequestParam (required=false) String idUser,
-                           @RequestParam boolean isRented, @RequestParam boolean isActive, ModelMap modelo) {
+                           @RequestParam Date createDate, @RequestParam PropertyType type,
+                           ModelMap modelo) {
         try {
 
 //            modelo.addAttribute("propertyType", type);
 //            System.out.println(type);
 
-            propertyServicio.createProperty(address, province, location, surface, bathrooms,
+            propertyServicio.create(address, province, location, surface, bathrooms,
                             bedrooms, price, description, status, createDate,
-                            type, images, offers, idUser, isRented, isActive);
+                            type);
 
             modelo.put("exito", "La propiedad fue cargada correctamente!");
 
-        } catch (MiException ex) {
+        } catch (Exception ex) {
             List<User> users = userservice.listUser();
             modelo.addAttribute("users", users);
             modelo.put("error", ex.getMessage());
@@ -84,7 +79,7 @@ public class PropertyController {
 
     @GetMapping("/list")//localhost:8080/property/list
     public String list(ModelMap modelo) {
-        List<Property> properties = propertyServicio.listProperty();
+        List<Property> properties = propertyServicio.list();
         modelo.addAttribute("properties", properties);
 
         return "property_list";
@@ -108,29 +103,20 @@ public class PropertyController {
                          @RequestParam(value = "bedrooms", defaultValue = "0")Integer bedrooms,
                          @RequestParam(value = "price", defaultValue = "0")Double price,
                          @RequestParam String description, @RequestParam PropertyStatus status,
-                         @RequestParam LocalDate createDate, @RequestParam PropertyType type,
+                         @RequestParam Date createDate, @RequestParam PropertyType type,
                          @RequestParam(required=false)List<ImageProperty> images,
                          @RequestParam(required=false) List<Offer> offers, @RequestParam (required=false) String idUser,
                          @RequestParam boolean isRented, @RequestParam boolean isActive, ModelMap modelo) {
-        try {
-            List<User> users = userservice.listUser();
 
-            modelo.addAttribute("users", users);
+        List<User> users = userservice.listUser();
 
-            propertyServicio.updateProperty(id, address, province, location, surface, bathrooms,
-                    bedrooms, price, description, status, createDate,
-                    type, images, offers, idUser, isRented, isActive);
+        modelo.addAttribute("users", users);
 
-            return "redirect:../list";
+        propertyServicio.update(id, address, province, location, surface, bathrooms,
+                bedrooms, price, description, status, createDate,
+                type, images, offers, idUser, isRented, isActive);
 
-        } catch (MiException ex) {
-            List<User> users = userservice.listUser();
+        return "redirect:../list";
 
-            modelo.put("error", ex.getMessage());
-
-            modelo.addAttribute("users", users);
-
-            return "property_modify.html";
-        }
     }
 }

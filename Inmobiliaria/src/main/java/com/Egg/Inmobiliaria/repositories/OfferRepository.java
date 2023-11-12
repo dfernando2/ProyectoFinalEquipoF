@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.Egg.Inmobiliaria.models.Offer;
 
 @Repository
-public interface IOfferRepository extends JpaRepository<Offer, Long>{
+public interface OfferRepository extends JpaRepository<Offer, Long>{
     
 }

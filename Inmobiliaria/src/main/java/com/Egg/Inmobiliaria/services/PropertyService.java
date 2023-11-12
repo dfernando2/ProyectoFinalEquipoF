@@ -8,13 +8,13 @@ import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.User;
 import com.Egg.Inmobiliaria.repositories.PropertyRepository;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,25 +28,12 @@ public class PropertyService {
     UserRepository userRepository;
 
     @Transactional
-    public void createProperty(String address, String province, String location, Integer surface,
-                               Integer bathrooms, Integer bedrooms, Double price, String description,
-                               PropertyStatus status, LocalDate createDate, PropertyType type, List<ImageProperty> images,
-                               List<Offer> offers, String idUser, boolean isRented, boolean isActive){
-
-        Optional <Property> propertyResponse = propertyRepository.findById(id);
-        Optional<User> userResponse = userRepository.findById(idUser);
-
-        User user = new User();
-
-        if(userResponse.isPresent()){
-
-            user = userResponse.get();
-        }
-
-
+    public void create(String address, String province, String location, Integer surface,
+                       Integer bathrooms, Integer bedrooms, Double price, String description,
+                       PropertyStatus status, Date createDate, PropertyType type){
+        //falta validar
 
         Property property = new Property();
-        property.setId(id);
         property.setAddress(address);
         property.setProvince(province);
         property.setLocation(location);
@@ -58,43 +45,41 @@ public class PropertyService {
         property.setStatus(status);
         property.setCreateDate(createDate);
         property.setType(type);
-        property.setImages(images);
-        property.setOffers(offers);
-        property.setUser(user);
-        property.setRented(isRented);
-        property.setActive(isActive);
+        property.setRented(false);
+        property.setActive(true);
 
         propertyRepository.save(property);
-
-
     }
 
 
-    public List<Property> listProperty() {
+    public Property getOne(Long id){
+        return propertyRepository.getOne(id);
+    }
+    public List<Property> list() {
         List<Property> properties = new ArrayList();
         properties = propertyRepository.findAll();
         return properties;
     }
 
     @Transactional
-    public void updateProperty(Long id, String address, String province, String location, Integer surface,
+    public void update(Long id, String address, String province, String location, Integer surface,
                                Integer bathrooms, Integer bedrooms, Double price, String description,
-                               PropertyStatus status, LocalDate createDate, PropertyType type, List<ImageProperty> images,
+                               PropertyStatus status, Date createDate, PropertyType type, List<ImageProperty> images,
                                List<Offer> offers, String idUser, boolean isRented, boolean isActive) {
 
-        Optional<Property> propertyResponse = propertyRepository.findById(id);
-        Optional<User> userResponse = userRepository.findById(idUser);
+        Optional<Property> propertyAnswer = propertyRepository.findById(id);
+        Optional<User> userAnswer = userRepository.findById(Long.valueOf(idUser));
 
         User user = new User();
 
-        if (userResponse.isPresent()) {
+        if (userAnswer.isPresent()) {
 
-            user = userResponse.get();
+            user = userAnswer.get();
         }
 
-        if (propertyResponse.isPresent()) {
+        if (propertyAnswer.isPresent()) {
 
-            Property property = propertyResponse.get();
+            Property property = propertyAnswer.get();
             property.setAddress(address);
             property.setProvince(province);
             property.setLocation(location);
@@ -117,15 +102,11 @@ public class PropertyService {
         }
     }
 
-    public Property getOne(Long id){
-        return propertyRepository.getOne(id);
-    }
-
     @Transactional
-    public void removeProperty() {
-        Optional<Property> propertyResponse = propertyRepository.findById(id);
-        if (propertyResponse.isPresent()) {
-            Property property = propertyResponse.get();
+    public void remove(Long id) {
+        Optional<Property> propertyAnswer = propertyRepository.findById(id);
+        if (propertyAnswer.isPresent()) {
+            Property property = propertyAnswer.get();
             property.setActive(false);
             propertyRepository.save(property);
         }
@@ -133,7 +114,6 @@ public class PropertyService {
 
     public void findByType(PropertyType type) {
         List<Property> properties = propertyRepository.findByType(type);
-
     }
 
 }
