@@ -8,6 +8,7 @@ public class InmobiliariaEquipoFApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(InmobiliariaEquipoFApplication.class, args);
+
 	}
 
 }
