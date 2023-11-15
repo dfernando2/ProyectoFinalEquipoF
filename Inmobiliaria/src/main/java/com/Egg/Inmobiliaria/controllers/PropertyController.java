@@ -6,7 +6,7 @@ import com.Egg.Inmobiliaria.exceptions.MiException;
 import com.Egg.Inmobiliaria.models.ImageProperty;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
-import com.Egg.Inmobiliaria.models.User;
+import com.Egg.Inmobiliaria.models.Usuario;
 import com.Egg.Inmobiliaria.services.PropertyService;
 import com.Egg.Inmobiliaria.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class PropertyController {
     @GetMapping("/record") //localhost:8080/property/record
     public String record(ModelMap modelo) {
 
-        List<User> users = userservice.listUser();
+        List<Usuario> users = userservice.listUser();
 
         modelo.addAttribute("users", users);
 
@@ -69,7 +69,7 @@ public class PropertyController {
             modelo.put("exito", "La propiedad fue cargada correctamente!");
 
         } catch (Exception ex) {
-            List<User> users = userservice.listUser();
+            List<Usuario> users = userservice.listUser();
             modelo.addAttribute("users", users);
             modelo.put("error", ex.getMessage());
             return "property_form.html";  // volvemos a cargar el formulario.
@@ -90,7 +90,7 @@ public class PropertyController {
 
         modelo.put("property", propertyServicio.getOne(id));
 
-        List<User> users = userservice.listUser();
+        List<Usuario> users = userservice.listUser();
 
         modelo.addAttribute("users", users);
 
@@ -108,7 +108,7 @@ public class PropertyController {
                          @RequestParam(required=false) List<Offer> offers, @RequestParam (required=false) String idUser,
                          @RequestParam boolean isRented, @RequestParam boolean isActive, ModelMap modelo) {
 
-        List<User> users = userservice.listUser();
+        List<Usuario> users = userservice.listUser();
 
         modelo.addAttribute("users", users);
 

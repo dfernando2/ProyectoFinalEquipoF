@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.Egg.Inmobiliaria.enums.OfferStatus;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
-import com.Egg.Inmobiliaria.models.User;
+import com.Egg.Inmobiliaria.models.Usuario;
 import com.Egg.Inmobiliaria.repositories.OfferRepository;
 
 @Service
@@ -31,9 +31,9 @@ public class OfferService {
     public void createOffer(String idProperty, String idUser, Double price){
 
         Optional<Property> answerProperty = propertyRepository.findById(Long.valueOf(idProperty));
-        Optional<User> answerUser = userRepository.findById(Long.valueOf(idUser));
+        Optional<Usuario> answerUser = userRepository.findById(Long.valueOf(idUser));
         Property property = new Property();
-        User user = new User();
+        Usuario user = new Usuario();
         if(answerProperty.isPresent()){
             property = answerProperty.get();
         }
@@ -53,11 +53,11 @@ public class OfferService {
     public void update(String id, String idProperty, String idUser, Double price){
 
         Optional<Property> answerProperty = propertyRepository.findById(Long.valueOf(idProperty));
-        Optional<User> answerUser = userRepository.findById(Long.valueOf(idUser));
+        Optional<Usuario> answerUser = userRepository.findById(Long.valueOf(idUser));
         Optional<Offer> answerOffer = offerRepository.findById(Long.valueOf(id));
 
         Property property = new Property();
-        User user = new User();
+        Usuario user = new Usuario();
         if(answerProperty.isPresent()){
             property = answerProperty.get();
         }
