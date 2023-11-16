@@ -30,7 +30,7 @@ public class Property {
     @OneToMany
     private List<Offer> offers;
     @ManyToOne
-    private User user;
+    private Usuario user;
     private boolean isRented;
     private boolean isActive;
 
@@ -40,7 +40,7 @@ public class Property {
     public Property(Long id, String address, String province, String location, Integer surface,
                     Integer bathrooms, Integer bedrooms, Double price, String description,
                     PropertyStatus status, Date createDate, PropertyType type, List<ImageProperty> images,
-                    List<Offer> offers, User user, boolean isRented, boolean isActive) {
+                    List<Offer> offers, Usuario user, boolean isRented, boolean isActive) {
         this.id = id;
         this.address = address;
         this.province = province;
@@ -172,11 +172,11 @@ public class Property {
         this.offers = offers;
     }
 
-    public User getUser() {
+    public Usuario getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Usuario user) {
         this.user = user;
     }
 
