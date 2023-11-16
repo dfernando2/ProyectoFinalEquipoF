@@ -5,7 +5,7 @@ import com.Egg.Inmobiliaria.enums.PropertyType;
 import com.Egg.Inmobiliaria.models.ImageProperty;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
-import com.Egg.Inmobiliaria.models.User;
+import com.Egg.Inmobiliaria.models.Usuario;
 import com.Egg.Inmobiliaria.repositories.PropertyRepository;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,9 +68,9 @@ public class PropertyService {
                                List<Offer> offers, String idUser, boolean isRented, boolean isActive) {
 
         Optional<Property> propertyAnswer = propertyRepository.findById(id);
-        Optional<User> userAnswer = userRepository.findById(Long.valueOf(idUser));
+        Optional<Usuario> userAnswer = userRepository.findById(Long.valueOf(idUser));
 
-        User user = new User();
+        Usuario user = new Usuario();
 
         if (userAnswer.isPresent()) {
 
