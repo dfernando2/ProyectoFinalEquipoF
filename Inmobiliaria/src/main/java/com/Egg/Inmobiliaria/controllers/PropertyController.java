@@ -2,22 +2,21 @@ package com.Egg.Inmobiliaria.controllers;
 
 import com.Egg.Inmobiliaria.enums.PropertyStatus;
 import com.Egg.Inmobiliaria.enums.PropertyType;
-import com.Egg.Inmobiliaria.exceptions.MiException;
 import com.Egg.Inmobiliaria.models.ImageProperty;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
-import com.Egg.Inmobiliaria.models.User;
+import com.Egg.Inmobiliaria.models.Usuario;
 import com.Egg.Inmobiliaria.services.PropertyService;
 import com.Egg.Inmobiliaria.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +25,7 @@ import java.util.List;
 public class PropertyController {
 
     @Autowired
-    PropertyService propertyServicio;
+    PropertyService propertyService;
     @Autowired
     UserService userservice;
 
@@ -38,10 +37,11 @@ public class PropertyController {
     // pueda manejar de manera personalizada el formato de las fechas, utilizando "yyyy-MM-dd"
     // como formato para las fechas de tipo Date.
 
+
     @GetMapping("/record") //localhost:8080/property/record
     public String record(ModelMap modelo) {
 
-        List<User> users = userservice.listUser();
+        List<Usuario> users = userservice.listUser();
 
         modelo.addAttribute("users", users);
 
@@ -55,22 +55,22 @@ public class PropertyController {
                            @RequestParam(value = "bedrooms", defaultValue = "0")Integer bedrooms,
                            @RequestParam(value = "price", defaultValue = "0")Double price,
                            @RequestParam String description, @RequestParam PropertyStatus status,
-                           @RequestParam Date createDate, @RequestParam PropertyType type,
+                           @RequestParam Date createDate, @RequestParam PropertyType type, List<MultipartFile> files, @RequestParam Usuario usuario,
                            ModelMap modelo) {
         try {
 
 //            modelo.addAttribute("propertyType", type);
 //            System.out.println(type);
 
-            propertyServicio.create(address, province, location, surface, bathrooms,
+            propertyService.create(address, province, location, surface, bathrooms,
                             bedrooms, price, description, status, createDate,
-                            type);
+                            type, files);
 
             modelo.put("exito", "La propiedad fue cargada correctamente!");
 
         } catch (Exception ex) {
-            List<User> users = userservice.listUser();
-            modelo.addAttribute("users", users);
+            List<Usuario> usuarios = userservice.listUser();
+            modelo.addAttribute("usuarios", usuarios);
             modelo.put("error", ex.getMessage());
             return "property_form.html";  // volvemos a cargar el formulario.
         }
@@ -79,23 +79,26 @@ public class PropertyController {
 
     @GetMapping("/list")//localhost:8080/property/list
     public String list(ModelMap modelo) {
-        List<Property> properties = propertyServicio.list();
+        List<Property> properties = propertyService.list();
         modelo.addAttribute("properties", properties);
 
-        return "property_list";
+        return "property_list.html";
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'BOTHROLE')")
     @GetMapping("/update/{id}")//localhost:8080/property/list/{id}
     public String modify(@PathVariable Long id, ModelMap modelo) {
 
-        modelo.put("property", propertyServicio.getOne(id));
+        modelo.put("property", propertyService.getOne(id));
 
-        List<User> users = userservice.listUser();
+        List<Usuario> usuarios = userservice.listUser();
 
-        modelo.addAttribute("users", users);
+        modelo.addAttribute("usuarios", usuarios);
 
         return "property_modify.html";
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'BOTHROLE')")
     @PostMapping("/update/{id}")//localhost:8080/property/list/{id}
     public String modify(@RequestParam(required = false) Long id, @RequestParam String address, @RequestParam String province,
                          String location, @RequestParam(value = "surface", defaultValue = "0") Integer surface,
@@ -104,15 +107,15 @@ public class PropertyController {
                          @RequestParam(value = "price", defaultValue = "0")Double price,
                          @RequestParam String description, @RequestParam PropertyStatus status,
                          @RequestParam Date createDate, @RequestParam PropertyType type,
-                         @RequestParam(required=false)List<ImageProperty> images,
+                         @RequestParam(required=false) List<MultipartFile> images,
                          @RequestParam(required=false) List<Offer> offers, @RequestParam (required=false) String idUser,
                          @RequestParam boolean isRented, @RequestParam boolean isActive, ModelMap modelo) {
 
-        List<User> users = userservice.listUser();
+        List<Usuario> usuarios = userservice.listUser();
 
-        modelo.addAttribute("users", users);
+        modelo.addAttribute("usuarios", usuarios);
 
-        propertyServicio.update(id, address, province, location, surface, bathrooms,
+        propertyService.update(id, address, province, location, surface, bathrooms,
                 bedrooms, price, description, status, createDate,
                 type, images, offers, idUser, isRented, isActive);
 

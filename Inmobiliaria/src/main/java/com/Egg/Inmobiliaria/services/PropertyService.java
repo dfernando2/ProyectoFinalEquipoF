@@ -5,7 +5,8 @@ import com.Egg.Inmobiliaria.enums.PropertyType;
 import com.Egg.Inmobiliaria.models.ImageProperty;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
-import com.Egg.Inmobiliaria.models.User;
+import com.Egg.Inmobiliaria.models.Usuario;
+import com.Egg.Inmobiliaria.repositories.ImagePropertyRepository;
 import com.Egg.Inmobiliaria.repositories.PropertyRepository;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,10 +29,16 @@ public class PropertyService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ImagePropertyService imagePropertyService;
+
+
     @Transactional
     public void create(String address, String province, String location, Integer surface,
                        Integer bathrooms, Integer bedrooms, Double price, String description,
-                       PropertyStatus status, Date createDate, PropertyType type){
+                       PropertyStatus status, Date createDate, PropertyType type,
+                       List<MultipartFile> files) {
+
         //falta validar
 
         Property property = new Property();
@@ -47,8 +55,15 @@ public class PropertyService {
         property.setType(type);
         property.setRented(false);
         property.setActive(true);
-
         propertyRepository.save(property);
+
+        for (MultipartFile file : files) {
+            try {
+                imagePropertyService.create(file, property);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 
@@ -63,19 +78,11 @@ public class PropertyService {
 
     @Transactional
     public void update(Long id, String address, String province, String location, Integer surface,
-                               Integer bathrooms, Integer bedrooms, Double price, String description,
-                               PropertyStatus status, Date createDate, PropertyType type, List<ImageProperty> images,
-                               List<Offer> offers, String idUser, boolean isRented, boolean isActive) {
+                       Integer bathrooms, Integer bedrooms, Double price, String description,
+                       PropertyStatus status, Date createDate, PropertyType type, List<MultipartFile> images,
+                       List<Offer> offers, String idUser, boolean isRented, boolean isActive) {
 
         Optional<Property> propertyAnswer = propertyRepository.findById(id);
-        Optional<User> userAnswer = userRepository.findById(Long.valueOf(idUser));
-
-        User user = new User();
-
-        if (userAnswer.isPresent()) {
-
-            user = userAnswer.get();
-        }
 
         if (propertyAnswer.isPresent()) {
 
@@ -91,12 +98,9 @@ public class PropertyService {
             property.setStatus(status);
             property.setCreateDate(createDate);
             property.setType(type);
-            property.setImages(images);
             property.setOffers(offers);
-            property.setUser(user);
             property.setRented(isRented);
             property.setActive(isActive);
-
             propertyRepository.save(property);
 
         }

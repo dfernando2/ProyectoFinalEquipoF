@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class imagePropertyController {
     
     
-    @GetMapping("/perfil/{id}")
-    public ResponseEntity<byte[]> imagenUsuario (@PathVariable String id) {
+    @GetMapping("/property/{id}")
+    public ResponseEntity<byte[]> imageProperty(@PathVariable String id) {
         
         
         HttpHeaders headers = new HttpHeaders();

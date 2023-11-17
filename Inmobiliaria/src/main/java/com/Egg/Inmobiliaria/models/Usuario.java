@@ -4,10 +4,8 @@ import com.Egg.Inmobiliaria.enums.Role;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.GenericGenerator;
-
 @Entity
-public class User {
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,11 +21,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role rol;
 
-    public User() {
+    public Usuario() {
     }
 
-    public User(Long id, String name, String email,
-                String password, Long dni, ImageUser image, Role rol) {
+    public Usuario(Long id, String name, String email,
+                   String password, Long dni, ImageUser image, Role rol) {
         this.id = id;
         this.name = name;
         this.email = email;

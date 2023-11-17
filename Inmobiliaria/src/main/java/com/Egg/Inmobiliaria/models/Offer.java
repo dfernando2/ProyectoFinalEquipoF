@@ -2,7 +2,6 @@ package com.Egg.Inmobiliaria.models;
 import java.util.Date;
 import javax.persistence.*;
 
-import org.hibernate.annotations.GenericGenerator;
 import com.Egg.Inmobiliaria.enums.OfferStatus;
 
 @Entity
@@ -15,18 +14,18 @@ public class Offer {
     @ManyToOne
     private Property property;
     @ManyToOne
-    private User user;
+    private Usuario usuario;
     private Double price;
     private OfferStatus offerStatus;
 
     public Offer() {
     }    
 
-    public Offer(Long id, Date creationDate, Property property, User user, Double price, OfferStatus offerStatus) {
+    public Offer(Long id, Date creationDate, Property property, Usuario usuario, Double price, OfferStatus offerStatus) {
         this.id = id;
         this.creationDate = creationDate;
         this.property = property;
-        this.user = user;
+        this.usuario = usuario;
         this.price = price;
         this.offerStatus = offerStatus;
     }
@@ -55,12 +54,12 @@ public class Offer {
         this.property = property;
     }
 
-    public User getUser() {
-        return user;
+    public Usuario getUser() {
+        return usuario;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public Double getPrice() {

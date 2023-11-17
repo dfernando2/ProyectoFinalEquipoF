@@ -5,6 +5,7 @@ import com.Egg.Inmobiliaria.enums.PropertyType;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.awt.*;
 import java.util.Date;
 import java.util.List;
 
@@ -26,11 +27,9 @@ public class Property {
     private Date createDate;
     private PropertyType type;
     @OneToMany
-    private List<ImageProperty> images;
-    @OneToMany
     private List<Offer> offers;
     @ManyToOne
-    private User user;
+    private Usuario usuario;
     private boolean isRented;
     private boolean isActive;
 
@@ -40,7 +39,7 @@ public class Property {
     public Property(Long id, String address, String province, String location, Integer surface,
                     Integer bathrooms, Integer bedrooms, Double price, String description,
                     PropertyStatus status, Date createDate, PropertyType type, List<ImageProperty> images,
-                    List<Offer> offers, User user, boolean isRented, boolean isActive) {
+                    List<Offer> offers, Usuario usuario, boolean isRented, boolean isActive) {
         this.id = id;
         this.address = address;
         this.province = province;
@@ -53,9 +52,8 @@ public class Property {
         this.status = status;
         this.createDate = createDate;
         this.type = type;
-        this.images = images;
         this.offers = offers;
-        this.user = user;
+        this.usuario = usuario;
         this.isRented = isRented;
         this.isActive = isActive;
     }
@@ -156,14 +154,6 @@ public class Property {
         this.type = type;
     }
 
-    public List<ImageProperty> getImages() {
-        return images;
-    }
-
-    public void setImages(List<ImageProperty> images) {
-        this.images = images;
-    }
-
     public List<Offer> getOffers() {
         return offers;
     }
@@ -172,12 +162,12 @@ public class Property {
         this.offers = offers;
     }
 
-    public User getUser() {
-        return user;
+    public Usuario getUser() {
+        return usuario;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public boolean isRented() {
