@@ -1,4 +1,5 @@
 package com.Egg.Inmobiliaria.services;
+
 import com.Egg.Inmobiliaria.models.ImageUser;
 import com.Egg.Inmobiliaria.enums.Role;
 import com.Egg.Inmobiliaria.exceptions.MiException;
@@ -26,26 +27,36 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserService implements UserDetailsService {
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private ImageUserService imageUserService;
     @Autowired
     private ImageUserRepository imageUserRepository;
+
     @Transactional
     public void create(MultipartFile file, String name, String email,
-                         Long dni, String password, String password2) throws MiException {
+            Long dni, String password, String password2, Role rol) throws MiException {
 
-        validate(name, email, dni, password, password2);
+        validate(name, email, dni, password, password2, rol);
 
         Usuario user = new Usuario();
-       
+
         user.setName(name);
         user.setEmail(email);
         user.setDni(dni);
         user.setPassword(new BCryptPasswordEncoder().encode(password));
-        user.setRol(Role.BOTHROLE);
 
+        if (rol.toString().equals("CLIENT")) {
+            user.setRol(Role.CLIENT);
+
+        } else if (rol.toString().equals("ENTITY")) {
+            user.setRol(Role.ENTITY);
+
+        } else if (rol.toString().equals("BOTHROLE")) {
+            user.setRol(Role.BOTHROLE);
+        }
 
         ImageUser imageUser = imageUserService.create(file);
         user.setImage(imageUser);
@@ -64,22 +75,32 @@ public class UserService implements UserDetailsService {
 
         return users;
     }
+
     @Transactional
     public void update(MultipartFile file, Long id, Long dni, String name, String email,
-                       String password, String password2) throws MiException {
-    
-        validate(name, email, dni, password, password2);
-        
+            String password, String password2, Role rol) throws MiException {
+
+        validate(name, email, dni, password, password2, rol);
+
         Optional<Usuario> answer = userRepository.findById(id);
 
         if (answer.isPresent()) {
-        
+
             Usuario user = answer.get();
             user.setName(name);
             user.setEmail(email);
             user.setPassword(new BCryptPasswordEncoder().encode(password));
-            user.setRol(Role.BOTHROLE);
-            
+
+            if (rol.toString().equals("CLIENT")) {
+                user.setRol(Role.CLIENT);
+
+            } else if (rol.toString().equals("ENTITY")) {
+                user.setRol(Role.ENTITY);
+
+            } else if (rol.toString().equals("BOTHROLE")) {
+                user.setRol(Role.BOTHROLE);
+            }
+
             ImageUser imageUser = imageUserService.create(file);
             user.setImage(imageUser);
 
@@ -88,26 +109,28 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void changeRol(Long id) {
+    public void changeRol(Long id, Role rol) {
         Optional<Usuario> answer = userRepository.findById(id);
-        
+
         if (answer.isPresent()) {
-        
+
             Usuario user = answer.get();
-            
-            if (user.getRol().equals(Role.BOTHROLE)) {
-                user.setRol(Role.ADMIN);
-                
-            } else if (user.getRol().equals(Role.ADMIN)) {
+
+            if (rol.toString().equals("CLIENT")) {
+                user.setRol(Role.CLIENT);
+
+            } else if (rol.toString().equals("ENTITY")) {
+                user.setRol(Role.ENTITY);
+
+            } else if (rol.toString().equals("BOTHROLE")) {
                 user.setRol(Role.BOTHROLE);
             }
-        
-            
+
         }
-        
+
     }
 
-    public void validate(String name, String email, Long dni, String password, String password2) throws MiException {
+    public void validate(String name, String email, Long dni, String password, String password2, Role rol) throws MiException {
 
         if (name.isEmpty() || name == null) {
             throw new MiException("El nombre no puede ser nulo o estar vacio");
@@ -123,6 +146,9 @@ public class UserService implements UserDetailsService {
         }
         if (!password.equals(password2)) {
             throw new MiException("Las contraseñas ingresadas deben ser iguales");
+        }
+        if (rol == null ) {
+            throw new MiException("El rol no puede ser nulo");
         }
 
     }

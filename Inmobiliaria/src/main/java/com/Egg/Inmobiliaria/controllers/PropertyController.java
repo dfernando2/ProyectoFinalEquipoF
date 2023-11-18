@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @Controller
 @RequestMapping("/property")
@@ -37,7 +38,7 @@ public class PropertyController {
     }// realizar la vinculación de datos entre las solicitudes web y los objetos del dominio,
     // pueda manejar de manera personalizada el formato de las fechas, utilizando "yyyy-MM-dd"
     // como formato para las fechas de tipo Date.
-
+    @PreAuthorize("hasAnyRole('ROLE_BOTHROLE', 'ROLE_ADMIN', 'ROLE_ENTITY')")
     @GetMapping("/record") //localhost:8080/property/record
     public String record(ModelMap modelo) {
 
@@ -47,7 +48,8 @@ public class PropertyController {
 
         return "property_form.html";
     }
-
+    
+    @PreAuthorize("hasAnyRole('ROLE_BOTHROLE', 'ROLE_ADMIN', 'ROLE_ENTITY')")
     @PostMapping("/register")//localhost:8080/property/register
     public String register(@RequestParam(required = false) Long id, @RequestParam String address, @RequestParam String province,
                            String location, @RequestParam(value = "surface", defaultValue = "0") Integer surface,
@@ -84,7 +86,8 @@ public class PropertyController {
 
         return "property_list";
     }
-
+    
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ENTITY')")
     @GetMapping("/update/{id}")//localhost:8080/property/list/{id}
     public String modify(@PathVariable Long id, ModelMap modelo) {
 
@@ -96,6 +99,7 @@ public class PropertyController {
 
         return "property_modify.html";
     }
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ENTITY')")
     @PostMapping("/update/{id}")//localhost:8080/property/list/{id}
     public String modify(@RequestParam(required = false) Long id, @RequestParam String address, @RequestParam String province,
                          String location, @RequestParam(value = "surface", defaultValue = "0") Integer surface,
