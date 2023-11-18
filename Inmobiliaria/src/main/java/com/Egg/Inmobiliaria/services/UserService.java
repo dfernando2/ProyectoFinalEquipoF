@@ -74,7 +74,9 @@ public class UserService implements UserDetailsService{
         validate(name, email, dni, password, password2);
         
         Optional<Usuario> answer = userRepository.findById(id);
-
+        
+                
+        
         if (answer.isPresent()) {
         
             Usuario user = answer.get();

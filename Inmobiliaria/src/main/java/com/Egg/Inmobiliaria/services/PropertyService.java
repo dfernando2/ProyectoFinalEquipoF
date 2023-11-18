@@ -2,6 +2,7 @@ package com.Egg.Inmobiliaria.services;
 
 import com.Egg.Inmobiliaria.enums.PropertyStatus;
 import com.Egg.Inmobiliaria.enums.PropertyType;
+import com.Egg.Inmobiliaria.exceptions.MiException;
 import com.Egg.Inmobiliaria.models.ImageProperty;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
@@ -30,9 +31,10 @@ public class PropertyService {
     @Transactional
     public void create(String address, String province, String location, Integer surface,
                        Integer bathrooms, Integer bedrooms, Double price, String description,
-                       PropertyStatus status, Date createDate, PropertyType type){
+                       PropertyStatus status, Date createDate, PropertyType type, Usuario user) throws MiException{
         //falta validar
 
+        
         Property property = new Property();
         property.setAddress(address);
         property.setProvince(province);
@@ -47,7 +49,8 @@ public class PropertyService {
         property.setType(type);
         property.setRented(false);
         property.setActive(true);
-
+        property.setUser(user);
+        
         propertyRepository.save(property);
     }
 
@@ -65,7 +68,7 @@ public class PropertyService {
     public void update(Long id, String address, String province, String location, Integer surface,
                                Integer bathrooms, Integer bedrooms, Double price, String description,
                                PropertyStatus status, Date createDate, PropertyType type, List<ImageProperty> images,
-                               List<Offer> offers, String idUser, boolean isRented, boolean isActive) {
+                               List<Offer> offers, String idUser, boolean isRented, boolean isActive) throws MiException {
 
         Optional<Property> propertyAnswer = propertyRepository.findById(id);
         Optional<Usuario> userAnswer = userRepository.findById(Long.valueOf(idUser));
@@ -96,6 +99,7 @@ public class PropertyService {
             property.setUser(user);
             property.setRented(isRented);
             property.setActive(isActive);
+            
 
             propertyRepository.save(property);
 

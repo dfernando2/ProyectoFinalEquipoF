@@ -7,6 +7,7 @@ import com.Egg.Inmobiliaria.models.ImageProperty;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.Usuario;
+import com.Egg.Inmobiliaria.repositories.UserRepository;
 import com.Egg.Inmobiliaria.services.PropertyService;
 import com.Egg.Inmobiliaria.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 @Controller
@@ -30,6 +33,8 @@ public class PropertyController {
     PropertyService propertyServicio;
     @Autowired
     UserService userservice;
+    @Autowired
+    UserRepository userrepository;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -58,16 +63,17 @@ public class PropertyController {
                            @RequestParam(value = "bedrooms", defaultValue = "0")Integer bedrooms,
                            @RequestParam(value = "price", defaultValue = "0")Double price,
                            @RequestParam String description, @RequestParam PropertyStatus status,
-                           @RequestParam Date createDate, @RequestParam PropertyType type,
+                           @RequestParam Date createDate, @RequestParam PropertyType type, String emailUser,
                            ModelMap modelo) {
         try {
 
 //            modelo.addAttribute("propertyType", type);
 //            System.out.println(type);
+            Usuario user = userrepository.buscarPorEmail(emailUser);
 
             propertyServicio.create(address, province, location, surface, bathrooms,
                             bedrooms, price, description, status, createDate,
-                            type);
+                            type, user);
 
             modelo.put("exito", "La propiedad fue cargada correctamente!");
 
@@ -111,16 +117,20 @@ public class PropertyController {
                          @RequestParam String description, @RequestParam PropertyStatus status,
                          @RequestParam Date createDate, @RequestParam PropertyType type,
                          @RequestParam(required=false)List<ImageProperty> images,
-                         @RequestParam(required=false) List<Offer> offers, @RequestParam (required=false) String idUser,
+                         @RequestParam(required=false) List<Offer> offers, @RequestParam String idUser,
                          @RequestParam boolean isRented, @RequestParam boolean isActive, ModelMap modelo) {
 
         List<Usuario> users = userservice.listUser();
 
         modelo.addAttribute("users", users);
 
-        propertyServicio.update(id, address, province, location, surface, bathrooms,
-                bedrooms, price, description, status, createDate,
-                type, images, offers, idUser, isRented, isActive);
+        try {
+            propertyServicio.update(id, address, province, location, surface, bathrooms,
+                    bedrooms, price, description, status, createDate,
+                    type, images, offers, idUser, isRented, isActive);
+        } catch (MiException ex) {
+            Logger.getLogger(PropertyController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         return "redirect:../list";
 
