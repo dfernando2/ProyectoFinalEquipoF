@@ -15,14 +15,14 @@ public class Offer {
     @ManyToOne
     private Property property;
     @ManyToOne
-    private User user;
+    private Usuario user;
     private Double price;
     private OfferStatus offerStatus;
 
     public Offer() {
     }    
 
-    public Offer(Long id, Date creationDate, Property property, User user, Double price, OfferStatus offerStatus) {
+    public Offer(Long id, Date creationDate, Property property, Usuario user, Double price, OfferStatus offerStatus) {
         this.id = id;
         this.creationDate = creationDate;
         this.property = property;
@@ -55,11 +55,11 @@ public class Offer {
         this.property = property;
     }
 
-    public User getUser() {
+    public Usuario getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Usuario user) {
         this.user = user;
     }
 

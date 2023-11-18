@@ -1,42 +1,62 @@
 package com.Egg.Inmobiliaria.services;
+
 import com.Egg.Inmobiliaria.models.ImageUser;
 import com.Egg.Inmobiliaria.enums.Role;
 import com.Egg.Inmobiliaria.exceptions.MiException;
 import com.Egg.Inmobiliaria.models.Property;
-import com.Egg.Inmobiliaria.models.User;
+import com.Egg.Inmobiliaria.models.Usuario;
 import com.Egg.Inmobiliaria.repositories.ImageUserRepository;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
+
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private ImageUserService imageUserService;
     @Autowired
     private ImageUserRepository imageUserRepository;
+
     @Transactional
-    public void create(MultipartFile file, Long id, String name, String email,
-                         Long dni, String password, String password2) throws MiException {
+    public void create(MultipartFile file, String name, String email,
+            Long dni, String password, String password2, Role rol) throws MiException {
 
-        validate(name, email, dni, password, password2);
+        validate(name, email, dni, password, password2, rol);
 
-        Optional <User> userResponse = userRepository.findById(id);
+        Usuario user = new Usuario();
 
-        User user = new User();
-       
         user.setName(name);
         user.setEmail(email);
         user.setDni(dni);
-        user.setPassword(password);
-        user.setRol(Role.BOTHROLE);
+        user.setPassword(new BCryptPasswordEncoder().encode(password));
 
+        if (rol.toString().equals("CLIENT")) {
+            user.setRol(Role.CLIENT);
+
+        } else if (rol.toString().equals("ENTITY")) {
+            user.setRol(Role.ENTITY);
+
+        } else if (rol.toString().equals("BOTHROLE")) {
+            user.setRol(Role.BOTHROLE);
+        }
 
         ImageUser imageUser = imageUserService.create(file);
         user.setImage(imageUser);
@@ -44,33 +64,43 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User getOne(Long id) {
+    public Usuario getOne(Long id) {
         return userRepository.getOne(id);
     }
 
-    public List<User> listUser() {
+    public List<Usuario> listUser() {
 
-        List<User> users = new ArrayList();
+        List<Usuario> users = new ArrayList();
         users = userRepository.findAll();
 
         return users;
     }
+
     @Transactional
     public void update(MultipartFile file, Long id, Long dni, String name, String email,
-                       String password, String password2) throws MiException {
-    
-        validate(name, email, dni, password, password2);
-        
-        Optional<User> answer = userRepository.findById(id);
+            String password, String password2, Role rol) throws MiException {
+
+        validate(name, email, dni, password, password2, rol);
+
+        Optional<Usuario> answer = userRepository.findById(id);
 
         if (answer.isPresent()) {
-        
-            User user = answer.get();
+
+            Usuario user = answer.get();
             user.setName(name);
             user.setEmail(email);
-            user.setPassword(password);
-            user.setRol(Role.BOTHROLE);
-            
+            user.setPassword(new BCryptPasswordEncoder().encode(password));
+
+            if (rol.toString().equals("CLIENT")) {
+                user.setRol(Role.CLIENT);
+
+            } else if (rol.toString().equals("ENTITY")) {
+                user.setRol(Role.ENTITY);
+
+            } else if (rol.toString().equals("BOTHROLE")) {
+                user.setRol(Role.BOTHROLE);
+            }
+
             ImageUser imageUser = imageUserService.create(file);
             user.setImage(imageUser);
 
@@ -79,26 +109,28 @@ public class UserService {
     }
 
     @Transactional
-    public void changeRol(Long id) {
-        Optional<User> answer = userRepository.findById(id);
-        
+    public void changeRol(Long id, Role rol) {
+        Optional<Usuario> answer = userRepository.findById(id);
+
         if (answer.isPresent()) {
-        
-            User user = answer.get();
-            
-            if (user.getRol().equals(Role.BOTHROLE)) {
-                user.setRol(Role.ADMIN);
-                
-            } else if (user.getRol().equals(Role.ADMIN)) {
+
+            Usuario user = answer.get();
+
+            if (rol.toString().equals("CLIENT")) {
+                user.setRol(Role.CLIENT);
+
+            } else if (rol.toString().equals("ENTITY")) {
+                user.setRol(Role.ENTITY);
+
+            } else if (rol.toString().equals("BOTHROLE")) {
                 user.setRol(Role.BOTHROLE);
             }
-        
-            
+
         }
-        
+
     }
 
-    public void validate(String name, String email, Long dni, String password, String password2) throws MiException {
+    public void validate(String name, String email, Long dni, String password, String password2, Role rol) throws MiException {
 
         if (name.isEmpty() || name == null) {
             throw new MiException("El nombre no puede ser nulo o estar vacio");
@@ -114,6 +146,35 @@ public class UserService {
         }
         if (!password.equals(password2)) {
             throw new MiException("Las contraseñas ingresadas deben ser iguales");
+        }
+        if (rol == null ) {
+            throw new MiException("El rol no puede ser nulo");
+        }
+
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        Usuario user = userRepository.buscarPorEmail(email);
+
+        if (user != null) {
+
+            List<GrantedAuthority> permisos = new ArrayList();
+
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + user.getRol().toString());
+
+            permisos.add(p);
+
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            HttpSession session = attr.getRequest().getSession(true);
+
+            session.setAttribute("usuariosession", user);
+
+            return new User(user.getEmail(), user.getPassword(), permisos);
+        } else {
+            return null;
         }
 
     }
