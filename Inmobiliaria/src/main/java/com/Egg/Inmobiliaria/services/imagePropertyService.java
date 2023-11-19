@@ -1,80 +1,57 @@
-
 package com.Egg.Inmobiliaria.services;
 
-import com.Egg.Inmobiliaria.exceptions.MiException;
 import com.Egg.Inmobiliaria.models.ImageProperty;
-import com.Egg.Inmobiliaria.repositories.imagePropertyRepository;
-
-import java.util.List;
-import java.util.Optional;
+import com.Egg.Inmobiliaria.models.Property;
+import com.Egg.Inmobiliaria.repositories.ImagePropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public class imagePropertyService {
 
     @Autowired
-    private imagePropertyRepository imagePropertyRepository;
+    ImagePropertyRepository imagePropertyRepository;
 
-    public ImageProperty guardar(MultipartFile archivo) throws MiException {
-        if (archivo != null) {
+    @Transactional
+    public void create(MultipartFile file, Property property) throws IOException {
+        if (!file.isEmpty()) {
             try {
-
                 ImageProperty image = new ImageProperty();
-
-                image.setMime(archivo.getContentType());
-
-                image.setName(archivo.getName());
-
-                image.setContainer(archivo.getBytes());
-
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
+                image.setMime(file.getContentType());
+                image.setName(file.getName());
+                image.setContainer(file.getBytes());
+                image.setProperty(property);
+                imagePropertyRepository.save(image);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
             }
         }
-        return null;
     }
 
-    public ImageProperty actualizar(MultipartFile archivo, String id) throws MiException {
-        if (archivo != null) {
-
+    @Transactional
+    public ImageProperty update(MultipartFile file, String id) {
+        if (!file.isEmpty()) {
             try {
-
                 ImageProperty image = new ImageProperty();
-
                 if (id != null) {
-
-                    Optional<ImageProperty> respuesta = imagePropertyRepository.findById(id);
-
-                    if (respuesta.isPresent()) {
-
-                        image = respuesta.get();
-
-                    }
-
+                    Optional<ImageProperty> response = imagePropertyRepository.findById(id);
+                    if (response.isPresent()) image = response.get();
                 }
-
-                image.setMime(archivo.getContentType());
-
-                image.setName(archivo.getName());
-
-                image.setContainer(archivo.getBytes());
-                
+                image.setMime(file.getContentType());
+                image.setName(file.getName());
+                image.setContainer(file.getBytes());
                 return imagePropertyRepository.save(image);
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
         return null;
     }
-    
-    @Transactional(readOnly = true)
-    public List<ImageProperty> listarTodos(){
-        return imagePropertyRepository.findAll();
-        
-    }
+
 
 }

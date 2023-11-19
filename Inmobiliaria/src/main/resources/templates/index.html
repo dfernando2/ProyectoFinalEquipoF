@@ -1,243 +1,34 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="es">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mr House HomePage</title>
-    <link rel="shortcut icon"
-        href="https://res.cloudinary.com/ddbif6hp5/image/upload/v1700093781/Inmobiliria/mfdz5wkktjmifc4ydelm.png"
-        type="image/x-icon">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Lilita+One&family=Moirai+One&display=swap');
-    </style>
-    <link rel="stylesheet" href="../static/css/inicio.css">
-    <link rel="stylesheet" href="navbar.css">
-    <style>
-        body {
-            background-color: #ECE3DB;
-        }
+<head th:replace="/fragments/head :: head"></head>
 
-        #title {
-            font-family: 'Lilita One';
-            color: black;
-            -webkit-text-stroke-width: 3px;
-            -webkit-text-stroke-color: #e8a074;
-        }
-
-        .carousel>.carousel-inner>.carousel-item>img {
-            width: 240px;
-
-            height: 500px;
-
-        }
-
-        #subtitle {
-            color: black;
-        }
-
-        #card {
-            width: 90vh;
-            width: 25vw;
-            border: 1px solid grey;
-            border-radius: 10px;
-            box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.507);
-
-        }
-
-        #card img {
-            width: 100%;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-        }
-
-        #card h3 {
-            text-align: center;
-        }
-
-        .flex-container {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-content: space-around;
-        }
-
-        .subti {
-            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-            text-align: center;
-
-        }
-
-        .iframe {
-            width: 100vw;
-        }
-
-        /*NAVBAR*/
-        .navbar {
-            background-color: #809638;
-
-        }
-
-        .navbar li a {
-            color: #eee9e6;
-            font-size: 1.2em;
-            
-            
-        }
-
-        .dropdown-menu {
-            background-color: #809638;
-        }
-
-        #ingre {
-            color: #eee9e6;
-        }
-
-        #ingre:hover{
-            color: black;
-        }
-        #logo {
-            height: 7vw;
-            padding-left: 50px;
-        }
-    </style>
-</head>
-
-<body>
-
-    <header>
-        <nav th:replace="/fragments/navbar :: nav"></nav>
-    </header>
-    <main>
-
-        <div data-bs-ride="carousel" data-ride="carousel" class="carousel slide carousel-fade" data-interval="1000"
-            id="myCarousel">
-
-            <div class="carousel-inner" data-bs-ride="carousel" data-interval="1000">
-                <div class="carousel-item active slide" id="first">
-                    <img src="https://casasenventahermosillo.com.mx/wp-content/uploads/2022/08/Diferencia-entre-apartamento-y-departamento-1024x683.webp"
-                        class="d-block w-100" alt="...">
-
-                </div>
-                <div class="carousel-item slide" id="second" data-interval="1000">
-                    <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/297259472.jpg?k=cbf10a90594d0452a07e0d7cfd81f8514a590e8eba311c34fb6efd6115f97fbc&o=&hp=1"
-                        class="d-block w-100" alt="...">
+<body id="index-body">
 
 
-                </div>
-                <div class="carousel-item slide" id="third" data-interval="1000">
-                    <img src="https://vsd.mx/wp-content/uploads/2022/10/Ventajas-de-vivir-en-Departamento-1024x683.jpg"
-                        class="d-block w-100" alt="...">
-
-                </div>
-                <div class="carousel-item slide" id="forth" data-interval="1000">
-                    <img src="https://www.ingenal.com.co/wp-content/uploads/2022/10/Z8A4974-min-scaled-1-1024x683-1.jpg"
-                        class="d-block w-100" alt="...">
-
-                </div>
-
-            </div>
-
-        </div>
-        <hr>
-        <h2 class="subti">Propiedades Destacadas</h2>
-        <hr>
-        <div class="flex-container">
-            <div id="card">
-                <img src="https://t3.ftcdn.net/jpg/01/62/06/40/360_F_162064034_HI2YEgV7km3HMy0rccQczKH2vvpI4OnB.jpg"
-                    alt="casa">
-                <h3>Casa</h3>
-                <ul>
-                    <li> <span>US$</span> 350.000</li>
-                    <li> <span> Tipo de Propiedad:</span> Casa,Barrios Cerrados y Countrys</li>
-                    <li> <span>Zona:</span> Residencial</li>
-                    <li><span>Localidad:</span> Don Torcuato</li>
-                    <li><span>Barrio:</span> San Jorge</li>
-                </ul>
-            </div>
-
-            <div id="card">
-                <img src="https://t3.ftcdn.net/jpg/01/18/46/52/360_F_118465200_0q7Of6UnbA8kDlYEe3a4PuIyue27fbuV.jpg">
-
-                <ul th:each="property : ${property}">
-                    <li th:text="${price}"> <span>US$</span></li>
-                    <li th:text="${type}"> <span> Tipo de Propiedad:</span></li>
-                    <li th:text="${province}"> <span>Provincia:</span></li>
-                    <li th:text="${location}"><span>Localidad:</span> </li>
-                    <li th:text="${address}"><span>Direccion:</span></li>
-                    <li th:text="${bathrooms}"><span>Baños:</span></li>
-                </ul>
-            </div>
-
-
-            <div id="card">
-                <img src=" https://t4.ftcdn.net/jpg/01/69/69/21/360_F_169692156_L1aGrmJaHsZxF1sWQGuRKn3mR60bBqhN.jpg"
-                    alt="departamento">
-                <h3>Departamento</h3>
-                <ul>
-                    <li> <span>US$</span> 200.000</li>
-                    <li> <span> Tipo de Propiedad:</span> Departamento</li>
-                    <li> <span>Zona:</span> Residencial</li>
-                    <li><span>Localidad:</span> CABA</li>
-                    <li><span>Barrio:</span> Caballito</li>
-                </ul>
-            </div>
-            <div id="card">
-                <img src="https://thumbs.dreamstime.com/b/shutter-background-shop-exterior-closed-red-113337154.jpg"
-                    alt="local">
-                <h3>Local</h3>
-                <ul>
-                    <li> <span>US$</span> 50.000</li>
-                    <li> <span> Tipo de Propiedad:</span>Local</li>
-                    <li> <span>Zona:</span> Comercial</li>
-                    <li><span>Localidad:</span> CABA</li>
-                    <li><span>Barrio:</span>Once</li>
-                </ul>
-            </div>
-            <div id="card">
-                <img src="https://images.pond5.com/pan-new-suburban-house-footage-087274252_iconl.jpeg" alt="casa">
-                <h3>Casa</h3>
-                <ul>
-                    <li> <span>US$</span> 350.000</li>
-                    <li> <span> Tipo de Propiedad:</span> Casa</li>
-                    <li> <span>Zona:</span> Residencial</li>
-                    <li><span>Localidad:</span> Don Torcuato</li>
-                    <li><span>Barrio:</span> San Jorge</li>
-                </ul>
-            </div>
-            <div id="card">
-                <img src="https://www.quickenloans.com/learnassets/QuickenLoans.com/2022%20Images/Stock-New-House-With-Large-Windows-AdobeStock328718092%20copy.jpeg"
-                    alt="casa">
-                <h3>Casa</h3>
-                <ul>
-                    <li> <span>US$</span> 350.000</li>
-                    <li> <span> Tipo de Propiedad:</span> Casa,Barrios Cerrados y Countrys</li>
-                    <li> <span>Zona:</span> Residencial</li>
-                    <li><span>Localidad:</span> Don Torcuato</li>
-                    <li><span>Barrio:</span> San Jorge</li>
-                </ul>
+    <main id="index-main">
+        <div id="div-relativo">
+            <div class="div-ingreso-absoluto">
+                <img src="https://res.cloudinary.com/ddbif6hp5/image/upload/v1700094591/Inmobiliria/zgq73pinlq6sjdhmg61g.png"
+                alt="Mr House logo" width="50px">
+                <h2 id="titulo-ingrsar"><b>Ingresar</b></h2>
+                <img src="https://res.cloudinary.com/ddbif6hp5/image/upload/v1700094591/Inmobiliria/zgq73pinlq6sjdhmg61g.png"
+                alt="Mr House logo" width="50px"><br>
+                <hr>
+                <a class="boton_ingreso" href="/login"><h5>Login</h5></a><br>
+                <a class="boton_ingreso" href="/register"><h5>Registro</h5></a><br>
+                <a class="boton_ingreso" href="/home"><h5>Ingresar como invitado</h5></a>
             </div>
         </div>
+
 
 
     </main>
-    <section>
-        <div>
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d209978.73240512074!2d-59.3274479132813!3d-34.682026699999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bc8946a9fb7043%3A0x28084c95ef32c251!2sMr%20House%20Club!5e0!3m2!1ses-419!2sar!4v1700011540539!5m2!1ses-419!2sar"
-                class="iframe" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
 
-    </section>
-    <footer></footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
         crossorigin="anonymous"></script>
+
 </body>
 
 </html>

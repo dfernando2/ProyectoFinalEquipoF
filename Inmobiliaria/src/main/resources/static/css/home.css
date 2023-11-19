@@ -1,8 +1,5 @@
-#title {
-    font-family: 'Lilita One';
-    color: black;
-    -webkit-text-stroke-width: 3px;
-    -webkit-text-stroke-color: #e8a074;
+#home-body {
+    background-color: #ECE3DB;
 }
 
 .carousel>.carousel-inner>.carousel-item>img {
@@ -17,12 +14,12 @@
 }
 
 #card {
-    width: 90vh;
+    
     width: 25vw;
     border: 1px solid grey;
     border-radius: 10px;
     box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.507);
- 
+
 }
 
 #card img {
@@ -30,9 +27,11 @@
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
-#card h3{
+
+#card h3 {
     text-align: center;
 }
+
 .flex-container {
     display: flex;
     flex-direction: row;
@@ -40,8 +39,14 @@
     justify-content: space-around;
     align-content: space-around;
 }
-.subti{
+
+.subti {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     text-align: center;
 
 }
+
+.iframe {
+    width: 100vw;
+}
+
