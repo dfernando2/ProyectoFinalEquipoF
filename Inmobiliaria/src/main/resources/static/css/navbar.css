@@ -1,0 +1,37 @@
+.navbar {
+    background-color: #809638;
+
+}
+
+.navbar li a {
+    color: #eee9e6;
+    font-size: 1.2em;
+
+
+}
+
+.nav-item {
+
+    padding-right: 3em;
+}
+
+.dropdown-menu {
+    background-color: #809638;
+}
+
+.dropdown-item:hover {
+    background-color: #809638;
+}
+
+#ingre {
+    color: #eee9e6;
+}
+
+#ingre:hover {
+    color: black;
+}
+
+#logo {
+    height: 6vw;
+    padding-left: 3em;
+}

@@ -10,7 +10,17 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 @Controller
 @RequestMapping("/")
@@ -25,85 +35,97 @@ public class PortalController {
         return "index.html";
     }
 
+    @GetMapping("/navbar")
+    public String navbar() {
+        return "home.html";
+    }
+
     @GetMapping("/register")
-    public String registrar() {
+    public String register() {
         return "register.html";
     }
 
-    @PostMapping("/registered")
-    public String registro(@RequestParam String name, @RequestParam String email, @RequestParam String password, Long dni,
-            String password2, ModelMap modelo, MultipartFile file) {
-
+    @PostMapping("/registration")
+    public String registration( @RequestParam String name,
+                                @RequestParam String email,
+                                @RequestParam Long dni,
+                                @RequestParam String password,
+                                @RequestParam String password2,
+//                                @RequestParam MultipartFile file,
+                                ModelMap modelo) {
         try {
-            userService.create(file, name, email, dni, password, password2);
-
-            modelo.put("exito", "Usuario registrado correctamente!");
+//            userService.create(file, name, email, dni, password, password2);
+            userService.create(name, email, dni, password, password2);
+            modelo.put("exito", "Usuario cargado correctamente");
 
             return "index.html";
-        } catch (MiException ex) {
 
-            modelo.put("error", ex.getMessage());
-            modelo.put("nombre", name);
-            modelo.put("email", email);
+        } catch (Exception e) {
+
+            modelo.put("error", e.getMessage());
+//            modelo.put("name", name);
+//            modelo.put("email", email);
+//            modelo.put("dni", dni);
+            // modelo.put("file", file);
 
             return "register.html";
         }
-
     }
 
     @GetMapping("/login")
-    public String login(@RequestParam(required = false) String error, ModelMap modelo ) {
+    public String login(@RequestParam(required = false) String error, ModelMap model) {
 
         if (error != null) {
-            modelo.put("error", "Usuario o Contraseña invalidos!");
+            model.put("error", "Credenciales invalidas");
         }
 
-        return "login.html";
+        return "login";
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'CLIENT', 'BOTHROLE')")
+    @PreAuthorize("hasAnyRole('ROLE_ENTITY', 'ROLE_ADMIN', 'ROLE_CLIENT', 'ROLE_BOTHROLE')")
     @GetMapping("/home")
-    public String inicio(HttpSession session) {
-        
-        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-        
-        if (logueado.getRol().toString().equals("ADMIN")) {
-            return "redirect:/admin/dashboard";
+    public String home(HttpSession session) {
+
+        Usuario currentUser = (Usuario) session.getAttribute("usuariosession");
+
+        if (currentUser.getRol().toString().equals("ADMIN")) {
+            return "home"; // ACA IRIA LA VISTA DASHBOARD
+        } else {
+            return "home";
         }
-        
-           return "home.html";
     }
-
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'CLIENT', 'BOTHROLE')")
-    @GetMapping("/profile")
-    public String profile(ModelMap modelo,HttpSession session){
-        Usuario usuario = (Usuario) session.getAttribute("usuariosession");
-         modelo.put("usuario", usuario);
-        return "usuario_update.html";
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'CLIENT', 'BOTHROLE')")
-    @PostMapping("/profile/{id}")
-    public String update(MultipartFile file,@PathVariable String id, @RequestParam Long dni, @RequestParam String name,@RequestParam String email,
-            @RequestParam String password,@RequestParam String password2, ModelMap modelo) {
-
-        try {
-            userService.update(file, id, dni, name, email,
-                    password, password2);
-
-            modelo.put("exito", "Usuario actualizado correctamente!");
-
-            return "home.html";
-        } catch (MiException ex) {
-
-            modelo.put("error", ex.getMessage());
-            modelo.put("nombre", name);
-            modelo.put("email", email);
-
-            return "usuario_update.html";
-        }
-
-    }
-    
-    
 }
+
+//    @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'CLIENT', 'BOTHROLE')")
+//    @GetMapping("/profile")
+//    public String profile(ModelMap modelo,HttpSession session){
+//        Usuario usuario = (Usuario) session.getAttribute("usuariosession");
+//         modelo.put("usuario", usuario);
+//        return "usuario_update.html";
+//    }
+//
+//    @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'CLIENT', 'BOTHROLE')")
+//    @PostMapping("/profile/{id}")
+//    public String update(MultipartFile file,@PathVariable String id, @RequestParam Long dni, @RequestParam String name,@RequestParam String email,
+//            @RequestParam String password,@RequestParam String password2, ModelMap modelo) {
+//
+//        try {
+//            userService.update(file, id, dni, name, email,
+//                    password, password2);
+//
+//            modelo.put("exito", "Usuario actualizado correctamente!");
+//
+//            return "home.html";
+//        } catch (MiException ex) {
+//
+//            modelo.put("error", ex.getMessage());
+//            modelo.put("nombre", name);
+//            modelo.put("email", email);
+//
+//            return "usuario_update.html";
+//        }
+//
+//    }
+//
+//
+//}

@@ -11,6 +11,8 @@ import com.Egg.Inmobiliaria.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
@@ -55,16 +57,22 @@ public class PropertyController {
                            @RequestParam(value = "bedrooms", defaultValue = "0")Integer bedrooms,
                            @RequestParam(value = "price", defaultValue = "0")Double price,
                            @RequestParam String description, @RequestParam PropertyStatus status,
-                           @RequestParam Date createDate, @RequestParam PropertyType type, List<MultipartFile> files, @RequestParam Usuario usuario,
+                           @RequestParam Date createDate, @RequestParam PropertyType type, List<MultipartFile> files,
                            ModelMap modelo) {
         try {
 
 //            modelo.addAttribute("propertyType", type);
 //            System.out.println(type);
 
+            //traer el usuario que esta logueado
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+            String emailUser = auth.getName();
+
+
             propertyService.create(address, province, location, surface, bathrooms,
                             bedrooms, price, description, status, createDate,
-                            type, files);
+                            type, files, emailUser);
 
             modelo.put("exito", "La propiedad fue cargada correctamente!");
 
@@ -77,11 +85,14 @@ public class PropertyController {
         return "index.html";
     }
 
-    @GetMapping("/list")//localhost:8080/property/list
-    public String list(ModelMap modelo) {
-        List<Property> properties = propertyService.list();
-        modelo.addAttribute("properties", properties);
+    @GetMapping("/list")
+    public String propertyList() {
+        return "property_list.html";
+    }
 
+    @PostMapping("/list")
+    public String propertyList(ModelMap model) {
+        model.put("properties", propertyService.list());
         return "property_list.html";
     }
 

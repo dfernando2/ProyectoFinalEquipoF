@@ -54,4 +54,9 @@ public class ImagePropertyService {
     }
 
 
+    public byte[] getImageBytesById(String id) {
+        Optional<ImageProperty> response = imagePropertyRepository.findById(id);
+        if (response.isPresent()) return response.get().getContainer();
+        return null; //si no encuentra la imagen retorna null.
+    }
 }

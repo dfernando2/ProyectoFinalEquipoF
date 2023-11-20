@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PropertyService {
@@ -37,9 +38,11 @@ public class PropertyService {
     public void create(String address, String province, String location, Integer surface,
                        Integer bathrooms, Integer bedrooms, Double price, String description,
                        PropertyStatus status, Date createDate, PropertyType type,
-                       List<MultipartFile> files) {
+                       List<MultipartFile> files, String emailUsuario) {
 
         //falta validar
+
+        Optional<Usuario> userAnswer = Optional.ofNullable(userRepository.findByEmail(emailUsuario));
 
         Property property = new Property();
         property.setAddress(address);
@@ -55,6 +58,7 @@ public class PropertyService {
         property.setType(type);
         property.setRented(false);
         property.setActive(true);
+        property.setUser(userAnswer.get());
         propertyRepository.save(property);
 
         for (MultipartFile file : files) {
@@ -67,9 +71,10 @@ public class PropertyService {
     }
 
 
-    public Property getOne(Long id){
+    public Property getOne(Long id) {
         return propertyRepository.getOne(id);
     }
+
     public List<Property> list() {
         List<Property> properties = new ArrayList();
         properties = propertyRepository.findAll();
@@ -121,3 +126,4 @@ public class PropertyService {
     }
 
 }
+
