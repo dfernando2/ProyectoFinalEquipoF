@@ -74,7 +74,7 @@ public class PropertyController {
                             bedrooms, price, description, status, createDate,
                             type, files, emailUser);
 
-            modelo.put("exito", "La propiedad fue cargada correctamente!");
+            modelo.put("exito", "La propiedad fue cargada correctamente! ");
 
         } catch (Exception ex) {
             List<Usuario> usuarios = userservice.listUser();

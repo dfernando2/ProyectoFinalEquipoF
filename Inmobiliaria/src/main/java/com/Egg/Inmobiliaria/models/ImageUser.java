@@ -9,7 +9,8 @@ import org.hibernate.annotations.GenericGenerator;
  @Entity
 public class ImageUser {
      @Id
-     @GeneratedValue(strategy = GenerationType.AUTO)
+     @GeneratedValue(generator = "uuid")
+     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
     private String mime;
     private String nombre;

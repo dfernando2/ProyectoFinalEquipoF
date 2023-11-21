@@ -36,10 +36,10 @@ public class UserService implements UserDetailsService {
     private ImageUserService imageUserService;
 
     @Transactional
-//    public void create(MultipartFile file, String name, String email,
-//                       Long dni, String password, String password2) {
-    public void create(String name, String email,
+    public void create(MultipartFile file, String name, String email,
                        Long dni, String password, String password2) {
+//    public void create(String name, String email,
+//                       Long dni, String password, String password2) {
         try {
             validate(name, email, dni, password, password2);
 
@@ -51,8 +51,8 @@ public class UserService implements UserDetailsService {
             user.setPassword(new BCryptPasswordEncoder().encode(password));
             user.setRol(Role.BOTHROLE);
 
-//            ImageUser imageUser = imageUserService.create(file);
-//            user.setImage(imageUser);
+            ImageUser imageUser = imageUserService.create(file);
+            user.setImage(imageUser);
 
             userRepository.save(user);
         } catch (MiException e) {
@@ -135,62 +135,62 @@ public class UserService implements UserDetailsService {
             throw new MiException("Las contraseñas ingresadas deben ser iguales");
         }
     }
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
-        Usuario usuario = userRepository.findByEmail(email);
-
-        if (usuario != null) {
-
-            List<GrantedAuthority> permisos = new ArrayList();
-
-            String role = "ROLE_" + usuario.getRol().toString();
-
-            GrantedAuthority p = new SimpleGrantedAuthority(role);
-
-            permisos.add(p);
-
-            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-
-            HttpSession session = attr.getRequest().getSession(true);
-
-            session.setAttribute("usuariosession", usuario);
-
-            return new User(usuario.getEmail(), usuario.getPassword(), permisos);
-        } else {
-            throw new UsernameNotFoundException("Usuario: " + email + " no encontrado" );
-        }
-//
 //    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 //
-//        Usuario user = null;
+//        Usuario usuario = userRepository.findByEmail(email);
 //
-//        if (username.contains("@")) {
-//            user = userRepository.findByEmail(username);
-//        } else {
-//            user = userRepository.findByDni(Long.valueOf(username));
-//        }
+//        if (usuario != null) {
 //
-//        if (user != null) {
+//            List<GrantedAuthority> permisos = new ArrayList();
 //
-//            List<GrantedAuthority> permisos = new ArrayList<>();
-//
-//            String role = "ROLE_" + user.getRol().toString();
+//            String role = "ROLE_" + usuario.getRol().toString();
 //
 //            GrantedAuthority p = new SimpleGrantedAuthority(role);
+//
 //            permisos.add(p);
 //
 //            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 //
 //            HttpSession session = attr.getRequest().getSession(true);
 //
-//            session.setAttribute("usuariosession", user);
+//            session.setAttribute("usuariosession", usuario);
 //
-//            return new User(user.getEmail(), user.getPassword(), permisos);
-//
+//            return new User(usuario.getEmail(), usuario.getPassword(), permisos);
 //        } else {
-//            throw new UsernameNotFoundException("Usuario: " + username + " no encontrado" );
+//            throw new UsernameNotFoundException("Usuario: " + email + " no encontrado" );
 //        }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        Usuario user = null;
+
+        if (username.contains("@")) {
+            user = userRepository.findByEmail(username);
+        } else {
+            user = userRepository.findByDni(Long.valueOf(username));
+        }
+
+        if (user != null) {
+
+            List<GrantedAuthority> permisos = new ArrayList<>();
+
+            String role = "ROLE_" + user.getRol().toString();
+
+            GrantedAuthority p = new SimpleGrantedAuthority(role);
+            permisos.add(p);
+
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            HttpSession session = attr.getRequest().getSession(true);
+
+            session.setAttribute("usuariosession", user);
+
+            return new User(user.getEmail(), user.getPassword(), permisos);
+
+        } else {
+            throw new UsernameNotFoundException("Usuario: " + username + " no encontrado" );
+        }
     }
 }

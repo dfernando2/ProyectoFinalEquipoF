@@ -37,7 +37,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
                 .formLogin(login -> login
                         .loginPage("/login")
                         .loginProcessingUrl("/logincheck")
-                        .usernameParameter("email")
+                        .usernameParameter("username")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/home")
                         .permitAll())

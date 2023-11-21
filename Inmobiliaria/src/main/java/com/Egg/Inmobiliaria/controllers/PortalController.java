@@ -51,11 +51,11 @@ public class PortalController {
                                 @RequestParam Long dni,
                                 @RequestParam String password,
                                 @RequestParam String password2,
-//                                @RequestParam MultipartFile file,
+                                @RequestParam MultipartFile file,
                                 ModelMap modelo) {
         try {
-//            userService.create(file, name, email, dni, password, password2);
-            userService.create(name, email, dni, password, password2);
+            userService.create(file, name, email, dni, password, password2);
+//            userService.create(name, email, dni, password, password2);
             modelo.put("exito", "Usuario cargado correctamente");
 
             return "index.html";

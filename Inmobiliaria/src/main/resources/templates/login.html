@@ -1,74 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="es">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="/fragments/head :: head"></head>
 
-<body>
+<body class="font-family-Arial h-100 p-0 m-0 ">
 
-<div class="d-flex flex-column min-vh-100">
-    <nav th:replace="/fragments/navbar :: nav"></nav>
+<nav th:replace="/fragments/navbar :: nav"></nav>
+<div class="d-flex justify-content-center align-items-center">
 
-    <section class="flex-grow-1 d-flex align-items-center justify-content-center">
 
-        <div class="container">
+    <div class="align-items-center">
 
-            <div class="row justify-content-center my-3">
-                <div class="col-lg-6 col-md-8 col-12">
-                    <div class="card">
-                        <div class="card-header text-center">
-                            <h3 class="card-title mt-1">Iniciar Sesión</h3>
-                        </div>
-                        <form class="needs-validation" novalidate th:action="@{/logincheck}" method="POST">
-                            <div class="row g-3 card-body">
-                                <div class="col-12">
-                                    <label for="email" class="form-label">Correo electrónico</label>
-                                    <input type="email" class="form-control" name="email" id="email"
-                                           placeholder="Ingrese su correo electrónico" required>
-                                    <div class="valid-feedback">
-                                        Correo electrónico ingresado!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Por favor, ingrese su correo electrónico.
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <label for="password" class="form-label">Contraseña</label>
-                                    <div class="input-group has-validation">
-                                        <input type="password" class="form-control" name="password" id="password"
-                                               placeholder="Ingrese una contraseña" required>
-                                        <button type="button" class="input-group-text" id="togglePassword">
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                        <div class="invalid-feedback">
-                                            Por favor, ingrese una contraseña.
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-2 d-grid">
-                                    <button type="submit" class="btn btn-success">Iniciar sesión</button>
-                                </div>
-                                <div class="text-center d-flex mt-3">
-                                    <a th:href="@{/register}"
-                                       class="btn btn-outline-success btn-block w-50 me-1">Crear una cuenta</a>
-                                    <a th:href="@{/}" class="btn btn-block btn-outline-secondary w-50">Volver</a>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+        <form style="background-image: url(../img/FondoForm.jpg);
+            background-position: center; background-repeat: no-repeat;
+            background-color: rgba(255, 255, 255, 0.8); height: 20rem; margin-top:5rem"
+              class="p-4 rounded shadow-xl text-center mt-5"
+              th:action="@{/logincheck}"
+              method="post"
+        >
 
+            <div th:if="${error!=null}" class="card text-white bg-danger text-center" >
+                <div class="card-body ">
+                    <h5 class="card-title">Error 👎</h5>
+                    <p class="card-text bg-alert text-white" th:text="${error}"></p>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <footer th:replace="/fragments/footer :: footer"></footer>
+            <div class="form-group mt-5 my-3">
+                <input type="text" class="form-control" name="username" placeholder="Email - DNI">
+            </div>
+            <div class="form-group my-3">
+                <input type="password" class="form-control" name="password" placeholder="Contraseña">
+            </div>
+
+            <div class="form-group my-3">
+                <button type="submit" class="btn btn-primary mt-3 botones  px-3">Login</button>
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
-<script src="/js/formValidation.js"></script>
-<script src="/js/theme.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
-</body>
 
+<footer th:replace="/fragments/footer :: footer"></footer>
+</body>
 </html>
