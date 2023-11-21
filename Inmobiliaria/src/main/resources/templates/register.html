@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org"
+      lang="en"
+>
+<head th:replace="fragments/head :: head">
+     <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(150deg, #865C37, #D79028, #ECE3DB);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        form {
+            background-image: url('FondoForm.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label,
+        input {
+            margin-bottom: 10px;
+            display: block;
+            width: 100%;
+            border-radius: 8px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <header th:replace=""></header>
+    <form action="@{/registro}" method="post" enctype="multipart/form-data">
+        <h1>Crear Cuenta</h1> 
+        <div class="form-group my-3">
+            <input type="text" class="form-control" name="name" placeholder="Nombre">
+        </div>
+    <div class="form-group my-3">
+            <input type="text" class="form-control" name="email" placeholder="Email">
+        </div>
+    <div class="form-group my-3">
+            <input type="text" class="form-control" name="dni" placeholder="DNI">
+        </div>
+    <div class="form-group my-3">
+            <input type="text" class="form-control" name="password" placeholder="Contraseña">
+        </div>
+    <div class="form-group my-3">
+            <input type="text" class="form-control" name="password2" placeholder="Repetir ">
+        </div>
+     <input type="file" name="file" th:value="${file}">
+     <input type="submit" value="Registrar">
+       
+    </form>
+   
+</body>
+</html>
