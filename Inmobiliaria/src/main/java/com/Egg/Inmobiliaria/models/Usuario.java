@@ -3,6 +3,7 @@ package com.Egg.Inmobiliaria.models;
 import com.Egg.Inmobiliaria.enums.Role;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Usuario {

@@ -63,7 +63,6 @@ public class Offer {
         this.usuario = usuario;
     }
 
-    }
 
     public Double getPrice() {
         return price;
