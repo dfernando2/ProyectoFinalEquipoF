@@ -1,9 +1,7 @@
 package com.Egg.Inmobiliaria.exceptions;
- 
 
-public class MiException extends Exception{
 
-    
+public class MiException extends Exception {
 
     public MiException(String msg) {
 
@@ -11,6 +9,5 @@ public class MiException extends Exception{
 
     }
 
-    
 
 }

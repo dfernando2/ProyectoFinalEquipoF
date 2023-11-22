@@ -1,11 +1,8 @@
 package com.Egg.Inmobiliaria.models;
 
 import com.Egg.Inmobiliaria.enums.Role;
-import java.util.List;
 
 import javax.persistence.*;
-
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Usuario {
@@ -23,15 +20,16 @@ public class Usuario {
     
     @Enumerated(EnumType.STRING)
     private Role rol;
-    
+
     @OneToMany
     private List<Property> UserProperties;
-    
+
     public Usuario() {
     }
 
     public Usuario(Long id, String name, String email,
-                String password, Long dni, ImageUser image, Role rol) {
+                   String password, Long dni, ImageUser image, Role rol) {
+
         this.id = id;
         this.name = name;
         this.email = email;

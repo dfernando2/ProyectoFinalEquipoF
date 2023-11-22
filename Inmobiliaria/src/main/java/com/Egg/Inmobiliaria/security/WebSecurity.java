@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.Egg.Inmobiliaria.services.UserService;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -31,21 +30,20 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception{
 
         http.authorizeRequests( requests -> requests
-                .antMatchers("/admin/*").hasRole("ADMIN")
-                .antMatchers("/js/*", "/css/*", "img/*", "/**")
-                .permitAll())
-            .formLogin(login -> login
-                .loginPage("/login")
-                .loginProcessingUrl("/logincheck")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .defaultSuccessUrl("/start")
-                .permitAll())
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                .permitAll())
-            .csrf( csrf -> csrf
-                .disable());
-    }    
-}
+                        .antMatchers("/admin/*").hasRole("ADMIN")
+                        .antMatchers("/js/*", "/css/*", "img/*", "/**")
+                        .permitAll())
+                .formLogin(login -> login
+                        .loginPage("/login")
+                        .loginProcessingUrl("/logincheck")
+                        .usernameParameter("username")
+                        .passwordParameter("password")
+                        .defaultSuccessUrl("/home")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .permitAll())
+                .csrf( csrf -> csrf
+                        .disable());
+    }

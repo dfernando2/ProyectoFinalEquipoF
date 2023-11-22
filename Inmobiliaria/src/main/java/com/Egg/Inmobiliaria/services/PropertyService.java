@@ -6,6 +6,8 @@ import com.Egg.Inmobiliaria.models.ImageProperty;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.Usuario;
+import com.Egg.Inmobiliaria.repositories.ImagePropertyRepository;
+
 import com.Egg.Inmobiliaria.repositories.PropertyRepository;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PropertyService {
@@ -27,11 +31,19 @@ public class PropertyService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ImagePropertyService imagePropertyService;
+
+
     @Transactional
     public void create(String address, String province, String location, Integer surface,
                        Integer bathrooms, Integer bedrooms, Double price, String description,
-                       PropertyStatus status, Date createDate, PropertyType type){
+                       PropertyStatus status, Date createDate, PropertyType type,
+                       List<MultipartFile> files, String emailUsuario) {
+
         //falta validar
+
+        Optional<Usuario> userAnswer = Optional.ofNullable(userRepository.findByEmail(emailUsuario));
 
         Property property = new Property();
         property.setAddress(address);
@@ -47,14 +59,23 @@ public class PropertyService {
         property.setType(type);
         property.setRented(false);
         property.setActive(true);
-
+        property.setUser(userAnswer.get());
         propertyRepository.save(property);
+
+        for (MultipartFile file : files) {
+            try {
+                imagePropertyService.create(file, property);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 
-    public Property getOne(Long id){
+    public Property getOne(Long id) {
         return propertyRepository.getOne(id);
     }
+
     public List<Property> list() {
         List<Property> properties = new ArrayList();
         properties = propertyRepository.findAll();
@@ -63,19 +84,11 @@ public class PropertyService {
 
     @Transactional
     public void update(Long id, String address, String province, String location, Integer surface,
-                               Integer bathrooms, Integer bedrooms, Double price, String description,
-                               PropertyStatus status, Date createDate, PropertyType type, List<ImageProperty> images,
-                               List<Offer> offers, String idUser, boolean isRented, boolean isActive) {
+                       Integer bathrooms, Integer bedrooms, Double price, String description,
+                       PropertyStatus status, Date createDate, PropertyType type, List<MultipartFile> images,
+                       List<Offer> offers, String idUser, boolean isRented, boolean isActive) {
 
         Optional<Property> propertyAnswer = propertyRepository.findById(id);
-        Optional<Usuario> userAnswer = userRepository.findById(Long.valueOf(idUser));
-
-        Usuario user = new Usuario();
-
-        if (userAnswer.isPresent()) {
-
-            user = userAnswer.get();
-        }
 
         if (propertyAnswer.isPresent()) {
 
@@ -91,12 +104,9 @@ public class PropertyService {
             property.setStatus(status);
             property.setCreateDate(createDate);
             property.setType(type);
-            property.setImages(images);
             property.setOffers(offers);
-            property.setUser(user);
             property.setRented(isRented);
             property.setActive(isActive);
-
             propertyRepository.save(property);
 
         }
@@ -117,3 +127,4 @@ public class PropertyService {
     }
 
 }
+

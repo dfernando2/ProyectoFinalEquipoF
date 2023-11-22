@@ -3,15 +3,14 @@ package com.Egg.Inmobiliaria.services;
 import com.Egg.Inmobiliaria.models.ImageUser;
 import com.Egg.Inmobiliaria.enums.Role;
 import com.Egg.Inmobiliaria.exceptions.MiException;
-import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.Usuario;
-import com.Egg.Inmobiliaria.repositories.ImageUserRepository;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,38 +29,33 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private ImageUserService imageUserService;
-    @Autowired
-    private ImageUserRepository imageUserRepository;
 
     @Transactional
     public void create(MultipartFile file, String name, String email,
-            Long dni, String password, String password2, Role rol) throws MiException {
+                       Long dni, String password, String password2) {
+//    public void create(String name, String email,
+//                       Long dni, String password, String password2) {
+        try {
+            validate(name, email, dni, password, password2);
 
-        validate(name, email, dni, password, password2, rol);
+            Usuario user = new Usuario();
 
-        Usuario user = new Usuario();
-
-        user.setName(name);
-        user.setEmail(email);
-        user.setDni(dni);
-        user.setPassword(new BCryptPasswordEncoder().encode(password));
-
-        if (rol.toString().equals("CLIENT")) {
-            user.setRol(Role.CLIENT);
-
-        } else if (rol.toString().equals("ENTITY")) {
-            user.setRol(Role.ENTITY);
-
-        } else if (rol.toString().equals("BOTHROLE")) {
+            user.setName(name);
+            user.setEmail(email);
+            user.setDni(dni);
+            user.setPassword(new BCryptPasswordEncoder().encode(password));
             user.setRol(Role.BOTHROLE);
+
+            ImageUser imageUser = imageUserService.create(file);
+            user.setImage(imageUser);
+
+            userRepository.save(user);
+        } catch (MiException e) {
+            throw new RuntimeException(e);
         }
-
-        ImageUser imageUser = imageUserService.create(file);
-        user.setImage(imageUser);
-
-        userRepository.save(user);
     }
 
     public Usuario getOne(Long id) {
@@ -70,64 +64,56 @@ public class UserService implements UserDetailsService {
 
     public List<Usuario> listUser() {
 
-        List<Usuario> users = new ArrayList();
+        List<Usuario> users = new ArrayList<>();
         users = userRepository.findAll();
 
         return users;
     }
 
     @Transactional
-    public void update(MultipartFile file, Long id, Long dni, String name, String email,
-            String password, String password2, Role rol) throws MiException {
 
-        validate(name, email, dni, password, password2, rol);
+    public void update(MultipartFile file, String id, Long dni, String name, String email,
+                       String password, String password2) throws Exception {
 
-        Optional<Usuario> answer = userRepository.findById(id);
+        if (file != null) {
+            try {
+                Optional<Usuario> answer = userRepository.findById(Long.valueOf(id));
 
-        if (answer.isPresent()) {
+                if (answer.isPresent()) {
 
-            Usuario user = answer.get();
-            user.setName(name);
-            user.setEmail(email);
-            user.setPassword(new BCryptPasswordEncoder().encode(password));
+                    Usuario user = answer.get();
+                    user.setName(name);
+                    user.setEmail(email);
+                    user.setPassword(password);
+                    user.setRol(Role.BOTHROLE);
 
-            if (rol.toString().equals("CLIENT")) {
-                user.setRol(Role.CLIENT);
+                    ImageUser imageUser = imageUserService.create(file);
+                    user.setImage(imageUser);
 
-            } else if (rol.toString().equals("ENTITY")) {
-                user.setRol(Role.ENTITY);
+                    userRepository.save(user);
+                }
+            } catch (Exception e) {
 
-            } else if (rol.toString().equals("BOTHROLE")) {
-                user.setRol(Role.BOTHROLE);
             }
-
-            ImageUser imageUser = imageUserService.create(file);
-            user.setImage(imageUser);
-
-            userRepository.save(user);
         }
     }
 
     @Transactional
-    public void changeRol(Long id, Role rol) {
+    public void changeRol(Long id) {
+
         Optional<Usuario> answer = userRepository.findById(id);
 
         if (answer.isPresent()) {
 
             Usuario user = answer.get();
 
-            if (rol.toString().equals("CLIENT")) {
-                user.setRol(Role.CLIENT);
+            if (user.getRol().equals(Role.BOTHROLE)) {
+                user.setRol(Role.ADMIN);
 
-            } else if (rol.toString().equals("ENTITY")) {
-                user.setRol(Role.ENTITY);
-
-            } else if (rol.toString().equals("BOTHROLE")) {
+            } else if (user.getRol().equals(Role.ADMIN)) {
                 user.setRol(Role.BOTHROLE);
             }
-
         }
-
     }
 
     public void validate(String name, String email, Long dni, String password, String password2, Role rol) throws MiException {
@@ -147,23 +133,51 @@ public class UserService implements UserDetailsService {
         if (!password.equals(password2)) {
             throw new MiException("Las contraseñas ingresadas deben ser iguales");
         }
-        if (rol == null ) {
-            throw new MiException("El rol no puede ser nulo");
-        }
-
     }
+//    @Override
+//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+//
+//        Usuario usuario = userRepository.findByEmail(email);
+//
+//        if (usuario != null) {
+//
+//            List<GrantedAuthority> permisos = new ArrayList();
+//
+//            String role = "ROLE_" + usuario.getRol().toString();
+//
+//            GrantedAuthority p = new SimpleGrantedAuthority(role);
+//
+//            permisos.add(p);
+//
+//            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+//
+//            HttpSession session = attr.getRequest().getSession(true);
+//
+//            session.setAttribute("usuariosession", usuario);
+//
+//            return new User(usuario.getEmail(), usuario.getPassword(), permisos);
+//        } else {
+//            throw new UsernameNotFoundException("Usuario: " + email + " no encontrado" );
+//        }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Usuario user = userRepository.buscarPorEmail(email);
+        Usuario user = null;
+
+        if (username.contains("@")) {
+            user = userRepository.findByEmail(username);
+        } else {
+            user = userRepository.findByDni(Long.valueOf(username));
+        }
 
         if (user != null) {
 
-            List<GrantedAuthority> permisos = new ArrayList();
+            List<GrantedAuthority> permisos = new ArrayList<>();
 
-            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + user.getRol().toString());
+            String role = "ROLE_" + user.getRol().toString();
 
+            GrantedAuthority p = new SimpleGrantedAuthority(role);
             permisos.add(p);
 
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -173,10 +187,9 @@ public class UserService implements UserDetailsService {
             session.setAttribute("usuariosession", user);
 
             return new User(user.getEmail(), user.getPassword(), permisos);
+
         } else {
-            return null;
+            throw new UsernameNotFoundException("Usuario: " + username + " no encontrado" );
         }
-
     }
-
 }
