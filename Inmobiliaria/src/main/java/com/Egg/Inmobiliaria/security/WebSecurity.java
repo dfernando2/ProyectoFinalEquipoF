@@ -14,22 +14,22 @@ import com.Egg.Inmobiliaria.services.UserService;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurity extends WebSecurityConfigurerAdapter{
+public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public UserService userService;
 
     @Autowired
-    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
         auth.userDetailsService(userService)
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception{
+    protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests( requests -> requests
+        http.authorizeRequests(requests -> requests
                         .antMatchers("/admin/*").hasRole("ADMIN")
                         .antMatchers("/js/*", "/css/*", "img/*", "/**")
                         .permitAll())
@@ -44,6 +44,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
                         .permitAll())
-                .csrf( csrf -> csrf
+                .csrf(csrf -> csrf
                         .disable());
     }
+}

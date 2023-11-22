@@ -116,7 +116,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public void validate(String name, String email, Long dni, String password, String password2, Role rol) throws MiException {
+    public void validate(String name, String email, Long dni, String password, String password2) throws MiException {
 
         if (name.isEmpty() || name == null) {
             throw new MiException("El nombre no puede ser nulo o estar vacio");
