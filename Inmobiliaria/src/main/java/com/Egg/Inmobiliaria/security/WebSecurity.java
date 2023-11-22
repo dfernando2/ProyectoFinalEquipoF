@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.Egg.Inmobiliaria.services.UserService;
 
-//Descomentar del pom la dependencia de security
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -48,4 +47,3 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
                 .csrf( csrf -> csrf
                         .disable());
     }
-}

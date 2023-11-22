@@ -22,6 +22,7 @@ public class Offer {
     }    
 
     public Offer(Long id, Date creationDate, Property property, Usuario usuario, Double price, OfferStatus offerStatus) {
+
         this.id = id;
         this.creationDate = creationDate;
         this.property = property;
@@ -60,6 +61,8 @@ public class Offer {
 
     public void setUser(Usuario usuario) {
         this.usuario = usuario;
+    }
+
     }
 
     public Double getPrice() {

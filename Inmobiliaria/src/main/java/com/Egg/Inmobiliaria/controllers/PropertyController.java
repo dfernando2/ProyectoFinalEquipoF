@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @Controller
 @RequestMapping("/property")
@@ -39,7 +40,6 @@ public class PropertyController {
     // pueda manejar de manera personalizada el formato de las fechas, utilizando "yyyy-MM-dd"
     // como formato para las fechas de tipo Date.
 
-
     @GetMapping("/record") //localhost:8080/property/record
     public String record(ModelMap modelo) {
 
@@ -49,7 +49,8 @@ public class PropertyController {
 
         return "property_form.html";
     }
-
+    
+    @PreAuthorize("hasAnyRole('ROLE_BOTHROLE', 'ROLE_ADMIN', 'ROLE_ENTITY')")
     @PostMapping("/register")//localhost:8080/property/register
     public String register(@RequestParam(required = false) Long id, @RequestParam String address, @RequestParam String province,
                            String location, @RequestParam(value = "surface", defaultValue = "0") Integer surface,
@@ -77,6 +78,7 @@ public class PropertyController {
             modelo.put("exito", "La propiedad fue cargada correctamente! ");
 
         } catch (Exception ex) {
+
             List<Usuario> usuarios = userservice.listUser();
             modelo.addAttribute("usuarios", usuarios);
             modelo.put("error", ex.getMessage());
@@ -109,6 +111,7 @@ public class PropertyController {
         return "property_modify.html";
     }
 
+
     @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'BOTHROLE')")
     @PostMapping("/update/{id}")//localhost:8080/property/list/{id}
     public String modify(@RequestParam(required = false) Long id, @RequestParam String address, @RequestParam String province,
@@ -121,6 +124,7 @@ public class PropertyController {
                          @RequestParam(required=false) List<MultipartFile> images,
                          @RequestParam(required=false) List<Offer> offers, @RequestParam (required=false) String idUser,
                          @RequestParam boolean isRented, @RequestParam boolean isActive, ModelMap modelo) {
+
 
         List<Usuario> usuarios = userservice.listUser();
 

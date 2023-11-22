@@ -40,6 +40,7 @@ public class Property {
                     Integer bathrooms, Integer bedrooms, Double price, String description,
                     PropertyStatus status, Date createDate, PropertyType type, List<ImageProperty> images,
                     List<Offer> offers, Usuario usuario, boolean isRented, boolean isActive) {
+
         this.id = id;
         this.address = address;
         this.province = province;

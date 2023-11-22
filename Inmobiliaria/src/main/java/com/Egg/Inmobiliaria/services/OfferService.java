@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 import com.Egg.Inmobiliaria.enums.OfferStatus;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
-import com.Egg.Inmobiliaria.repositories.OfferRepository;
+import com.Egg.Inmobiliaria.models.Usuario;
+
 
 @Service
 public class OfferService {
@@ -57,7 +58,9 @@ public class OfferService {
         Optional<Offer> answerOffer = offerRepository.findById(Long.valueOf(id));
 
         Property property = new Property();
+
         Usuario usuario = new Usuario();
+
         if(answerProperty.isPresent()){
             property = answerProperty.get();
         }

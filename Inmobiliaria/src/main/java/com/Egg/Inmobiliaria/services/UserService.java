@@ -5,11 +5,9 @@ import com.Egg.Inmobiliaria.enums.Role;
 import com.Egg.Inmobiliaria.exceptions.MiException;
 import com.Egg.Inmobiliaria.models.Usuario;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
@@ -73,12 +71,12 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
+
     public void update(MultipartFile file, String id, Long dni, String name, String email,
                        String password, String password2) throws Exception {
 
         if (file != null) {
             try {
-
                 Optional<Usuario> answer = userRepository.findById(Long.valueOf(id));
 
                 if (answer.isPresent()) {
@@ -102,6 +100,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void changeRol(Long id) {
+
         Optional<Usuario> answer = userRepository.findById(id);
 
         if (answer.isPresent()) {
@@ -117,7 +116,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public void validate(String name, String email, Long dni, String password, String password2) throws MiException {
+    public void validate(String name, String email, Long dni, String password, String password2, Role rol) throws MiException {
 
         if (name.isEmpty() || name == null) {
             throw new MiException("El nombre no puede ser nulo o estar vacio");

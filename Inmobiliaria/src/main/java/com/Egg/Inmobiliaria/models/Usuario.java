@@ -21,11 +21,15 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private Role rol;
 
+    @OneToMany
+    private List<Property> UserProperties;
+
     public Usuario() {
     }
 
     public Usuario(Long id, String name, String email,
                    String password, Long dni, ImageUser image, Role rol) {
+
         this.id = id;
         this.name = name;
         this.email = email;
