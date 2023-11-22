@@ -94,7 +94,10 @@ public class PortalController {
             return "home";
         }
     }
+
 }
+
+
 
 //    @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'CLIENT', 'BOTHROLE')")
 //    @GetMapping("/profile")

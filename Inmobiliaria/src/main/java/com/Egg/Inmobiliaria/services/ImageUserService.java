@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,60 +23,70 @@ public class ImageUserService {
 
     @Transactional
     public ImageUser create(MultipartFile archivo) throws MiException {
-        if(archivo != null){
-            try{
+        if (archivo != null) {
+            try {
 
                 ImageUser imagen = new ImageUser();
 
                 imagen.setMime(archivo.getContentType());
 
-                imagen.setNombre(archivo.getName());
+                imagen.setName(archivo.getName());
 
-                imagen.setContenido(archivo.getBytes());
+                imagen.setContainer(archivo.getBytes());
 
                 return imageUserRepository.save(imagen);
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.err.println(e.getMessage());
             }
         }
         return null;
     }
+
     public List<ImageUser> list() {
         List<ImageUser> images = new ArrayList();
         images = imageUserRepository.findAll();
         return images;
     }
+
     public ImageUser getOne(String id) {
 
         Optional<ImageUser> answer = imageUserRepository.findById(id);
 
-        return answer.orElse(null);
+        if (answer.isPresent()) {
+            System.out.println(answer.get().toString());
+            return answer.get();
+        } else {
+            System.out.println("el usuario no tiene foto");
+            return null;
+        }
     }
+
     @Transactional
     public ImageUser update(MultipartFile archivo, String idImageUser) throws MiException, IOException {
-        if(archivo != null){
+        if (archivo != null) {
             ImageUser image = new ImageUser();
 
-            if(idImageUser != null){
+            if (idImageUser != null) {
                 Optional<ImageUser> answer = imageUserRepository.findById(idImageUser);
 
-                if(answer.isPresent()){
+                if (answer.isPresent()) {
                     image = answer.get();
                 }
 
             }
             image.setMime(archivo.getContentType());
 
-            image.setNombre(archivo.getName());
+            image.setName(archivo.getName());
 
-            image.setContenido(archivo.getBytes());
+            image.setContainer(archivo.getBytes());
 
             return imageUserRepository.save(image);
 
         }
         return null;
     }
+
     @Transactional
     public void remove(String idImageUser) {
         Optional<ImageUser> imageUserAnswer = imageUserRepository.findById(idImageUser);

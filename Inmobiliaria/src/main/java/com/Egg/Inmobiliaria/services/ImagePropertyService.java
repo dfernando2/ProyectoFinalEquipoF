@@ -1,6 +1,7 @@
 package com.Egg.Inmobiliaria.services;
 
 import com.Egg.Inmobiliaria.models.ImageProperty;
+import com.Egg.Inmobiliaria.models.ImageUser;
 import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.repositories.ImagePropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +59,20 @@ public class ImagePropertyService {
         Optional<ImageProperty> response = imagePropertyRepository.findById(id);
         if (response.isPresent()) return response.get().getContainer();
         return null; //si no encuentra la imagen retorna null.
+    }
+
+    public ImageProperty getOne(String id) {
+
+        Optional<ImageProperty> answer = imagePropertyRepository.findById(id);
+
+        if (answer.isPresent()) {
+            System.out.println(answer.get().toString());
+            return answer.get();
+        } else {
+            System.out.println("la propiedad no tiene foto");
+            return null;
+        }
+
+
     }
 }

@@ -13,17 +13,17 @@ public class ImageUser {
      @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
     private String mime;
-    private String nombre;
+    private String name;
     @Lob @Basic(fetch = FetchType.LAZY)
-    private byte[] contenido;
+    private byte[] container;
     public ImageUser() {
     }
 
-     public ImageUser(String id, String mime, String nombre, byte[] contenido) {
+     public ImageUser(String id, String mime, String name, byte[] container) {
          this.id = id;
          this.mime = mime;
-         this.nombre = nombre;
-         this.contenido = contenido;
+         this.name = name;
+         this.container = container;
      }
 
      public String getId() {
@@ -45,24 +45,24 @@ public class ImageUser {
 
     }
 
-    public String getNombre() {
+    public String getName() {
 
-        return nombre;
-
-    }
-    public void setNombre(String nombre) {
-
-        this.nombre = nombre;
+        return name;
 
     }
-    public byte[] getContenido() {
+    public void setName(String name) {
 
-        return contenido;
+        this.name = name;
 
     }
-    public void setContenido(byte[] contenido) {
+    public byte[] getContainer() {
 
-        this.contenido = contenido;
+        return container;
+
+    }
+    public void setContainer(byte[] container) {
+
+        this.container = container;
 
     }
 }
