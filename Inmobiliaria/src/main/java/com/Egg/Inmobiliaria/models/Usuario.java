@@ -14,7 +14,7 @@ public class Usuario {
     private String name;
     private String email;
     private String password;
-    private Long dni;
+    private String dni;
     
     @OneToOne
     private ImageUser image;
@@ -29,7 +29,7 @@ public class Usuario {
     }
 
     public Usuario(Long id, String name, String email,
-                   String password, Long dni, ImageUser image, Role rol) {
+                   String password, String dni, ImageUser image, Role rol) {
 
         this.id = id;
         this.name = name;
@@ -80,11 +80,11 @@ public class Usuario {
         this.password = password;
     }
 
-    public Long getDni() {
+    public String getDni() {
         return dni;
     }
 
-    public void setDni(Long dni) {
+    public void setDni(String dni) {
         this.dni = dni;
     }
 
