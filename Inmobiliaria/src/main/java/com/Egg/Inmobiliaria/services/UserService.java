@@ -34,28 +34,31 @@ public class UserService implements UserDetailsService {
     private ImageUserService imageUserService;
 
     @Transactional
-    public void create(MultipartFile file, String name, String email,
-                       Long dni, String password, String password2) {
-//    public void create(String name, String email,
-//                       Long dni, String password, String password2) {
-        try {
-            validate(name, email, dni, password, password2);
+    public void create(MultipartFile File, String name, String email,
+            String dni, String password, String password2, String rol) throws Exception {
 
-            Usuario user = new Usuario();
+        validate(name, email, dni, password, password2, File, rol);
 
-            user.setName(name);
-            user.setEmail(email);
-            user.setDni(dni);
-            user.setPassword(new BCryptPasswordEncoder().encode(password));
+        Usuario user = new Usuario();
+
+        user.setName(name);
+        user.setEmail(email);
+        user.setDni(dni);
+        user.setPassword(new BCryptPasswordEncoder().encode(password));
+
+        if (rol.equals("Comprador")) {
+            user.setRol(Role.CLIENT);
+        } else if (rol.equals("Vendedor")) {
+            user.setRol(Role.ENTITY);
+        } else if (rol.equals("Comprador y vendedor")) {
             user.setRol(Role.BOTHROLE);
-
-            ImageUser imageUser = imageUserService.create(file);
-            user.setImage(imageUser);
-
-            userRepository.save(user);
-        } catch (MiException e) {
-            throw new RuntimeException(e);
         }
+
+        ImageUser imageUser = imageUserService.create(File);
+        user.setImage(imageUser);
+
+        userRepository.save(user);
+
     }
 
     public Usuario getOne(Long id) {
@@ -72,8 +75,8 @@ public class UserService implements UserDetailsService {
 
     @Transactional
 
-    public void update(MultipartFile file, String id, Long dni, String name, String email,
-                       String password, String password2) throws Exception {
+    public void update(MultipartFile file, String id, String dni, String name, String email,
+            String password, String password2, String rol) throws Exception {
 
         if (file != null) {
             try {
@@ -85,7 +88,14 @@ public class UserService implements UserDetailsService {
                     user.setName(name);
                     user.setEmail(email);
                     user.setPassword(password);
-                    user.setRol(Role.BOTHROLE);
+                    
+                    if (rol.equals("Comprador")) {
+                        user.setRol(Role.CLIENT);
+                    } else if (rol.equals("Vendedor")) {
+                        user.setRol(Role.ENTITY);
+                    } else if (rol.equals("Comprador y vendedor")) {
+                        user.setRol(Role.BOTHROLE);
+                    }
 
                     ImageUser imageUser = imageUserService.create(file);
                     user.setImage(imageUser);
@@ -116,15 +126,21 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public void validate(String name, String email, Long dni, String password, String password2) throws MiException {
+    public void validate(String name, String email, String dni, String password, String password2, MultipartFile File, String rol) throws MiException {
 
         if (name.isEmpty() || name == null) {
             throw new MiException("El nombre no puede ser nulo o estar vacio");
         }
+        if (rol == null || rol.isEmpty()) {
+            throw new MiException("El rol no puede ser nulo o estar vacio");
+        }
+        if (File == null || File.isEmpty()) {
+            throw new MiException("La foto no puede ser nula");
+        }
         if (email.isEmpty() || email == null) {
             throw new MiException("El email no puede ser nulo o estar vacio");
         }
-        if (dni == null) {
+        if (dni == null || dni.isEmpty()) {
             throw new MiException("El dni no puede ser nulo o estar vacio");
         }
         if (password.isEmpty() || password == null || password.length() <= 5) {
@@ -189,7 +205,7 @@ public class UserService implements UserDetailsService {
             return new User(user.getEmail(), user.getPassword(), permisos);
 
         } else {
-            throw new UsernameNotFoundException("Usuario: " + username + " no encontrado" );
+            throw new UsernameNotFoundException("Usuario: " + username + " no encontrado");
         }
     }
 }

@@ -55,13 +55,14 @@ public class PortalController {
     @PostMapping("/registration")
     public String registration(@RequestParam String name,
             @RequestParam String email,
-            @RequestParam Long dni,
+            @RequestParam String dni,
             @RequestParam String password,
             @RequestParam String password2,
+            @RequestParam String rol,
             @RequestParam MultipartFile file,
             ModelMap modelo) {
         try {
-            userService.create(file, name, email, dni, password, password2);
+            userService.create(file, name, email, dni, password, password2, rol);
 //            userService.create(name, email, dni, password, password2);
             modelo.put("exito", "Usuario cargado correctamente");
 
