@@ -1,14 +1,10 @@
-
 .navbar {
     background-color: #809638;
-
 }
 
 .navbar li a {
     color: #eee9e6;
     font-size: 1.2em;
-
-
 }
 
 .nav-item {
@@ -24,15 +20,27 @@
     background-color: #809638;
 }
 
-#ingre {
+#link {
     color: #eee9e6;
 }
 
-#ingre:hover {
-    color: black;
+#link:hover {
+    background-color: orange;
+    border-radius: 10px;
 }
 
-#logo {
+#logo {    
     height: 6vw;
     padding-left: 3em;
+}
+
+#foto-perfil{
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;   
+}
+
+.usuario{
+    padding: 0;
+    margin-top: -0.2rem;
 }

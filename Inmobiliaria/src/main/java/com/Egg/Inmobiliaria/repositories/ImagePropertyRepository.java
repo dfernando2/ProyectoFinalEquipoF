@@ -11,8 +11,9 @@ import java.util.Optional;
 @Repository
 public interface ImagePropertyRepository extends JpaRepository<ImageProperty, String> {
 
-    //Traer imagen por objeto property
-    @Query ("SELECT i FROM ImageProperty i WHERE i.property = ?1")
-    ImageProperty findByProperty(Optional<Property> property);
+   
+    
+    @Query ("SELECT ip FROM ImageProperty ip WHERE ip.property = ?1")
+    ImageProperty findByProperty(Property property);
 
 }

@@ -19,7 +19,7 @@
     border: 1px solid grey;
     border-radius: 10px;
     box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.507);
-
+   
 }
 
 #card img {
@@ -28,9 +28,10 @@
     border-top-right-radius: 10px;
 }
 
-#card h3 {
+#card h4 {
     text-align: center;
 }
+
 
 .flex-container {
     display: flex;
@@ -38,6 +39,7 @@
     flex-wrap: wrap;
     justify-content: space-around;
     align-content: space-around;
+    
 }
 
 .subti {
@@ -48,4 +50,7 @@
 
 .iframe {
     width: 100vw;
+}
+.a{
+    padding-left: 10px;
 }

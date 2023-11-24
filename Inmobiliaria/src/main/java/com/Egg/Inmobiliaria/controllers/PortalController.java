@@ -1,7 +1,9 @@
 package com.Egg.Inmobiliaria.controllers;
 
 import com.Egg.Inmobiliaria.exceptions.MiException;
+import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.Usuario;
+import com.Egg.Inmobiliaria.services.PropertyService;
 import com.Egg.Inmobiliaria.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,8 +21,10 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
+import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping("/")
@@ -28,6 +32,9 @@ public class PortalController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PropertyService propertyService;
 
     @GetMapping("/")
     public String index() {
@@ -46,13 +53,13 @@ public class PortalController {
     }
 
     @PostMapping("/registration")
-    public String registration( @RequestParam String name,
-                                @RequestParam String email,
-                                @RequestParam Long dni,
-                                @RequestParam String password,
-                                @RequestParam String password2,
-                                @RequestParam MultipartFile file,
-                                ModelMap modelo) {
+    public String registration(@RequestParam String name,
+            @RequestParam String email,
+            @RequestParam Long dni,
+            @RequestParam String password,
+            @RequestParam String password2,
+            @RequestParam MultipartFile file,
+            ModelMap modelo) {
         try {
             userService.create(file, name, email, dni, password, password2);
 //            userService.create(name, email, dni, password, password2);
@@ -84,20 +91,22 @@ public class PortalController {
 
     @PreAuthorize("hasAnyRole('ROLE_ENTITY', 'ROLE_ADMIN', 'ROLE_CLIENT', 'ROLE_BOTHROLE')")
     @GetMapping("/home")
-    public String home(HttpSession session) {
+    public String home(HttpSession session, Model model) {
 
         Usuario currentUser = (Usuario) session.getAttribute("usuariosession");
-
+        
+        List<Property> properties = propertyService.getAllProperties();
+        model.addAttribute("properties", properties);
+        
         if (currentUser.getRol().toString().equals("ADMIN")) {
             return "home"; // ACA IRIA LA VISTA DASHBOARD
         } else {
             return "home";
         }
+
     }
 
 }
-
-
 
 //    @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'CLIENT', 'BOTHROLE')")
 //    @GetMapping("/profile")

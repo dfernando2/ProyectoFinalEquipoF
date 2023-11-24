@@ -34,6 +34,12 @@ public class PropertyService {
     @Autowired
     ImagePropertyService imagePropertyService;
 
+    public Property getLast() {
+        List<Property> properties = new ArrayList();
+        properties = propertyRepository.findAll();
+        return properties.get(properties.size()-1);
+    }
+
 
     @Transactional
     public void create(String address, String province, String location, Integer surface,
@@ -125,6 +131,9 @@ public class PropertyService {
     public void findByType(PropertyType type) {
         List<Property> properties = propertyRepository.findByType(type);
     }
+    public List<Property> getAllProperties() {
+      
+        return propertyRepository.findAll();
+    }
 
 }
-
