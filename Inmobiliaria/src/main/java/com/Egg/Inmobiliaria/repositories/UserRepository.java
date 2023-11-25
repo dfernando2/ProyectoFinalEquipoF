@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<Usuario, Long>{
     public Usuario findByEmail(@Param("email") String email);
 
     @Query("SELECT u FROM Usuario u WHERE u.dni = :dni")
-    public Usuario findByDni(@Param("dni") Long dni);
+    public Usuario findByDni(@Param("dni") String dni);
     
     
     

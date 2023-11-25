@@ -41,10 +41,16 @@ public class AdminController {
     }
 
     @GetMapping("/propietarios")
-    public String propietarios() {
+    public String propietarios(ModelMap modelo) {
+        
+        List<Usuario> propietarioList = ur.findAll();
+
+        modelo.addAttribute("propietarios", propietarioList);
+
+        
         return "propietarios.html";
     }
 
-
+    
 
 }
