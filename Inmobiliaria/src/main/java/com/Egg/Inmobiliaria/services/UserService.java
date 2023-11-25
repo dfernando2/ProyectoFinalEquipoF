@@ -61,7 +61,7 @@ public class UserService implements UserDetailsService {
 
     }
 
-    public Usuario getOne(Long id) {
+    public Usuario getOne(String id) {
         return userRepository.getOne(id);
     }
 
@@ -75,12 +75,12 @@ public class UserService implements UserDetailsService {
 
     @Transactional
 
-    public void update(MultipartFile file, Long id, String dni, String name, String email,
+    public void update(MultipartFile file, String id, String dni, String name, String email,
             String password, String password2, String rol) throws Exception {
 
         if (file != null) {
             try {
-                Optional<Usuario> answer = userRepository.findById(Long.valueOf(id));
+                Optional<Usuario> answer = userRepository.findById(id);
 
                 if (answer.isPresent()) {
 
@@ -111,7 +111,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void changeRol(Long id) {
 
-        Optional<Usuario> answer = userRepository.findById(id);
+        Optional<Usuario> answer = userRepository.findById(String.valueOf(id));
 
         if (answer.isPresent()) {
 

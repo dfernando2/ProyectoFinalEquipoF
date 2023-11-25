@@ -1,0 +1,35 @@
+.body-error{
+    padding: 0;
+    margin: 0;
+}
+.container-error{
+    height: 95vh;
+    width: 100%;
+    background-image: url("../image/bg-index.png");
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+    margin-top:-2rem;
+}
+
+.img-error{
+    height: 18rem;
+    width: 18rem;
+    border-radius: 50%;
+    margin-top:1rem;
+}
+
+.text-error{
+    color:white;
+    background-color: red;
+    font-size: 1.2rem;
+    font-weight: 800;
+    padding:0.2rem;
+    margin:0;
+    text-align: center;    
+}

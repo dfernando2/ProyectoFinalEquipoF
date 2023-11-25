@@ -38,9 +38,9 @@ public class PortalController {
 
     @GetMapping("/")
     public String index(Model model) {
+
         List<Property> properties = propertyService.getAllProperties();
         model.addAttribute("properties", properties);
-
         return "home.html";
     }
 
