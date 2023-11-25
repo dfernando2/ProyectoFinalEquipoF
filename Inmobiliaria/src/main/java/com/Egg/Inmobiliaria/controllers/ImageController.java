@@ -43,7 +43,7 @@ public class ImageController {
     PropertyService propertyService;
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<byte[]> userImage (@PathVariable String id) {
+    public ResponseEntity<byte[]> userImage (@PathVariable Long id) {
         ImageUser imageUser = userService.getOne(id).getImage();
 
         if (imageUser != null) {

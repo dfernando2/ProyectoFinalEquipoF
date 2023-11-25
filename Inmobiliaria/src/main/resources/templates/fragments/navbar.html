@@ -14,9 +14,16 @@
         <div class="text-center" id="navbarNav">
             <ul class="navbar-nav ">
 
+<!--                <li th:if="${session.usuariosession.rol.toString() == 'ADMIN'}" class="nav-item dropdown">-->
+<!--                    <a id="link" class="nav-link dropdown-toggle active" href="/dashboard/panel" role="button"-->
+<!--                       aria-expanded="false">Panel</a>-->
+
+<!--                </li>-->
+
                 <li th:if="${session.usuariosession} != null" class="nav-item">
                     <a id="link" class="nav-link" aria-current="page" th:href="@{/home}">Inicio</a>
                 </li>
+
 
                 <li class="nav-item dropdown">
                     <a sec:authorize="hasRole('ENTITY','BOTHROLE')" id="link" class="nav-link dropdown-toggle active" href="#" role="button"
@@ -39,6 +46,7 @@
                     <a th:if="${session.usuariosession != null}" id="link" class="nav-link dropdown-toggle active" href="#" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="px-1" th:text="${session.usuariosession.name}"></span>
+                        <span th:if="${session.usuariosession != null}" th:text="${session.usuariosession.rol.name()}"></span>
                         <img id="foto-perfil"  th:src="@{/image/user/__${session.usuariosession.id}__}">
                     </a>
                     <ul class="dropdown-menu">

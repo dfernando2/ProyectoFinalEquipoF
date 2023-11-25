@@ -31,7 +31,7 @@
                 </tr>
             </thead>
             <tbody th:each="inquilino : ${inquilinos}">
-                <tr th:if="${inquilino.rol.toString() == 'ENTITY'}">
+                <tr th:if="${inquilino.rol.toString() == 'CLIENT'}">
                     <th scope="row" th:text="${inquilino.id}"></th>
                     <td th:text="${inquilino.name}"></td>
                     <td th:text="${inquilino.dni}"></td>
@@ -43,7 +43,12 @@
                             Elige
                         </a>
                         <ul class="dropdown-menu">
-                            <li ><a class="dropdown-item" href="#">Editar</a></li>
+                            <li><a th:href="@{/dashboard/usuario/editar}" class="dropdown-item">Editar</a></li>
+                            <form class="formulario" th:action="@{/dashboard/usuario/editar}" METHOD="post">
+
+                            </form>
+
+
                             <li><a class="dropdown-item" href="#">Dar de baja</a></li>
                         </ul>
                     </td>
