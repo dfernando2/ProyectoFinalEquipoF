@@ -12,7 +12,9 @@ public class ImageProperty {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
+
     private String mime;
+
     private String name;
     @ManyToOne(fetch = FetchType.LAZY)
     private Property property;
@@ -21,10 +23,6 @@ public class ImageProperty {
     private byte[] container;
 
     public ImageProperty() {
-    }
-
-    public String getMime() {
-        return mime;
     }
 
     public ImageProperty(String id, String mime, String name, Property property, byte[] container) {
