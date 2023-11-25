@@ -37,9 +37,11 @@ public class PortalController {
     private PropertyService propertyService;
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
 
-        return "index.html";
+        List<Property> properties = propertyService.getAllProperties();
+        model.addAttribute("properties", properties);
+        return "home.html";
     }
 
     @GetMapping("/navbar")
