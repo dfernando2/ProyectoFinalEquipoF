@@ -43,6 +43,7 @@ public class PropertyController {
     // "yyyy-MM-dd"
     // como formato para las fechas de tipo Date.
 
+
     @GetMapping("/record") // localhost:8080/property/record
     public String record(ModelMap modelo) {
 
@@ -86,7 +87,7 @@ public class PropertyController {
             modelo.put("error", ex.getMessage());
             return "property_form.html"; // volvemos a cargar el formulario.
         }
-        return "index.html";
+        return "home.html";
     }
 
     @GetMapping("/list")

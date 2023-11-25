@@ -30,7 +30,7 @@ public class OfferService {
     private PropertyRepository propertyRepository;
 
 
-    public void createOffer(Long idProperty, String idUser, Double price){
+    public void createOffer(Long idProperty, Long idUser, Double price){
 
         Optional<Property> answerProperty = propertyRepository.findById(idProperty);
         Optional<Usuario> answerUser = userRepository.findById(idUser);
@@ -52,7 +52,7 @@ public class OfferService {
 
         offerRepository.save(offer);
     }
-    public void update(String id, String idProperty, String idUser, Double price){
+    public void update(String id, String idProperty, Long idUser, Double price){
 
         Optional<Property> answerProperty = propertyRepository.findById(Long.valueOf(idProperty));
         Optional<Usuario> answerUser = userRepository.findById(idUser);

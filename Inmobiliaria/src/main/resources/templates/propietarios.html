@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-    xmlns="http://www.w3.org/1999/html">
+      xmlns="http://www.w3.org/1999/html">
 
 <head th:replace="/fragments/head :: head"></head>
 <nav th:replace="/fragments/navbar :: nav"></nav>
@@ -9,62 +9,45 @@
 
 <body>
 
-    <div class="card">
-        <div class="card-body text-center">
-            <h3>¡Bienvenido de vuelta!</h3>
-            <!--    <h3 th:if="${session.usuariosession != null}" th:text="'¡Bienvenido de vuelta! ' + ${session.usuariosession.nombre}">-->
-        </div>
+<div class="card">
+    <div class="card-body text-center">
+        <h3>¡Bienvenido de vuelta!</h3>
+        <!--    <h3 th:if="${session.usuariosession != null}" th:text="'¡Bienvenido de vuelta! ' + ${session.usuariosession.nombre}">-->
     </div>
+</div>
 
-    <div class="card center container">
+<div class="card center container">
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Documento</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Rol</th>
-                    <th scope="col">Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                    <td class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Elige
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Editar</a></li>
-                            <li><a class="dropdown-item" href="#">Dar de baja</a></li>
-                        </ul>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-            </tbody>
-        </table>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Documento</th>
+            <th scope="col">Email</th>
+            <th scope="col">Rol</th>
+            <th scope="col">Foto</th>
+            <th scope="col">Acción</th>
+        </tr>
+        </thead>
+        <tbody th:each="propietario : ${propietarios}">
+        <tr th:if="${propietario.rol.toString() == 'CLIENT'}">
+            <th scope="row" th:text="${propietario.id}"></th>
+            <td th:text="${propietario.name}"></td>
+            <td th:text="${propietario.dni}"></td>
+            <td th:text="${propietario.email}"></td>
+            <td th:text="${propietario.rol}"></td>
+            <td th:text="${propietario.image}"></td>
+            <td class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    Elige
+                </a>
+                <ul class="dropdown-menu">
+                    <li ><a class="dropdown-item" href="#">Editar</a></li>
+                    <li><a class="dropdown-item" href="#">Dar de baja</a></li>
+                </ul>
+            </td>
+        </tr>
 
-
-
-    </div>
-
-
-</body>
-
-</html>
+        </tbody>
+    </table>
