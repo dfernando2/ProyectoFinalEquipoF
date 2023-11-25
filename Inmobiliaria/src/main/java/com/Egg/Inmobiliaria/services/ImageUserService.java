@@ -3,6 +3,7 @@ package com.Egg.Inmobiliaria.services;
 import com.Egg.Inmobiliaria.exceptions.MiException;
 import com.Egg.Inmobiliaria.models.ImageUser;
 import com.Egg.Inmobiliaria.models.Property;
+import com.Egg.Inmobiliaria.models.Usuario;
 import com.Egg.Inmobiliaria.repositories.ImageUserRepository;
 
 import java.io.IOException;
@@ -22,19 +23,20 @@ public class ImageUserService {
     private ImageUserRepository imageUserRepository;
 
     @Transactional
-    public ImageUser create(MultipartFile archivo) throws MiException {
-        if (archivo != null) {
+    public ImageUser create(MultipartFile file, Usuario usuario) throws MiException {
+
+        if (file != null) {
             try {
 
-                ImageUser imagen = new ImageUser();
+                ImageUser image = new ImageUser();
 
-                imagen.setMime(archivo.getContentType());
+                image.setMime(file.getContentType());
 
-                imagen.setName(archivo.getName());
+                image.setName(file.getName());
 
-                imagen.setContainer(archivo.getBytes());
+                image.setContainer(file.getBytes());
 
-                return imageUserRepository.save(imagen);
+                return imageUserRepository.save(image);
 
             } catch (Exception e) {
                 System.err.println(e.getMessage());

@@ -44,7 +44,7 @@ public class ImageController {
 
     @GetMapping("/user/{id}")
     public ResponseEntity<byte[]> userImage (@PathVariable String id) {
-        ImageUser imageUser = userService.getOne(Long.valueOf(id)).getImage();
+        ImageUser imageUser = userService.getOne(id).getImage();
 
         if (imageUser != null) {
 

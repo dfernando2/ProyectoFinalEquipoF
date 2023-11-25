@@ -34,30 +34,30 @@ public class UserService implements UserDetailsService {
     private ImageUserService imageUserService;
 
     @Transactional
-    public void create(MultipartFile File, String name, String email,
+    public void create(MultipartFile file, String name, String email,
             String dni, String password, String password2, String rol) throws Exception {
 
-        validate(name, email, dni, password, password2, File, rol);
+        validate(name, email, dni, password, password2, rol);
 
-        Usuario user = new Usuario();
+        Usuario usuario = new Usuario();
 
-        user.setName(name);
-        user.setEmail(email);
-        user.setDni(dni);
-        user.setPassword(new BCryptPasswordEncoder().encode(password));
+        usuario.setName(name);
+        usuario.setEmail(email);
+        usuario.setDni(dni);
+        usuario.setPassword(new BCryptPasswordEncoder().encode(password));
 
         if (rol.equals("Comprador")) {
-            user.setRol(Role.CLIENT);
+            usuario.setRol(Role.CLIENT);
         } else if (rol.equals("Vendedor")) {
-            user.setRol(Role.ENTITY);
+            usuario.setRol(Role.ENTITY);
         } else if (rol.equals("Comprador y vendedor")) {
-            user.setRol(Role.BOTHROLE);
+            usuario.setRol(Role.BOTHROLE);
         }
 
-        ImageUser imageUser = imageUserService.create(File);
-        user.setImage(imageUser);
+        ImageUser imageUser = imageUserService.create(file, usuario);
+        usuario.setImage(imageUser);
 
-        userRepository.save(user);
+        userRepository.save(usuario);
 
     }
 
@@ -84,23 +84,23 @@ public class UserService implements UserDetailsService {
 
                 if (answer.isPresent()) {
 
-                    Usuario user = answer.get();
-                    user.setName(name);
-                    user.setEmail(email);
-                    user.setPassword(password);
+                    Usuario usuario = answer.get();
+                    usuario.setName(name);
+                    usuario.setEmail(email);
+                    usuario.setPassword(password);
                     
                     if (rol.equals("Comprador")) {
-                        user.setRol(Role.CLIENT);
+                        usuario.setRol(Role.CLIENT);
                     } else if (rol.equals("Vendedor")) {
-                        user.setRol(Role.ENTITY);
+                        usuario.setRol(Role.ENTITY);
                     } else if (rol.equals("Comprador y vendedor")) {
-                        user.setRol(Role.BOTHROLE);
+                        usuario.setRol(Role.BOTHROLE);
                     }
 
-                    ImageUser imageUser = imageUserService.create(file);
-                    user.setImage(imageUser);
+                    ImageUser imageUser = imageUserService.create(file, usuario);
+                    usuario.setImage(imageUser);
 
-                    userRepository.save(user);
+                    userRepository.save(usuario);
                 }
             } catch (Exception e) {
 
@@ -126,16 +126,13 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public void validate(String name, String email, String dni, String password, String password2, MultipartFile File, String rol) throws MiException {
+    public void validate(String name, String email, String dni, String password, String password2, String rol) throws MiException {
 
         if (name.isEmpty() || name == null) {
             throw new MiException("El nombre no puede ser nulo o estar vacio");
         }
         if (rol == null || rol.isEmpty()) {
             throw new MiException("El rol no puede ser nulo o estar vacio");
-        }
-        if (File == null || File.isEmpty()) {
-            throw new MiException("La foto no puede ser nula");
         }
         if (email.isEmpty() || email == null) {
             throw new MiException("El email no puede ser nulo o estar vacio");
