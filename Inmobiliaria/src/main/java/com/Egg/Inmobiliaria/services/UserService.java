@@ -75,7 +75,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
 
-    public void update(MultipartFile file, String id, String dni, String name, String email,
+    public void update(MultipartFile file, Long id, String dni, String name, String email,
             String password, String password2, String rol) throws Exception {
 
         if (file != null) {
@@ -184,7 +184,7 @@ public class UserService implements UserDetailsService {
         if (username.contains("@")) {
             user = userRepository.findByEmail(username);
         } else {
-            user = userRepository.findByDni(Long.valueOf(username));
+            user = userRepository.findByDni(username);
         }
 
         if (user != null) {
