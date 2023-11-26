@@ -5,6 +5,8 @@ import com.Egg.Inmobiliaria.enums.Role;
 import com.Egg.Inmobiliaria.exceptions.MiException;
 import com.Egg.Inmobiliaria.models.Usuario;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +37,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void create(MultipartFile file, String name, String email,
-            String dni, String password, String password2, String rol) throws Exception {
+                       String dni, String password, String password2, String rol) throws Exception {
 
         validate(name, email, dni, password, password2, rol);
 
@@ -64,6 +66,7 @@ public class UserService implements UserDetailsService {
     public Usuario getOne(Long id) {
         return userRepository.getOne(id);
     }
+
     public Usuario getOneDni(String dni) {
         return userRepository.findByDni(dni);
     }
@@ -77,21 +80,31 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
+    public void update(MultipartFile file, Long id, String email,
+                       String password, String password2, String rol) throws MiException {
 
-    public void update(MultipartFile file, Long id, String dni, String name, String email,
-            String password, String password2, String rol) throws Exception {
-
-        if (file != null) {
+        if (rol == null || rol.isEmpty()) {
+            throw new MiException("El rol no puede ser nulo o estar vacio");
+        }
+        if (email.isEmpty() || email == null) {
+            throw new MiException("El email no puede ser nulo o estar vacio");
+        }
+        if (password.isEmpty() || password == null || password.length() <= 5) {
+            throw new MiException("La contraseña no puede estar vacía y debe tener más de 5 dígitos");
+        }
+        if (!password.equals(password2)) {
+            throw new MiException("Las contraseñas ingresadas deben ser iguales");
+        }
+        if (file != null  && !file.isEmpty()) {
             try {
                 Optional<Usuario> answer = userRepository.findById(id);
 
                 if (answer.isPresent()) {
 
                     Usuario usuario = answer.get();
-                    usuario.setName(name);
                     usuario.setEmail(email);
                     usuario.setPassword(password);
-                    
+
                     if (rol.equals("Comprador")) {
                         usuario.setRol(Role.CLIENT);
                     } else if (rol.equals("Vendedor")) {
@@ -100,13 +113,14 @@ public class UserService implements UserDetailsService {
                         usuario.setRol(Role.BOTHROLE);
                     }
 
-                    ImageUser imageUser = imageUserService.create(file, usuario);
+                    ImageUser imageUser = imageUserService.update(file, answer.get().getImage().getId());
+
                     usuario.setImage(imageUser);
-
                     userRepository.save(usuario);
+                    System.out.println("Usuario modificado");
                 }
-            } catch (Exception e) {
-
+            } catch (MiException | IOException e) {
+                System.out.println("No se cargo el usuario modificado");
             }
         }
     }

@@ -102,7 +102,7 @@ public class PortalController {
         model.addAttribute("properties", properties);
         
         if (currentUser.getRol().toString().equals("ADMIN")) {
-            return "home"; // ACA IRIA LA VISTA DASHBOARD
+            return "dashboard";
         } else {
             return "home";
         }
@@ -116,7 +116,7 @@ public class PortalController {
 //    public String profile(ModelMap modelo,HttpSession session){
 //        Usuario usuario = (Usuario) session.getAttribute("usuariosession");
 //         modelo.put("usuario", usuario);
-//        return "usuario_update.html";
+//        return " /panelusuario_update.html";
 //    }
 //
 //    @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'CLIENT', 'BOTHROLE')")
