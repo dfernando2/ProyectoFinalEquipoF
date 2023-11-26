@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
@@ -37,27 +34,28 @@ public class AdminController {
     }
 
 
-    @GetMapping("/inquilinos")
+    @GetMapping("/usuario/inquilinos")
     public String inquilinos(ModelMap modelo) {
 
         List<Usuario> inquilinoList = ur.findAll();
 
-        modelo.addAttribute("inquilinos", inquilinoList);
+        modelo.addAttribute("usuarios", inquilinoList);
 
         return "inquilinos.html";
     }
 
-    @GetMapping("/usuario/editar")
-    public String editarInquilinos (@PathVariable(required = false) String dni, ModelMap modelo) {
+    @GetMapping("/usuario/editar/{dni}")
+    public String editar (@RequestParam String dni, ModelMap modelo) {
 
-        modelo.put("inquilino", u.getOneDni(dni));
+        modelo.put("usuario", u.getOneDni(dni));
 
         return "usuario_update.html";
     }
 
-    @PostMapping("/usuario/editar")
-    public String editar (@PathVariable(required = false) MultipartFile file, Long id, String dni, String name, String email,
-                          String password, String password2, String rol, ModelMap modelo) {
+
+    @PostMapping("/usuario/editar/{dni}")
+    public String editar2 (@PathVariable(required = false) MultipartFile file,  Long id, String dni, String name, String email,
+                           String password, String password2, String rol, ModelMap modelo) {
         try {
             u.update(file, id, dni, name, email, password, password2, rol);
             modelo.put("Exito", "El usuario se ha modificado correctamente");
@@ -70,11 +68,40 @@ public class AdminController {
         return "dashboard.html";
     }
 
+    @GetMapping("/usuarios/propietarios")
+    public String propietarios(ModelMap modelo) {
 
-    @GetMapping("/propietarios")
-    public String propietarios() {
+        List<Usuario> propietariosList = ur.findAll();
+
+        modelo.addAttribute("usuarios", propietariosList);
+
         return "propietarios.html";
     }
+
+//    @GetMapping("/usuario/remove")
+//    public String bajaUsuario (@PathVariable(required = false) String dni, ModelMap modelo) {
+//
+//        modelo.put("inquilino", u.getOneDni(dni));
+//
+//        return "usuario_update.html";
+//    }
+//
+//    @PostMapping("/usuario/remove")
+//    public String bajUsuario2 (@PathVariable(required = false) MultipartFile file, Long id, String dni, String name, String email,
+//                          String password, String password2, String rol, ModelMap modelo) {
+//        try {
+//            u.update(file, id, dni, name, email, password, password2, rol);
+//            modelo.put("Exito", "El usuario se ha modificado correctamente");
+//        } catch (MiException e) {
+//            modelo.put("Error", e.getMessage());
+//            return "usuario_update.html";
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        return "dashboard.html";
+//    }
+
+
 
 
 
