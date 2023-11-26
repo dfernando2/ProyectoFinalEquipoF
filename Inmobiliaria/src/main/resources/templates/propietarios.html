@@ -43,14 +43,26 @@
                     Elige
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a th:href="@{/dashboard/usuario/editar}" class="dropdown-item">Editar</a></li>
-                    <form class="formulario" th:action="@{/dashboard/usuario/editar}" METHOD="post">
+                    <li><a th:href="@{/dashboard/usuario/editar/__${usuario.id}__}" class="dropdown-item">Editar</a></li>
+                    <!--                                <li><a class="dropdown-item" href="@{/dashboard/usuario/remove}">Dar de baja</a></li>-->
+                    <!--                                <form class="formulario" th:action="@{/dashboard/usuario/remove}" METHOD="post">-->
 
-<!--                        <li><a class="dropdown-item" href="@{/dashboard/usuario/remove}">Dar de baja</a></li>-->
-<!--                        <form class="formulario" th:action="@{/dashboard/usuario/remove}" METHOD="post">-->
+                    </form>
+
+
+                    <li><a class="dropdown-item" href="#">Dar de baja</a></li>
                 </ul>
             </td>
         </tr>
 
         </tbody>
     </table>
+
+
+
+</div>
+
+
+</body>
+
+</html>

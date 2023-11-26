@@ -16,33 +16,32 @@
 
 <div class="container-fluid m-5 contenedor">
 
-    <form class="formulario" th:action="@{/usuario/editar/__${usuario.dni}__}" method="POST" enctype="multipart/form-data">
+    <form class="formulario" th:action="@{'/dashboard/usuario/editar/' + ${id}}" method="POST" enctype="multipart/form-data">
 
 
 
         <div class="form-group my-3">
-            <h3 class="card-title">Registrate!</h3>
+            <h3 class="card-title">Modifica tus datos!</h3>
         </div>
         <div class="form-group my-3">
-            <input disabled type="text" class="form-control" name="name" placeholder="NOMBRE" th:value="${usuario.name}">
+            <input disabled type="text" class="form-control" name="name" th:placeholder="${usuario.name}" >
         </div>
         <div class="form-group my-3">
-            <input type="email" class="form-control" name="email" placeholder="EMAIL" th:value="${usuario.email}">
+            <input type="email" class="form-control" name="email" th:placeholder="${usuario.email}" >
         </div>
         <div class="form-group my-3">
-            <input disabled type="text" class="form-control" name="dni" placeholder="DNI" th:value="${usuario.dni}">
-        </div>
-
-        <div class="form-group my-3">
-            <input type="file" class="form-control" name="file" placeholder="foto" th:value="${usuario.image}">
+            <input disabled type="text" class="form-control" name="dni" th:placeholder="${usuario.dni}" >
         </div>
 
         <div class="form-group my-3">
-            <input type="password" class="form-control" name="password" placeholder="CONTRASEÑA" th:value="${password}">
+            <input type="file" class="form-control" name="file" >
+        </div>
+
+        <div class="form-group my-3">
+            <input type="password" class="form-control" name="password" placeholder="CONTRASEÑA" >
         </div>
         <div class="form-group my-3">
-            <input type="password" class="form-control" name="password2" placeholder="REPETIR CONTRASEÑA"
-                   th:value="${password2}">
+            <input type="password" class="form-control" name="password2" placeholder="REPETIR CONTRASEÑA" >
         </div>
 
         <div class="form-group my-3">
@@ -57,14 +56,14 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary mt-3 botones">Registrarme</button>
+        <button type="submit" class="btn btn-primary mt-3 botones">Modificar</button>
     </form>
 
 
     <section class=" text-center container">
         <div class="row mt-3">
             <div class="divVolver">
-                <a th:href="@{/}" class="btn btn-secondary my-2 botonVolver botones">Volver</a>
+                <a th:href="@{/dashboard/usuario/inquilinos}" class="btn btn-secondary my-2 botonVolver botones">Volver</a>
             </div>
         </div>
     </section>
