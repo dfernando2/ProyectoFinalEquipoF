@@ -30,21 +30,23 @@
                     <th scope="col">Acción</th>
                 </tr>
             </thead>
-            <tbody th:each="inquilino : ${inquilinos}">
-                <tr th:if="${inquilino.rol.toString() == 'CLIENT'}">
-                    <th scope="row" th:text="${inquilino.id}"></th>
-                    <td th:text="${inquilino.name}"></td>
-                    <td th:text="${inquilino.dni}"></td>
-                    <td th:text="${inquilino.email}"></td>
-                    <td th:text="${inquilino.rol}"></td>
-                    <td th:text="${inquilino.image}"></td>
+            <tbody th:each="usuario : ${usuarios}">
+                <tr th:if="${usuario.rol.toString() == 'CLIENT'}">
+                    <th scope="row" th:text="${usuario.id}"></th>
+                    <td th:text="${usuario.name}"></td>
+                    <td th:text="${usuario.dni}"></td>
+                    <td th:text="${usuario.email}"></td>
+                    <td th:text="${usuario.rol}"></td>
+                    <td th:text="${usuario.image}"></td>
                     <td class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             Elige
                         </a>
                         <ul class="dropdown-menu">
                             <li><a th:href="@{/dashboard/usuario/editar}" class="dropdown-item">Editar</a></li>
-                            <form class="formulario" th:action="@{/dashboard/usuario/editar}" METHOD="post">
+                            <form class="formulario" th:action="@{/dashboard/usuario/editar/__${usuario.dni}__}" METHOD="post">
+<!--                                <li><a class="dropdown-item" href="@{/dashboard/usuario/remove}">Dar de baja</a></li>-->
+<!--                                <form class="formulario" th:action="@{/dashboard/usuario/remove}" METHOD="post">-->
 
                             </form>
 
