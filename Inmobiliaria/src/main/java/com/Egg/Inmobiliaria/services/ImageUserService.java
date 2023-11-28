@@ -65,8 +65,8 @@ public class ImageUserService {
     }
 
     @Transactional
-    public ImageUser update(MultipartFile archivo, String idImageUser) throws MiException, IOException {
-        if (archivo != null) {
+    public ImageUser update(MultipartFile file, String idImageUser) throws MiException {
+
             ImageUser image = new ImageUser();
 
             if (idImageUser != null) {
@@ -77,16 +77,17 @@ public class ImageUserService {
                 }
 
             }
-            image.setMime(archivo.getContentType());
+            image.setMime(file.getContentType());
 
-            image.setName(archivo.getName());
+            image.setName(file.getName());
 
-            image.setContainer(archivo.getBytes());
-
-            return imageUserRepository.save(image);
-
+        try {
+            image.setContainer(file.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return null;
+
+        return imageUserRepository.save(image);
     }
 
     @Transactional

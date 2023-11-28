@@ -12,13 +12,17 @@ import com.Egg.Inmobiliaria.repositories.UserRepository;
 import com.Egg.Inmobiliaria.services.PropertyService;
 import com.Egg.Inmobiliaria.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +53,9 @@ public class AdminController {
 
 
     @GetMapping("/usuario/inquilinos")
-    public String inquilinos(ModelMap modelo) {
+    public String inquilinos(HttpSession session, ModelMap modelo) {
+
+        Usuario currentUser = (Usuario) session.getAttribute("usuariosession");
 
         List<Usuario> inquilinoList = ur.findAll();
 
@@ -71,21 +77,26 @@ public class AdminController {
     public String modified(@RequestParam MultipartFile file,  @PathVariable Long id,
                            @RequestParam String email, @RequestParam String password,
                            @RequestParam String password2, @RequestParam String rol,
-                           ModelMap modelo) throws MiException {
+                           ModelMap modelo) {
 
         try {
             u.update(file, id, email, password, password2, rol);
-            modelo.put("Exito", "El usuario se ha modificado correctamente");
-        } catch (MiException e) {
-            modelo.put("Error", e.getMessage());
+            String mensaje = "El usuario fue modificado con exito";
+            modelo.put("Exito", mensaje);
+            return "redirect:/dashboard/usuario/inquilinos";
+        }catch (Exception e) {
+            String mensaje = "El usuario no fue modificado";
+            modelo.put("Error", mensaje);
             return "usuario_update.html";
         }
-        return "redirect:/dashboard/usuario/inquilinos";
+
     }
 
 
     @GetMapping("/usuario/propietarios")
-    public String propietarios(ModelMap modelo) {
+    public String propietarios(HttpSession session, ModelMap modelo) {
+
+        Usuario currentUser = (Usuario) session.getAttribute("usuariosession");
 
         List<Usuario> propietariosList = ur.findAll();
 
@@ -95,11 +106,14 @@ public class AdminController {
     }
 
     @GetMapping("/inmuebles")
-    public String inmuebles(ModelMap modelo) {
+    public String inmuebles(HttpSession session, ModelMap modelo) {
+
+        Usuario currentUser = (Usuario) session.getAttribute("usuariosession");
 
         List<Property> propertyList = pr.findAll();
 
         modelo.addAttribute("inmuebles", propertyList);
+        modelo.addAttribute("usuariosession", currentUser );
 
         return "inmuebles.html";
     }
@@ -112,6 +126,13 @@ public class AdminController {
         return "inmueble_update.html";
     }
 
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+    }// realizar la vinculación de datos entre las solicitudes web y los objetos del
+    // dominio, pueda manejar de manera personalizada el formato de las fechas, utilizando
+    // "yyyy-MM-dd" como formato para las fechas de tipo Date.
     @Transactional
     @PostMapping("/inmuebles/editar/{id}")
     public String modifiedProperty(@PathVariable Long id, @RequestParam(required = false) String address,
