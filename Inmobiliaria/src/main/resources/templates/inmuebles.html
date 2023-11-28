@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
+
+<head th:replace="/fragments/head :: head"></head>
+<nav th:replace="/fragments/navbar :: nav"></nav>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<body>
+
+<div class="card">
+    <div class="card-body text-center">
+        <h3>PROPIEDADES</h3>
+<!--            <h3 th:if="${session.usuariosession != null}" th:text="'¡Bienvenido de vuelta! ' + ${session.usuariosession.nombre}">-->
+    </div>
+</div>
+
+<div class="card center container">
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Calle y numero</th>
+            <th scope="col">Provincia</th>
+            <th scope="col">Ciudad</th>
+            <th scope="col">Superficie total</th>
+            <th scope="col">Baños</th>
+            <th scope="col">Dormitorios</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Descripcion</th>
+            <th scope="col">Estado de la propiedad</th>
+            <th scope="col">Tipo de propiedad</th>
+            <th scope="col">Dormitorios</th>
+            <th scope="col">Precio</th>
+        </tr>
+        </thead>
+        <tbody th:each="inmueble : ${inmuebles}">
+        <tr>
+            <th scope="row" th:text="${inmueble.id}"></th>
+            <td th:text="${inmueble.address}"></td>
+            <td th:text="${inmueble.province}"></td>
+            <td th:text="${inmueble.location}"></td>
+            <td th:text="${inmueble.surface}"></td>
+            <td th:text="${inmueble.bathrooms}"></td>
+            <td th:text="${inmueble.bedrooms}"></td>
+            <td th:text="${inmueble.price}"></td>
+            <td th:text="${inmueble.description}"></td>
+            <td th:text="${inmueble.status}"></td>
+            <td th:text="${inmueble.createDate}"></td>
+            <td th:text="${inmueble.type}"></td>
+            <td th:text="${inmueble.status}"></td>
+            <td class="nav-item dropdown">
+
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    Elige
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/dashboard/inmuebles/editar/__${inmueble.id}__}" class="dropdown-item">Editar</a></li>
+                    <!--                                <li><a class="dropdown-item" href="@{/dashboard/usuario/remove}">Dar de baja</a></li>-->
+                    <!--                                <form class="formulario" th:action="@{/dashboard/usuario/remove}" METHOD="post">-->
+
+                    </form>
+
+
+                    <!--                    <li><a class="dropdown-item" href="#">Dar de baja</a></li>-->
+                </ul>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+
+
+</div>
+
+
+</body>
+
+</html>

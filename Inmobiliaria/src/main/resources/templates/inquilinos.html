@@ -31,7 +31,7 @@
                 </tr>
             </thead>
             <tbody th:each="usuario : ${usuarios}">
-                <tr th:if="${usuario.rol.toString() == 'CLIENT'}">
+                <tr th:if="${(usuario.rol.toString() == 'CLIENT') || (usuario.rol.toString() =='BOTHROLE')}">
                     <th scope="row" th:text="${usuario.id}"></th>
                     <td th:text="${usuario.name}"></td>
                     <td th:text="${usuario.dni}"></td>
@@ -50,7 +50,7 @@
                             </form>
 
 
-                            <li><a class="dropdown-item" href="#">Dar de baja</a></li>
+<!--                            <li><a class="dropdown-item" href="#">Dar de baja</a></li>-->
                         </ul>
                     </td>
                 </tr>

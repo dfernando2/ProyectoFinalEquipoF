@@ -10,34 +10,34 @@
 
 <div class="d-flex justify-content-center align-items-center">
 
-
     <div class="align-items-center">
 
-        <form style="background-image: url(../img/FondoForm.jpg);
-            background-position: center; background-repeat: no-repeat;
-            background-color: rgba(255, 255, 255, 0.8); height: 20rem; margin-top:5rem"
-              class="p-4 rounded shadow-xl text-center mt-5"
-              th:action="@{/logincheck}"
-              method="post"
+        <form 
+            class="p-4 rounded shadow bg-light mt-4 mb-4 d-flex align-items-center flex-column"
+            th:action="@{/logincheck}"
+            method="post"
         >
 
-            <div th:if="${error!=null}" class="card text-white bg-danger text-center" >
-                <div class="card-body ">
-                    <h5 class="card-title">Error 👎</h5>
-                    <p class="card-text bg-alert text-white" th:text="${error}"></p>
-                </div>
+            <div th:if="${error!=null}">
+                <p class="login-error" th:text="${error}"></p>                
             </div>
 
             <div class="form-group mt-5 my-3">
-                <input type="text" class="form-control" name="username" placeholder="Email - DNI">
-            </div>
-            <div class="form-group my-3">
-                <input type="password" class="form-control" name="password" placeholder="Contraseña">
+                <label for="usuario">Usuario</label>
+                <input type="text" id="usuario" class="form-control" name="username" placeholder="Email - Dni">
             </div>
 
-            <div class="form-group my-3">
-                <button type="submit" class="btn btn-primary mt-3 botones  px-3">Login</button>
+            <div class="form-group my-2">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" class="form-control" name="password" placeholder="Contraseña">
             </div>
+
+            <div class="form-group my-2 d-flex align-items-center ">
+                <div>
+                    <button type="submit" class="btn btn-primary me-3 px-3">Login</button>
+                </div>                
+            </div>
+            <span>¿No tienes una cuenta?</span><a th:href="@{/register}">Registrate</a>
 
         </form>
 
