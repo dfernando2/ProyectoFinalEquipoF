@@ -89,7 +89,7 @@ public class PortalController {
         Usuario currentUser = (Usuario) session.getAttribute("usuariosession");
         
         List<Property> properties = propertyService.getAllProperties();
-        model.addAttribute("inmuebles", properties);
+        model.addAttribute("properties", properties);
         
         if (currentUser.getRol().toString().equals("ADMIN")) {
             return "dashboard";
