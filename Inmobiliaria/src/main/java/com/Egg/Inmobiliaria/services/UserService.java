@@ -81,49 +81,51 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void update(MultipartFile file, Long id, String email,
-                       String password, String password2, String rol) throws MiException {
+                         String password, String password2, String rol) throws Exception {
+//TODO agarrar este try para mostrar en pantalla
+//        if (password.isEmpty() || password == null || password.length() <= 5) {
+//            throw new MiException("La contraseña no puede estar vacía y debe tener más de 5 dígitos");
+//        }
+//        if (!password.equals(password2)) {
+//            throw new MiException("Las contraseñas ingresadas deben ser iguales");
+//        }
 
-        if (rol == null || rol.isEmpty()) {
-            throw new MiException("El rol no puede ser nulo o estar vacio");
-        }
-        if (email.isEmpty() || email == null) {
-            throw new MiException("El email no puede ser nulo o estar vacio");
-        }
-        if (password.isEmpty() || password == null || password.length() <= 5) {
-            throw new MiException("La contraseña no puede estar vacía y debe tener más de 5 dígitos");
-        }
-        if (!password.equals(password2)) {
-            throw new MiException("Las contraseñas ingresadas deben ser iguales");
-        }
-        if (file != null  && !file.isEmpty()) {
-            try {
-                Optional<Usuario> answer = userRepository.findById(id);
+        Optional<Usuario> answer = userRepository.findById(id);
 
-                if (answer.isPresent()) {
+        String name = answer.get().getName();
+        String dni = answer.get().getDni();
 
-                    Usuario usuario = answer.get();
-                    usuario.setEmail(email);
-                    usuario.setPassword(password);
+        validate(name, email, dni, password, password2, rol);
 
-                    if (rol.equals("Comprador")) {
-                        usuario.setRol(Role.CLIENT);
-                    } else if (rol.equals("Vendedor")) {
-                        usuario.setRol(Role.ENTITY);
-                    } else if (rol.equals("Comprador y vendedor")) {
-                        usuario.setRol(Role.BOTHROLE);
-                    }
+        try {
 
-                    ImageUser imageUser = imageUserService.update(file, answer.get().getImage().getId());
 
-                    usuario.setImage(imageUser);
-                    userRepository.save(usuario);
-                    System.out.println("Usuario modificado");
-                }
-            } catch (MiException | IOException e) {
-                System.out.println("No se cargo el usuario modificado");
+            Usuario usuario = answer.get();
+            if (!email.isEmpty()) {
+                usuario.setEmail(email);
             }
+            usuario.setPassword(null);
+            usuario.setPassword(new BCryptPasswordEncoder().encode(password));
+
+            if (rol.equals("Comprador")) {
+                usuario.setRol(Role.CLIENT);
+            } else if (rol.equals("Vendedor")) {
+                usuario.setRol(Role.ENTITY);
+            } else if (rol.equals("Comprador y vendedor")) {
+                usuario.setRol(Role.BOTHROLE);
+            }
+            if (file != null) {
+                ImageUser imageUser = imageUserService.update(file, answer.get().getImage().getId());
+                usuario.setImage(imageUser);
+            }
+            userRepository.save(usuario);
+            }
+        catch (MiException e) {
+            throw new MiException(e.getMessage());
+
         }
     }
+
 
     @Transactional
     public void changeRol(Long id) {
@@ -147,6 +149,7 @@ public class UserService implements UserDetailsService {
 
         if (name.isEmpty() || name == null) {
             throw new MiException("El nombre no puede ser nulo o estar vacio");
+
         }
         if (rol == null || rol.isEmpty()) {
             throw new MiException("El rol no puede ser nulo o estar vacio");

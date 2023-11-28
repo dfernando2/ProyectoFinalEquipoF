@@ -65,19 +65,10 @@ public class PortalController {
             ModelMap modelo) {
         try {
             userService.create(file, name, email, dni, password, password2, rol);
-//            userService.create(name, email, dni, password, password2);
             modelo.put("exito", "Usuario cargado correctamente");
-
             return "index.html";
-
         } catch (Exception e) {
-
             modelo.put("error", e.getMessage());
-//            modelo.put("name", name);
-//            modelo.put("email", email);
-//            modelo.put("dni", dni);
-            // modelo.put("file", file);
-
             return "register.html";
         }
     }
@@ -92,14 +83,13 @@ public class PortalController {
         return "login";
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ENTITY', 'ROLE_ADMIN', 'ROLE_CLIENT', 'ROLE_BOTHROLE')")
     @GetMapping("/home")
     public String home(HttpSession session, Model model) {
 
         Usuario currentUser = (Usuario) session.getAttribute("usuariosession");
         
         List<Property> properties = propertyService.getAllProperties();
-        model.addAttribute("properties", properties);
+        model.addAttribute("inmuebles", properties);
         
         if (currentUser.getRol().toString().equals("ADMIN")) {
             return "dashboard";

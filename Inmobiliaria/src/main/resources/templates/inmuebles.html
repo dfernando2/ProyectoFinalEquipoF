@@ -56,7 +56,12 @@
                     Elige
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a th:href="@{/dashboard/inmuebles/editar/__${inmueble.id}__}" class="dropdown-item">Editar</a></li>
+                    <li>
+                        <th:block th:if="${usuariosession != null and usuariosession.getRol().toString() == 'ADMIN'}">
+                            <a th:href="@{/dashboard/inmuebles/editar/__${inmueble.id}__}" class="dropdown-item">Editar</a>
+                        </th:block>
+
+                    </li>
                     <!--                                <li><a class="dropdown-item" href="@{/dashboard/usuario/remove}">Dar de baja</a></li>-->
                     <!--                                <form class="formulario" th:action="@{/dashboard/usuario/remove}" METHOD="post">-->
 
