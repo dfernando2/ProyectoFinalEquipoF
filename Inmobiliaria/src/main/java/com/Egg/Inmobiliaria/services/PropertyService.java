@@ -91,8 +91,7 @@ public class PropertyService {
     @Transactional
     public void update(Long id, String address, String province, String location, Integer surface,
                        Integer bathrooms, Integer bedrooms, Double price, String description,
-                       PropertyStatus status, Date createDate, PropertyType type, List<MultipartFile> images,
-                       List<Offer> offers, String idUser, boolean isRented, boolean isActive) {
+                       PropertyStatus status, Date createDate, PropertyType type, List<MultipartFile> files) {
 
         Optional<Property> propertyAnswer = propertyRepository.findById(id);
 
@@ -110,11 +109,21 @@ public class PropertyService {
             property.setStatus(status);
             property.setCreateDate(createDate);
             property.setType(type);
-            property.setOffers(offers);
-            property.setRented(isRented);
-            property.setActive(isActive);
+//            property.setOffers(offers);
+//            property.setRented(false);
+//            property.setActive(true);
             propertyRepository.save(property);
 
+            for (MultipartFile file : files) {
+                try {
+                    imagePropertyService.create(file, property);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            //Check
+            System.out.println("Se estan guardando los cambios");
+            //check
         }
     }
 

@@ -14,6 +14,7 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
     @Query("SELECT p FROM Property p WHERE p.type = ?1")
     List<Property> findByType(PropertyType type);
 
-    @Override
-    List<Property> findAll();
+    @Query ("SELECT p FROM Property p")
+    List<Property> findProperty();
+
 }

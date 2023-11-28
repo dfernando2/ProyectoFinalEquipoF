@@ -1,0 +1,14 @@
+.login-error{
+    color: white;
+    background-color: red;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    border-radius: 5px;
+    width: 10rem;
+    margin:-1.8rem;
+    padding: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    
+}

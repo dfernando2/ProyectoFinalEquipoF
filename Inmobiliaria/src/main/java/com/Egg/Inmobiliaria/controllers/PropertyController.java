@@ -135,7 +135,8 @@ public class PropertyController {
 
         propertyService.update(id, address, province, location, surface, bathrooms,
                 bedrooms, price, description, status, createDate,
-                type, images, offers, idUser, isRented, isActive);
+                type, images);
+
 
         return "redirect:../list";
 
