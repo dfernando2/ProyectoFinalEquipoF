@@ -96,6 +96,7 @@ public class PropertyController {
         return "property_list.html";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_BOTHROLE', 'ROLE_ADMIN', 'ROLE_ENTITY')")
     @PostMapping("/list")
     public String propertyList(ModelMap model) {
         model.put("properties", propertyService.list());
