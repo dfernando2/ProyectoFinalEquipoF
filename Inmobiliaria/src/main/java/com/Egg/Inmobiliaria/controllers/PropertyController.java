@@ -143,5 +143,17 @@ public class PropertyController {
 
     }
 
+    @PostMapping("/filter")
+    public void filterProperty(@RequestParam(required = false) String province,
+                                 @RequestParam(required = false) String status,
+                                 @RequestParam(required = false) String type,
+                                 @RequestParam(required = false) String bedrooms,
+                                 @RequestParam(required = false) Double minPrice,
+                                 @RequestParam(required = false) Double maxPrice,
+                                 ModelMap model) {
+        model.put("properties", propertyService.filteredProperties(status, type, bedrooms, minPrice, maxPrice, province));
+
+    }
+
 
 }

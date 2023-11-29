@@ -65,8 +65,8 @@ public class ImageController {
 
 
    @GetMapping("/property/{id}")
-    public ResponseEntity<byte[]> propertyImage(@PathVariable String id) {
-        Property property = propertyService.getOne(Long.valueOf(id));
+    public ResponseEntity<byte[]> propertyImage(@PathVariable Long id) {
+        Property property = propertyService.getOne(id);
 
         ImageProperty images = imagePropertyRepository.findByProperty(property);
 

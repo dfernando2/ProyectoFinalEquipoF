@@ -37,7 +37,7 @@ public class PropertyService {
     public Property getLast() {
         List<Property> properties = new ArrayList();
         properties = propertyRepository.findAll();
-        return properties.get(properties.size()-1);
+        return properties.get(properties.size() - 1);
     }
 
 
@@ -140,9 +140,79 @@ public class PropertyService {
     public void findByType(PropertyType type) {
         List<Property> properties = propertyRepository.findByType(type);
     }
+
     public List<Property> getAllProperties() {
-      
+
         return propertyRepository.findAll();
     }
 
+    public List<Property> filteredProperties(String status, String type, String bedrooms, Double minPrice, Double maxPrice, String province) {
+
+        List<Property> properties = propertyRepository.findAll();
+        if (!province.equals("null")) {
+            List<Property> list = new ArrayList<>();
+            for (Property p : properties) {
+                if (p.getProvince().equals(province)) {
+                    list.add(p);
+                }
+            }
+            properties = list;
+        }
+        if (!properties.equals("null")) {
+            List<Property> list = new ArrayList<>();
+            for (Property p : properties) {
+                if (p.getStatus() == PropertyStatus.valueOf(status)) {
+                    list.add(p);
+                }
+            }
+            properties = list;
+        }
+        if (!properties.equals("null")) {
+            List<Property> list = new ArrayList<>();
+            for (Property p : properties) {
+                if (p.getType() == PropertyType.valueOf(type)) {
+                    list.add(p);
+                }
+            }
+            properties = list;
+        }
+        if (minPrice != null || maxPrice != null) {
+            properties = priceFilter(properties, minPrice, maxPrice);
+        }
+
+        return properties;
+    }
+
+    private List<Property> priceFilter(List<Property> properties, Double minPrice, Double maxPrice) {
+        if (minPrice != null && maxPrice != null) {
+            List<Property> list = new ArrayList<>();
+            for (Property p : properties) {
+                if (p.getPrice() >= minPrice && p.getPrice() <= maxPrice) {
+                    list.add(p);
+                }
+            }
+            return list;
+        } else if (minPrice != null) {
+            List<Property> list = new ArrayList<>();
+            for (Property p : properties) {
+                if (p.getPrice() >= minPrice) {
+                    list.add(p);
+                }
+            }
+            return list;
+        } else if (maxPrice != null) {
+            List<Property> list = new ArrayList<>();
+            for (Property p : properties) {
+                if (p.getPrice() <= maxPrice) {
+                    list.add(p);
+                }
+            }
+            return list;
+        } else {
+            return properties;
+        }
+
+    }
+
 }
+
