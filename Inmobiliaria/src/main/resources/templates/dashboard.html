@@ -11,14 +11,14 @@
 
 <div class="card">
   <div class="card-body text-center" id="titulo">
-    <h3>¡Bienvenido de vuelta!</h3>
+    <h3 th:text="'¡Bienvenido de vuelta ' + ${session.usuariosession.name} + '!'"></h3>
   </div>
 </div>
 
 <div class="card-group">
   <div class="card border-success mb-3">
     <div class="card-body">
-      <h5 class="card-title"><span>Inquilinos</span></h5>
+      <h5 class="card-title"><span>Clientes</span></h5>
       <p class="card-text">Conoce la cantidad de inquilinos registrados en la plataforma</p>
     </div>
     <div class="card-footer">

@@ -79,7 +79,6 @@ public class PortalController {
         if (error != null) {
             model.put("error", "Credenciales invalidas");
         }
-
         return "login";
     }
 
@@ -97,6 +96,12 @@ public class PortalController {
             return "home";
         }
 
+    }
+    @GetMapping("/profile")
+    public String profile(ModelMap modelo,HttpSession session){
+        Usuario usuario = (Usuario) session.getAttribute("usuariosession");
+        modelo.put("usuario", usuario);
+        return "profile.html";
     }
 
 }
