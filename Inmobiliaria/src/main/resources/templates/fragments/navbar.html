@@ -21,25 +21,25 @@
 <!--                </li>-->
 
                 <li th:if="${session.usuariosession} != null" class="nav-item">
-                    <a id="link" class="nav-link" aria-current="page" th:href="@{/home}">Inicio</a>
+                    <a id="link" class="nav-link" aria-current="page" th:href="@{/}">Inicio</a>
                 </li>
 
 
-                <li th:if="${session.usuariosession} != null" class="nav-item dropdown">
-                    <a sec:authorize="hasRole('ENTITY','BOTHROLE')" id="link" class="nav-link dropdown-toggle active" href="#" role="button"
+                <li th:if="${session.usuariosession} != null and (${session.usuariosession.getRol().toString()}  == 'ENTITY' or ${session.usuariosession.getRol().toString()}  == 'BOTHROLE')" class="nav-item dropdown">
+                    <a id="link" class="nav-link dropdown-toggle active" href="" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">Propiedades</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" id="link" th:href="@{/property/record}">Cargar Propiedades</a></li>
-                        <li><a class="dropdown-item" id="link" href="#">Ver Propiedades</a></li>
+                        <li><a class="dropdown-item" id="link" href="">Ver Propiedades</a></li>
                     </ul>
                 </li>
 
                 <li th:if="${session.usuariosession} == null" class="nav-item dropdown">
-                    <a id="ingre" class="nav-link" th:href="@{/login}">Ingresar</a>                        
+                    <a id="link" class="nav-link" th:href="@{/login}">Ingresar</a>                        
                 </li>
 
                 <li th:if="${session.usuariosession} == null" class="nav-item">
-                    <a id="ingre" class="nav-link" th:href="@{/register}">Registrate</a>
+                    <a id="link" class="nav-link" th:href="@{/register}">Registrate</a>
                 </li>   
                 
                 <li class="nav-item dropdown usuario">
@@ -50,6 +50,12 @@
                         <img id="foto-perfil"  th:src="@{/image/user/__${session.usuariosession.id}__}">
                     </a>
                     <ul class="dropdown-menu">
+                        <!-- <li>
+                            <a id="link" th:href="@{/perfil}">Perfil</a>
+                        </li>
+                        <li>
+                            <a id="link" th:href="@{/perfil/editar}">Editar Perfil</a>
+                        </li> -->
                         <li>
                             <a id="link" th:if="${session.usuariosession != null}" class="dropdown-item" href="/logout">Cerrar Sesion</a>
                         </li>
