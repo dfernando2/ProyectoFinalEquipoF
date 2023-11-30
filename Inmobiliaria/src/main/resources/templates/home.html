@@ -56,19 +56,27 @@
                 </div>
                 <h4 th:text="${property.type}"></h4>
                 <div class="a">
-
+                    <div th:if="${session.usuariosession} != null" >
                     <span class="texto-card"><b>Precio</b></span>
                     <p th:text="${property.price}"></p>
+                    </div>
+                     <div th:if="${session.usuariosession} != null" >
                     <span class="texto-card"><b>Direccion</b></span>
                     <p th:text="${property.address}"></p>
+                     </div>
+                     <div th:if="${session.usuariosession} != null" >
                     <span class="texto-card"><b>Ciudad</b></span>
                     <p th:text="${property.location}"></p>
+                     </div>
                     <span class="texto-card"><b>Provincia</b></span>
                     <p th:text="${property.province}"></p>
                     <span class="texto-card"><b>Descripcion</b></span>
                     <p th:text="${property.description}"></p>
                 </div>
-
+                <div th:if="${session.usuariosession} == null" class="button-card" >
+                        <a th:href="@{/login}" class="btn btn-primary me-3 px-3">Ver Más Información</a>
+                </div>
+                
             </div>
 
     </main>
