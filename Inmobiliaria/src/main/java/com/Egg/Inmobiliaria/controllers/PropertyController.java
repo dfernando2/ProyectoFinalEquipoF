@@ -142,5 +142,18 @@ public class PropertyController {
 
     }
 
+        @PostMapping("/filter")
+    public String filterProperty(@RequestParam(required = false) String province,
+                                 @RequestParam(required = false) String status,
+                                 @RequestParam(required = false) String type,
+                                 @RequestParam(required = false) String bedrooms,
+                                 @RequestParam(required = false) Double minPrice,
+                                 @RequestParam(required = false) Double maxPrice,
+                                 ModelMap model) throws MiException {
+        //TODO Hay que comprobar porque no esta filtrando el servicio
+        model.put("properties", propertyService.filteredProperties(status, type, bedrooms, minPrice, maxPrice, province));
+        return "home.html";
+    }
+
 
 }
