@@ -145,4 +145,89 @@ public class PropertyService {
         return propertyRepository.findAll();
     }
 
+     public List<Property> filteredProperties(String status, String type, String bedrooms, Double minPrice, Double maxPrice, String province) throws MiException {
+        //TODO tiene sout para comprobar el if de cada variable para el filtrado
+        try {
+            List<Property> properties = propertyRepository.findAll();
+            System.out.println("Lista completa: " + properties.toString());
+            if (!province.isEmpty()) {
+                List<Property> list = new ArrayList<>();
+                for (Property p : properties) {
+                    if (p.getProvince().equals(province)) {
+                        list.add(p);
+                    }
+                }
+                properties = list;
+                System.out.println("Por provincia:" + properties.toString());
+            }
+
+            if (!status.isEmpty()) {
+                List<Property> list = new ArrayList<>();
+                for (Property p : properties) {
+                    if (p.getStatus().toString().equalsIgnoreCase(status)) {
+                        list.add(p);
+                    }
+                }
+                properties = list;
+                System.out.println("Por estado:" + properties.toString());
+            }
+
+            if (!type.isEmpty()) {
+                List<Property> list = new ArrayList<>();
+                for (Property p : properties) {
+                    if (p.getType() == PropertyType.valueOf(type)) {
+                        list.add(p);
+                    }
+                }
+                properties = list;
+                System.out.println("Por tipo:" + properties.toString());
+            }
+
+
+            if (minPrice != null || maxPrice != null) {
+                properties = priceFilter(properties, minPrice, maxPrice);
+                System.out.println("Por precio:" + properties.toString());
+            }
+
+            System.out.println("Final:" + properties.toString());
+            return properties;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+
+    }
+
+    private List<Property> priceFilter(List<Property> properties2, Double minPrice, Double maxPrice) {
+        if (minPrice != null && maxPrice != null) {
+            List<Property> list = new ArrayList<>();
+            for (Property p : properties2) {
+                if (p.getPrice() >= minPrice && p.getPrice() <= maxPrice) {
+                    list.add(p);
+                }
+            }
+            return list;
+        } else if (minPrice != null) {
+            List<Property> list = new ArrayList<>();
+            for (Property p : properties2) {
+                if (p.getPrice() >= minPrice) {
+                    list.add(p);
+                }
+            }
+            return list;
+        } else if (maxPrice != null) {
+            List<Property> list = new ArrayList<>();
+            for (Property p : properties2) {
+                if (p.getPrice() <= maxPrice) {
+                    list.add(p);
+                }
+            }
+            System.out.println("Final:" + properties2.toString());
+            return list;
+        } else {
+            return properties2;
+        }
+
+    }
+
 }
