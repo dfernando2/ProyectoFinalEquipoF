@@ -129,8 +129,11 @@
                                 <i class="fas fa-chart-area me-2"></i>
                                 <div th:text="'Superficie total: ' + ${property.surface}"></div>
                             </li>
+                            <li class="list-group-item d-flex flex-direcction-row align-items-center">
+                                <i class="fas fa-chart-area me-2"></i>
+                                <div th:text="'Precio USD: ' + ${property.price}" </div>
+                            </li>
                         </ul>
-                        <div class="text-muted" th:text="'Precio: $' + ${property.price}"></div>
                     </div>
 
                     <!--            <a class="card-footer btn btn-success mt-1 border-success" th:href="@{/propiedades/__${property.id}__}">-->

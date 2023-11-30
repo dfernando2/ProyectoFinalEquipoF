@@ -87,10 +87,10 @@ public class PortalController {
     public String home(HttpSession session, Model model) {
 
         Usuario currentUser = (Usuario) session.getAttribute("usuariosession");
-        
+
         List<Property> properties = propertyService.getAllProperties();
         model.addAttribute("properties", properties);
-        
+
         if (currentUser.getRol().toString().equals("ADMIN")) {
             return "dashboard";
         } else {
@@ -99,6 +99,8 @@ public class PortalController {
 
     }
 
+
+            
 }
 
 //    @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'CLIENT', 'BOTHROLE')")
