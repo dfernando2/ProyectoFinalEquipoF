@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/dashboard")
@@ -157,4 +159,31 @@ public class AdminController {
         }
         return "redirect:/dashboard/inmuebles";
     }
+    
+    @GetMapping("/usuario/remove/{id}")
+    public String darDeBaja(@PathVariable Long id, ModelMap modelo){
+        
+        try {
+            u.darDeBaja(id);
+            return "redirect:/dashboard/usuario/inquilinos";
+        } catch (MiException ex) {
+            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+            return "redirect:/dashboard/usuario/inquilinos";
+        }
+        
+    }
+    
+    @GetMapping("/inmuebles/remove/{id}")
+    public String delete(@PathVariable Long id, ModelMap modelo){
+        
+        try {
+            ps.remove(id);
+            return "redirect:/dashboard/inmuebles";
+        } catch (MiException ex) {
+            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+            return "redirect:/dashboard/inmuebles";
+        }
+        
+    }
+    
 }

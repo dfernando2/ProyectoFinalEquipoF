@@ -2,6 +2,7 @@ package com.Egg.Inmobiliaria.services;
 
 import com.Egg.Inmobiliaria.enums.PropertyStatus;
 import com.Egg.Inmobiliaria.enums.PropertyType;
+import com.Egg.Inmobiliaria.exceptions.MiException;
 import com.Egg.Inmobiliaria.models.ImageProperty;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
@@ -128,12 +129,11 @@ public class PropertyService {
     }
 
     @Transactional
-    public void remove(Long id) {
+    public void remove(Long id) throws MiException{
         Optional<Property> propertyAnswer = propertyRepository.findById(id);
         if (propertyAnswer.isPresent()) {
-            Property property = propertyAnswer.get();
-            property.setActive(false);
-            propertyRepository.save(property);
+            
+            propertyRepository.deleteById(id);
         }
     }
 
@@ -144,5 +144,43 @@ public class PropertyService {
       
         return propertyRepository.findAll();
     }
+    
+    public void validate(String address, String province, String location, Integer surface,
+                       Integer bathrooms, Integer bedrooms, Double price, String description,
+                       PropertyStatus status, Date createDate, PropertyType type,
+                       List<MultipartFile> files) throws MiException {
+        
+        if (address.isEmpty() || address == null) {
+            throw new MiException("Debe ingresar una direccion");
+        }
+        if (province.isEmpty() || province == null) {
+            throw new MiException("Debe ingresar una provincia");
+        }
+        if (location.isEmpty() || location == null) {
+            throw new MiException("Debe ingresar una localidad");
+        }
+        if (surface == null) {
+            throw new MiException("La superficie de la propiedad debe estar especificada");
+        }
+        if (bathrooms == null) {
+            throw new MiException("Especifique la cantidad de baños por favor");
+        }
+        if (bedrooms == null) {
+            throw new MiException("Especifique la cantidad de habitaciones por favor");
+        }
+        if (price == null) {
+            throw new MiException("Indique el precio esperado");
+        }
+        if (description.isEmpty() || description == null) {
+            throw new MiException("Indique una descripcion de la propiedad deseada");
+        }
+        if (createDate == null) {
+            throw new MiException("Especifique la fecha de adquisicion");
+        }
+        if (files == null) {
+            throw new MiException("La imagen es obligatoria");
+        }
+    
+}
 
 }

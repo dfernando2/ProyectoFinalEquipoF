@@ -225,4 +225,14 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("Usuario: " + username + " no encontrado");
         }
     }
+    
+    public void darDeBaja(Long id) throws MiException {
+        
+        Optional<Usuario> answer = userRepository.findById(id);
+        
+        if (answer.isPresent()) {
+            userRepository.deleteById(id);
+        }
+        
+    }
 }
