@@ -47,33 +47,33 @@
 
 
         <div th:action="@{/property/filter}" method="post" class="flex-container">
-            <form>
-                <div class="container mt-5 d-flex align-items-center justify-content-center gap-3 ">
+            <form th:action="@{/property/filter}" method="post" class="flex-container">
+                <div class="container mt-5 d-flex align-items-center justify-content-center gap-3">
                     <select name="province" class="w-25 form-select border border-success">
-                        <option hidden selected>Provincia</option>
-                        <option value="opcion1">Buenos Aires</option>
-                        <option value="opcion2">Catamarca</option>
-                        <option value="opcion3">Chaco</option>
-                        <option value="opcion4">Chubut</option>
-                        <option value="opcion5">Córdoba</option>
-                        <option value="opcion6">Corrientes</option>
-                        <option value="opcion7">Entre Ríos</option>
-                        <option value="opcion8">Formosa</option>
-                        <option value="opcion9">Jujuy</option>
-                        <option value="opcion10">La Pampa</option>
-                        <option value="opcion11">La Rioja</option>
-                        <option value="opcion12">Mendoza</option>
-                        <option value="opcion13">Misiones</option>
-                        <option value="opcion14">Neuquén</option>
-                        <option value="opcion15">Río Negro</option>
-                        <option value="opcion16">Salta</option>
-                        <option value="opcion17">San Juan</option>
-                        <option value="opcion18">San Luis</option>
-                        <option value="opcion19">Santa Cruz</option>
-                        <option value="opcion20">Santa Fe</option>
-                        <option value="opcion21">Santiago del Estero</option>
-                        <option value="opcion22">Tierra del Fuego</option>
-                        <option value="opcion23">Tucumán</option>
+                        <option hidden selected value=null>Provincia</option>
+                        <option value="Buenos Aires">Buenos Aires</option>
+                        <option value="Catamarca">Catamarca</option>
+                        <option value="Chaco">Chaco</option>
+                        <option value="Chubut">Chubut</option>
+                        <option value="Córdoba">Córdoba</option>
+                        <option value="Corrientes">Corrientes</option>
+                        <option value="Entre Ríos">Entre Ríos</option>
+                        <option value="Formosa">Formosa</option>
+                        <option value="Jujuy">Jujuy</option>
+                        <option value="La Pampa">La Pampa</option>
+                        <option value="La Rioja">La Rioja</option>
+                        <option value="Mendoza">Mendoza</option>
+                        <option value="Misiones">Misiones</option>
+                        <option value="Neuquén">Neuquén</option>
+                        <option value="Río Negro">Río Negro</option>
+                        <option value="Salta">Salta</option>
+                        <option value="San Juan">San Juan</option>
+                        <option value="San Luis">San Luis</option>
+                        <option value="Santa Cruz">Santa Cruz</option>
+                        <option value="Santa Fe">Santa Fe</option>
+                        <option value="Santiago del Estero">Santiago del Estero</option>
+                        <option value="Tierra del Fuego">Tierra del Fuego</option>
+                        <option value="Tucumán">Tucumán</option>
                     </select>
 
                     <select name="status" class="w-25 form-select border border-success">
@@ -101,16 +101,15 @@
                     </select>
 
                     <select name="bedrooms" class="w-25 form-select border border-success">
-                        <option hidden value="null">Dormitorios</option>
+                        <option hidden value="0">Dormitorios</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
-                        <option value="5">5+</option>
+                        <option value="6">5+</option>
                     </select>
 
                     <div class="w-50 d-flex align-items-center justify-content-center gap-3">
-                        <label>Precio:</label>
                         <input name="minPrice" type="number" min="0" class="form-control border border-success"
                                placeholder="Precio Minimo">
                         <input name="maxPrice" type="number" max="999999999" class="form-control border border-success"
@@ -135,7 +134,7 @@
                 <h4 th:text="${property.type}"></h4>
                 <div class="a">
                     <div th:if="${session.usuariosession} != null" >
-                    <span class="texto-card"><b>Precio</b></span>
+                    <span class="texto-card"><b>Precio US$</b></span>
                     <p th:text="${property.price}"></p>
                     </div>
                      <div th:if="${session.usuariosession} != null" >
@@ -156,6 +155,7 @@
                 </div>
                 
             </div>
+        </div>
 
     </main>
     <section>

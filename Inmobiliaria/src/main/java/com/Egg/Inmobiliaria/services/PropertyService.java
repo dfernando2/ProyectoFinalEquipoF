@@ -16,10 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,7 +34,7 @@ public class PropertyService {
     public Property getLast() {
         List<Property> properties = new ArrayList();
         properties = propertyRepository.findAll();
-        return properties.get(properties.size()-1);
+        return properties.get(properties.size() - 1);
     }
 
 
@@ -140,52 +137,65 @@ public class PropertyService {
     public void findByType(PropertyType type) {
         List<Property> properties = propertyRepository.findByType(type);
     }
+
     public List<Property> getAllProperties() {
-      
+
         return propertyRepository.findAll();
     }
 
-     public List<Property> filteredProperties(String status, String type, String bedrooms, Double minPrice, Double maxPrice, String province) throws MiException {
-        //TODO tiene sout para comprobar el if de cada variable para el filtrado
+    public List<Property> filteredProperties(String province, String status, String type, int bedrooms, Double minPrice, Double maxPrice) throws Exception {
+
+        List<Property> properties = propertyRepository.findAll();
+        System.out.println("Lista completa: " + properties.toString());
+
         try {
-            List<Property> properties = propertyRepository.findAll();
-            System.out.println("Lista completa: " + properties.toString());
-            if (!province.isEmpty()) {
-                List<Property> list = new ArrayList<>();
+            if (!province.equals("null")) {
+                List<Property> list1 = new ArrayList<>();
                 for (Property p : properties) {
-                    if (p.getProvince().equals(province)) {
-                        list.add(p);
+                    if (p.getProvince().equalsIgnoreCase(province)) {
+                        list1.add(p);
                     }
                 }
-                properties = list;
+                properties = list1;
                 System.out.println("Por provincia:" + properties.toString());
             }
 
-            if (!status.isEmpty()) {
-                List<Property> list = new ArrayList<>();
+            if (!status.equals("null")) {
+                List<Property> list2 = new ArrayList<>();
                 for (Property p : properties) {
                     if (p.getStatus().toString().equalsIgnoreCase(status)) {
-                        list.add(p);
+                        list2.add(p);
                     }
                 }
-                properties = list;
+                properties =list2;
                 System.out.println("Por estado:" + properties.toString());
+
             }
 
-            if (!type.isEmpty()) {
-                List<Property> list = new ArrayList<>();
+            if (!type.equals("null")) {
+                List<Property> list3 = new ArrayList<>();
                 for (Property p : properties) {
-                    if (p.getType() == PropertyType.valueOf(type)) {
-                        list.add(p);
+                    if (p.getType().toString().equalsIgnoreCase(type)) {
+                        list3.add(p);
                     }
                 }
-                properties = list;
+                properties =list3;
                 System.out.println("Por tipo:" + properties.toString());
             }
+            if (bedrooms != 0) {
+                List<Property> list4 = new ArrayList<>();
+                for (Property p : properties) {
+                    if (p.getBedrooms() == bedrooms) {
+                        list4.add(p);
+                    }
+                }
+                properties =list4;
+                System.out.println("Por habitaciones:" + properties.toString());
+            }
 
-
-            if (minPrice != null || maxPrice != null) {
-                properties = priceFilter(properties, minPrice, maxPrice);
+            if ((!((minPrice) == null)) || (!((maxPrice) == null))) {
+                List<Property> list5 = priceFilter(properties, minPrice, maxPrice);
+                properties =list5;
                 System.out.println("Por precio:" + properties.toString());
             }
 
@@ -199,7 +209,7 @@ public class PropertyService {
     }
 
     private List<Property> priceFilter(List<Property> properties2, Double minPrice, Double maxPrice) {
-        if (minPrice != null && maxPrice != null) {
+        if ((!((minPrice) == null)) && (!((maxPrice) == null))) {
             List<Property> list = new ArrayList<>();
             for (Property p : properties2) {
                 if (p.getPrice() >= minPrice && p.getPrice() <= maxPrice) {
@@ -207,7 +217,7 @@ public class PropertyService {
                 }
             }
             return list;
-        } else if (minPrice != null) {
+        } else if (!((minPrice) == null)) {
             List<Property> list = new ArrayList<>();
             for (Property p : properties2) {
                 if (p.getPrice() >= minPrice) {
@@ -215,7 +225,7 @@ public class PropertyService {
                 }
             }
             return list;
-        } else if (maxPrice != null) {
+        } else if (!((maxPrice) == null)){
             List<Property> list = new ArrayList<>();
             for (Property p : properties2) {
                 if (p.getPrice() <= maxPrice) {
@@ -231,3 +241,4 @@ public class PropertyService {
     }
 
 }
+

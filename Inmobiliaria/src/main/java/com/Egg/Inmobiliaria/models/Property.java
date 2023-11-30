@@ -2,10 +2,7 @@ package com.Egg.Inmobiliaria.models;
 
 import com.Egg.Inmobiliaria.enums.PropertyStatus;
 import com.Egg.Inmobiliaria.enums.PropertyType;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.persistence.*;
-import java.awt.*;
 import java.util.Date;
 import java.util.List;
 
@@ -22,9 +19,11 @@ public class Property {
     private Integer bedrooms;
     private Double price;
     private String description;
+    @Enumerated(EnumType.STRING)
     private PropertyStatus status;
     @Temporal(TemporalType.DATE)
     private Date createDate;
+    @Enumerated(EnumType.STRING)
     private PropertyType type;
     @OneToMany
     private List<Offer> offers;
@@ -38,7 +37,7 @@ public class Property {
 
     public Property(Long id, String address, String province, String location, Integer surface,
                     Integer bathrooms, Integer bedrooms, Double price, String description,
-                    PropertyStatus status, Date createDate, PropertyType type, List<ImageProperty> images,
+                    PropertyStatus status, Date createDate, PropertyType type,
                     List<Offer> offers, Usuario usuario, boolean isRented, boolean isActive) {
 
         this.id = id;

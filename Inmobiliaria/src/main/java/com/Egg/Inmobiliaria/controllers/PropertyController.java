@@ -85,9 +85,9 @@ public class PropertyController {
             List<Usuario> usuarios = userservice.listUser();
             modelo.addAttribute("usuarios", usuarios);
             modelo.put("error", ex.getMessage());
-            return "property_form.html"; // volvemos a cargar el formulario.
+//            return "property_form.html"; // volvemos a cargar el formulario.
         }
-        return "home.html";
+        return "redirect:/home";
     }
 
     @GetMapping("/list")
@@ -146,12 +146,13 @@ public class PropertyController {
     public String filterProperty(@RequestParam(required = false) String province,
                                  @RequestParam(required = false) String status,
                                  @RequestParam(required = false) String type,
-                                 @RequestParam(required = false) String bedrooms,
+                                 @RequestParam(required = false) int bedrooms,
                                  @RequestParam(required = false) Double minPrice,
                                  @RequestParam(required = false) Double maxPrice,
-                                 ModelMap model) throws MiException {
-        //TODO Hay que comprobar porque no esta filtrando el servicio
-        model.put("properties", propertyService.filteredProperties(status, type, bedrooms, minPrice, maxPrice, province));
+                                 ModelMap model) throws Exception {
+
+        model.put("properties", propertyService.filteredProperties(province,
+                status, type, bedrooms, minPrice, maxPrice));
         return "home.html";
     }
 

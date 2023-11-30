@@ -56,8 +56,7 @@ class ImageProperty {
     }
 
 enum PropertyStatus {
-    FOR_SALE, FOR_RENT,
-    BOTH_STATUS, NONE;
+    , FOR_RENT;
 }
 enum PropertyType {
     CASA, DEPARTAMENTO, CABAÑA, DUPLEX,
