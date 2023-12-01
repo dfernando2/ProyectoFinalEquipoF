@@ -66,7 +66,7 @@ public class PortalController {
         try {
             userService.create(file, name, email, dni, password, password2, rol);
             modelo.put("exito", "Usuario cargado correctamente");
-            return "index.html";
+            return "login.html";
         } catch (Exception e) {
             modelo.put("error", e.getMessage());
             return "register.html";
@@ -104,16 +104,6 @@ public class PortalController {
         return "profile.html";
     }
 
-}
-
-//    @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'CLIENT', 'BOTHROLE')")
-//    @GetMapping("/profile")
-//    public String profile(ModelMap modelo,HttpSession session){
-//        Usuario usuario = (Usuario) session.getAttribute("usuariosession");
-//         modelo.put("usuario", usuario);
-//        return " /panelusuario_update.html";
-//    }
-//
 //    @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'CLIENT', 'BOTHROLE')")
 //    @PostMapping("/profile/{id}")
 //    public String update(MultipartFile file,@PathVariable String id, @RequestParam Long dni, @RequestParam String name,@RequestParam String email,
@@ -136,6 +126,6 @@ public class PortalController {
 //        }
 //
 //    }
-//
-//
-//}
+
+
+}
