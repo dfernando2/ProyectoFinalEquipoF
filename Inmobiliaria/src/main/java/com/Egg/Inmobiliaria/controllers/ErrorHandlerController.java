@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class ErrorHandler implements ErrorController {
+public class ErrorHandlerController implements ErrorController {
 
     @RequestMapping(value = "error", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView paginaError(HttpServletRequest httpRequest){
@@ -48,6 +48,11 @@ public class ErrorHandler implements ErrorController {
                 break;
             }
 
+            case 405:{
+                msg = "Método de petición no permitido en este endpoint";
+                url = "/image/error405.jpg";
+            }
+
             case 500:{
                 msg = "Ocurrio un error interno";
                 url = "/image/error500.jpg";
@@ -63,11 +68,10 @@ public class ErrorHandler implements ErrorController {
     }
 
     private int codigoError(HttpServletRequest httpRequest){
-            return (Integer) httpRequest.getAttribute("javax.servlet.error.status_code");
+        return (Integer) httpRequest.getAttribute("javax.servlet.error.status_code");
     }
 
     public String getErrorPath(){
         return "error";
     }
 }
-    
