@@ -24,6 +24,10 @@
                     <a id="link" class="nav-link" aria-current="page" th:href="@{/home}">Inicio</a>
                 </li>
 
+                <li class="nav-item">
+                    <a id="link" class="nav-link" aria-current="page" th:href="@{/contacto}">Contacto</a>
+                </li>
+
 
                 <li th:if="${session.usuariosession} != null and (${session.usuariosession.getRol().toString()}  == 'ENTITY' or ${session.usuariosession.getRol().toString()}  == 'BOTHROLE')" class="nav-item dropdown">
                     <a id="link" class="nav-link dropdown-toggle active" href="" role="button"
@@ -51,7 +55,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                           <a id="profile" th:if="${session.usuariosession != null}" class="dropdown-item" href="@{/profile}">Perfil</a>-->
+                           <a id="profile" th:if="${session.usuariosession != null}" class="dropdown-item" th:href="@{/profile/__${session.usuariosession.id}__}">Perfil</a>-->
                         </li>                      
                         <li>
                             <a id="link" th:href="@{/perfil/editar}">Editar Perfil</a>

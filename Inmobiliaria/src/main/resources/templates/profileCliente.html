@@ -1,0 +1,54 @@
+<div class="card">
+    <div class="card-body text-center" id="titulo">
+        <h5>Conoce los clientes que han consultado por tus publicaciones y contactate con ellos</h5>
+    </div>
+</div>
+<br>
+<div class="card mb-3" th:each="property : properties" style="width: 95%; height: 95%; margin-left: 20px;">
+    <div class="card-body">
+        <img th:src="@{image/property/__${property.id}__}" class="card-img-top" alt="..." style="width: 50%; height: 50%;">
+        <!--    <div class="card-body">-->
+        <h4 th:text="${property.type}"></h4>
+        <div class="a">
+            <div>
+                <span class="texto-card"><b>Precio US$</b></span>
+                <p th:text="${property.price}"></p>
+            </div>
+            <div >
+                <span class="texto-card"><b>Direccion</b></span>
+                <p th:text="${property.address}"></p>
+            </div>
+            <div>
+                <span class="texto-card"><b>Ciudad</b></span>
+                <p th:text="${property.location}"></p>
+            </div>
+            <span class="texto-card"><b>Provincia</b></span>
+            <p th:text="${property.province}"></p>
+            <span class="texto-card"><b>Descripcion</b></span>
+            <p th:text="${property.description}"></p>
+        </div>
+
+
+
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Ismar Hidalgo
+                <button type="button" class="btn btn-success">Contactar</button>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Alicia Aramayo
+                <button type="button" class="btn btn-success">Contactar</button>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Darío Matorra
+                <button type="button" class="btn btn-success">Contactar</button>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--</div>-->
+<br>
+
+<footer th:replace="/fragments/footer :: footer"></footer>
+</body>
+</html>

@@ -1,8 +1,11 @@
 package com.Egg.Inmobiliaria.controllers;
 
 import com.Egg.Inmobiliaria.exceptions.MiException;
+import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.Usuario;
+import com.Egg.Inmobiliaria.repositories.OfferRepository;
+import com.Egg.Inmobiliaria.repositories.UserRepository;
 import com.Egg.Inmobiliaria.services.PropertyService;
 import com.Egg.Inmobiliaria.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +25,10 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
+
 import org.springframework.ui.Model;
 
 @Controller
@@ -35,6 +40,12 @@ public class PortalController {
 
     @Autowired
     private PropertyService propertyService;
+
+    @Autowired
+    private UserRepository userRep;
+
+    @Autowired
+    private OfferRepository offerRepo;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -56,13 +67,13 @@ public class PortalController {
 
     @PostMapping("/registration")
     public String registration(@RequestParam String name,
-            @RequestParam String email,
-            @RequestParam String dni,
-            @RequestParam String password,
-            @RequestParam String password2,
-            @RequestParam String rol,
-            @RequestParam MultipartFile file,
-            ModelMap modelo) {
+                               @RequestParam String email,
+                               @RequestParam String dni,
+                               @RequestParam String password,
+                               @RequestParam String password2,
+                               @RequestParam String rol,
+                               @RequestParam MultipartFile file,
+                               ModelMap modelo) {
         try {
             userService.create(file, name, email, dni, password, password2, rol);
             modelo.put("exito", "Usuario cargado correctamente");
@@ -86,10 +97,10 @@ public class PortalController {
     public String home(HttpSession session, Model model) {
 
         Usuario currentUser = (Usuario) session.getAttribute("usuariosession");
-        
+
         List<Property> properties = propertyService.getAllProperties();
         model.addAttribute("properties", properties);
-        
+
         if (currentUser.getRol().toString().equals("ADMIN")) {
             return "dashboard";
         } else {
@@ -97,12 +108,32 @@ public class PortalController {
         }
 
     }
-    @GetMapping("/profile")
-    public String profile(ModelMap modelo,HttpSession session){
-        Usuario usuario = (Usuario) session.getAttribute("usuariosession");
-        modelo.put("usuario", usuario);
-        return "profile.html";
+
+    @GetMapping("/profile/{id}")
+    public String profile(ModelMap modelo, Long id) {
+        Optional<Usuario> usuarioAnswer = userRep.findById(id);
+        Usuario usuario = usuarioAnswer.get();
+        List <Offer> offers = offerRepo.findOfferByUserId(id);
+        List<Property> properties = propertyService.getAllPropertiesByUserId(id);
+        if (usuario.getRol().toString().equalsIgnoreCase("CLIENT")) {
+            modelo.addAttribute("properties", properties);
+            modelo.addAttribute("offers", offers);
+
+            return "profileCliente.html";
+        } else {
+            modelo.addAttribute("properties", properties);
+            modelo.addAttribute("offers", offers);
+
+            return "profilePropietario.html";
+        }
     }
+
+    @GetMapping("/contacto")
+    public String contacto() {
+
+        return "contacto.html";
+    }
+
 
 //    @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'CLIENT', 'BOTHROLE')")
 //    @PostMapping("/profile/{id}")

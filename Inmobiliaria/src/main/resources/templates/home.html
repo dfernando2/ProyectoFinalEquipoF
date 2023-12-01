@@ -150,10 +150,19 @@
                     <span class="texto-card"><b>Descripcion</b></span>
                     <p th:text="${property.description}"></p>
                 </div>
-                <div th:if="${session.usuariosession} == null" class="button-card" >
-                        <a th:href="@{/login}" class="btn btn-primary me-3 px-3">Ver Más Información</a>
+                <div th:if="${session.usuariosession == null}" class="button-card">
+                    <a th:href="@{/login}" class="btn btn-primary me-3 px-3">Ver Más Información</a>
+
                 </div>
-                
+                <div th:if="${session.usuariosession != null}" class="button-card">
+                    <a th:href="@{/property/offer/__${session.usuariosession.id}__/__${property.id}__}"
+                       class="btn btn-primary me-3 px-3">Ver Más</a>
+                </div>
+
+<!--                <div th:if="${(session.usuariosession.rol.toString() == 'CLIENT')}" class="button-card">-->
+<!--                    <a th:href="@{/property/offer/__${session.usuariosession.id}__/__${property.id}__}"-->
+<!--                       class="btn btn-primary me-3 px-3">Ver Más</a>-->
+<!--                </div>-->
             </div>
         </div>
 

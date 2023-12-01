@@ -6,6 +6,7 @@ import com.Egg.Inmobiliaria.models.ImageProperty;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.Usuario;
+import com.Egg.Inmobiliaria.services.OfferService;
 import com.Egg.Inmobiliaria.services.PropertyService;
 import com.Egg.Inmobiliaria.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,8 @@ public class PropertyController {
     PropertyService propertyService;
     @Autowired
     UserService userservice;
+    @Autowired
+    private OfferService offerService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -153,5 +157,23 @@ public class PropertyController {
         return "home.html";
     }
 
+    @GetMapping("/offer/{idUser}/{idProperty}")
+    public String offer(@PathVariable Long idUser, @PathVariable Long idProperty, ModelMap modelo) {
 
+        modelo.put("property", propertyService.getOne(idProperty));
+
+        modelo.addAttribute("usuario", userservice.getOne(idUser));
+
+        return "offer.html";
+    }
+
+    @Transactional
+    @PostMapping("/offer/{idUser}/{idProperty}")
+    public String offerTransaction(@RequestParam Long idUser, @RequestParam Long idProperty,
+                                   @RequestParam Double price, @RequestParam int contact, ModelMap modelo) {
+
+        offerService.createOffer(idProperty, idUser, price, contact);
+
+        return "home.html";
+    }
 }

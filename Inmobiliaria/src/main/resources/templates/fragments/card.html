@@ -1,5 +1,4 @@
 <div id="card">
-
     <ul th:each="property : ${properties}">
         <img id="" th:src="@{image/property/__${property.id}__}" alt="foto">
         <li th:text="${property.price}"> <span>US$</span></li>
