@@ -205,8 +205,7 @@ public class UserService implements UserDetailsService {
     public void darDeBaja(Long id) throws MiException {
 
         Optional<Usuario> answer = userRepository.findById(id);
-       // TODO condicional si no tiene propiedades se elimina sino cartel
-        //  avisando que se debe eliminar las publicaciones de propiedades
+       // TODO condicional si no tiene propiedades se elimina sino cartel avisando que se debe eliminar las publicaciones de propiedades
             if (answer.isPresent()) {
                 userRepository.deleteById(id);
             }
