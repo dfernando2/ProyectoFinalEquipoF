@@ -29,7 +29,7 @@ public class Property {
     private PropertyType type;
     @OneToMany
     private List<Offer> offers;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Usuario usuario;
     private boolean isRented;
     private boolean isActive;
