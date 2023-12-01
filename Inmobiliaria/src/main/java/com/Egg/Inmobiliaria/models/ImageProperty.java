@@ -16,7 +16,8 @@ public class ImageProperty {
     private String mime;
 
     private String name;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "property_id")
     private Property property;
     @Lob
     @Basic(fetch = FetchType.LAZY)
@@ -32,7 +33,6 @@ public class ImageProperty {
         this.property = property;
         this.container = container;
     }
-
     public String getId() {
         return id;
     }

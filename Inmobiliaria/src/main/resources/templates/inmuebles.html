@@ -12,8 +12,17 @@
 <div class="card">
     <div class="card-body text-center">
         <h3>PROPIEDADES</h3>
-<!--            <h3 th:if="${session.usuariosession != null}" th:text="'¡Bienvenido de vuelta! ' + ${session.usuariosession.nombre}">-->
+        <!--            <h3 th:if="${session.usuariosession != null}" th:text="'¡Bienvenido de vuelta! ' + ${session.usuariosession.nombre}">-->
     </div>
+</div>
+<div class="card text-white bg-success mb-3 mt-3 mensajeExito" th:if="${exito != null}">
+    <div class="card-body">
+        <h5 class="card-title">Exito!</h5>
+        <p class="card-text" th:text="${exito}"></p>
+    </div>
+</div>
+<div class="d-block mb-4" th:if="${error!=null}">
+    <p class="login-error w-50" th:text="${error}"></p>
 </div>
 
 <div class="card center container">
@@ -50,32 +59,25 @@
             <td th:text="${inmueble.createDate}"></td>
             <td th:text="${inmueble.type}"></td>
             <td th:text="${inmueble.status}"></td>
+
             <td class="nav-item dropdown">
 
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                     Elige
                 </a>
                 <ul class="dropdown-menu">
-                    <li>
-                        <th:block th:if="${usuariosession != null and usuariosession.getRol().toString() == 'ADMIN'}">
-                            <a th:href="@{/dashboard/inmuebles/editar/__${inmueble.id}__}" class="dropdown-item">Editar</a>
-                        </th:block>
-
+                    <li><a th:href="@{/dashboard/inmuebles/editar/__${inmueble.id}__}" class="dropdown-item">Editar</a>
                     </li>
-                    <!--                                <li><a class="dropdown-item" href="@{/dashboard/usuario/remove}">Dar de baja</a></li>-->
-                    <!--                                <form class="formulario" th:action="@{/dashboard/usuario/remove}" METHOD="post">-->
+                    <li><a class="dropdown-item" th:href="@{/dashboard/inmuebles/remove/__${inmueble.id}__}">Dar de
+                        baja</a></li>
 
-                    </form>
-
-
-                    <!--                    <li><a class="dropdown-item" href="#">Dar de baja</a></li>-->
                 </ul>
             </td>
+
         </tr>
 
         </tbody>
     </table>
-
 
 
 </div>

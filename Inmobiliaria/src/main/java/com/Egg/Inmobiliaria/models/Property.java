@@ -2,6 +2,8 @@ package com.Egg.Inmobiliaria.models;
 
 import com.Egg.Inmobiliaria.enums.PropertyStatus;
 import com.Egg.Inmobiliaria.enums.PropertyType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +29,7 @@ public class Property {
     private PropertyType type;
     @OneToMany
     private List<Offer> offers;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Usuario usuario;
     private boolean isRented;
     private boolean isActive;
