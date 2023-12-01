@@ -21,8 +21,7 @@ public class Usuario {
     
     @Enumerated(EnumType.STRING)
     private Role rol;
-
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Property> UserProperties;
 
     public Usuario() {

@@ -3,6 +3,7 @@ package com.Egg.Inmobiliaria.services;
 import com.Egg.Inmobiliaria.models.ImageUser;
 import com.Egg.Inmobiliaria.enums.Role;
 import com.Egg.Inmobiliaria.exceptions.MiException;
+import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.Usuario;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
 
@@ -167,31 +168,6 @@ public class UserService implements UserDetailsService {
             throw new MiException("Las contraseñas ingresadas deben ser iguales");
         }
     }
-//    @Override
-//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//
-//        Usuario usuario = userRepository.findByEmail(email);
-//
-//        if (usuario != null) {
-//
-//            List<GrantedAuthority> permisos = new ArrayList();
-//
-//            String role = "ROLE_" + usuario.getRol().toString();
-//
-//            GrantedAuthority p = new SimpleGrantedAuthority(role);
-//
-//            permisos.add(p);
-//
-//            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-//
-//            HttpSession session = attr.getRequest().getSession(true);
-//
-//            session.setAttribute("usuariosession", usuario);
-//
-//            return new User(usuario.getEmail(), usuario.getPassword(), permisos);
-//        } else {
-//            throw new UsernameNotFoundException("Usuario: " + email + " no encontrado" );
-//        }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -224,5 +200,17 @@ public class UserService implements UserDetailsService {
         } else {
             throw new UsernameNotFoundException("Usuario: " + username + " no encontrado");
         }
+    }
+
+    public void darDeBaja(Long id) throws MiException {
+
+        Optional<Usuario> answer = userRepository.findById(id);
+       // TODO condicional si no tiene propiedades se elimina sino cartel
+        //  avisando que se debe eliminar las publicaciones de propiedades
+            if (answer.isPresent()) {
+                userRepository.deleteById(id);
+            }
+
+
     }
 }

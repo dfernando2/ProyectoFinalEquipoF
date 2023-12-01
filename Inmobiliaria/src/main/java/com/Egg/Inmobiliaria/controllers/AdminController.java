@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/dashboard")
@@ -143,18 +145,46 @@ public class AdminController {
                                    @RequestParam(value = "price", defaultValue = "0", required = false) Double price,
                                    @RequestParam(required = false) String description, @RequestParam(required = false) PropertyStatus status,
                                    @RequestParam(required = false) Date createDate, @RequestParam(required = false) PropertyType type,
-                                   @RequestParam(required = false) List<MultipartFile> files,
                                    ModelMap modelo) {
 
         try {
             ps.update(id, address, province, location, surface, bathrooms,
                     bedrooms, price, description, status, createDate,
-                    type, files);
+                    type);
             modelo.put("Exito", "La propiedad se ha modificado correctamente");
         } catch (Exception e) {
             modelo.put("Error", e.getMessage());
             return "inmueble_update.html";
         }
         return "redirect:/dashboard/inmuebles";
+    }
+
+    @GetMapping("/usuario/remove/{id}")
+    public String darDeBaja(@PathVariable Long id, ModelMap modelo){
+        System.out.println(id);
+        try {
+            u.darDeBaja(id);
+            modelo.put("Exito", "El usuariose ha eliminado correctamente");
+            return "redirect:/dashboard/usuario/inquilinos";
+        } catch (MiException ex) {
+            modelo.put("Error", ex.getMessage());
+            return "redirect:/dashboard/usuario/inquilinos";
+        }
+
+    }
+
+    @Transactional
+    @GetMapping("/inmuebles/remove/{id}")
+    public String delete(@PathVariable Long id, ModelMap modelo){
+
+        try {
+            ps.remove(id);
+            modelo.put("Exito", "La propiedad se ha eliminado correctamente");
+            return "redirect:/dashboard/inmuebles";
+        } catch (MiException ex) {
+            modelo.put("Error", ex.getMessage());
+            return "redirect:/dashboard/inmuebles";
+        }
+
     }
 }

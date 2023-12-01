@@ -60,8 +60,6 @@ public class ImageController {
         }
     }
 
-   
-    
 
    @GetMapping("/property/{id}")
     public ResponseEntity<byte[]> propertyImage(@PathVariable Long id) {

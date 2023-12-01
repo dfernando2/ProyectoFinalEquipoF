@@ -43,19 +43,15 @@
                     <td th:text="${usuario.email}"></td>
                     <td th:text="${usuario.rol}"></td>
                     <td th:text="${usuario.image}"></td>
+
                     <td class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             Elige
                         </a>
                         <ul class="dropdown-menu">
                             <li><a th:href="@{/dashboard/usuario/editar/__${usuario.id}__}" class="dropdown-item">Editar</a></li>
-                           <!--                                <li><a class="dropdown-item" href="@{/dashboard/usuario/remove}">Dar de baja</a></li>-->
-<!--                                <form class="formulario" th:action="@{/dashboard/usuario/remove}" METHOD="post">-->
+                            <li><a class="dropdown-item" th:href="@{/dashboard/usuario/remove/__${usuario.id}__}">Dar de baja</a></li>
 
-                            </form>
-
-
-<!--                            <li><a class="dropdown-item" href="#">Dar de baja</a></li>-->
                         </ul>
                     </td>
                 </tr>

@@ -125,7 +125,6 @@ public class PropertyController {
             @RequestParam(value = "price", defaultValue = "0") Double price,
             @RequestParam String description, @RequestParam PropertyStatus status,
             @RequestParam Date createDate, @RequestParam PropertyType type,
-            @RequestParam(required = false) List<MultipartFile> images,
             @RequestParam(required = false) List<Offer> offers, @RequestParam(required = false) String idUser,
             @RequestParam boolean isRented, @RequestParam boolean isActive, ModelMap modelo) {
 
@@ -135,9 +134,7 @@ public class PropertyController {
 
         propertyService.update(id, address, province, location, surface, bathrooms,
                 bedrooms, price, description, status, createDate,
-                type, images);
-
-
+                type);
         return "redirect:../list";
 
     }
