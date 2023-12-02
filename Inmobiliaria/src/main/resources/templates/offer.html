@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="es">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 
 <head th:replace="/fragments/head :: head"></head>
 
@@ -38,7 +38,7 @@
         </div>
         <form th:ref="@{home}" method="POST" enctype="multipart/form-data">
             <div class="form-group my-3 me-5">
-                <input th:if="${property.status.toString() == 'FOR_RENT'}" type="number" class="form-control" name="contact" placeholder="Numero de contacto">
+                <input type="number" class="form-control" name="contact" placeholder="Numero de contacto">
                 <input th:if="${property.status.toString() == 'FOR_SALE'}" type="number" class="form-control" name="price" placeholder="Precio ofertado">
             </div>
             <div class="w-25">

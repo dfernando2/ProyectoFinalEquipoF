@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es" data-bs-theme="dark">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="/fragments/head :: head"></head>
 
 <body id="home-body">
@@ -40,12 +40,12 @@
 
         </div>
         <hr>
-       
+
         <h1 class="subti">Lista de Propiedades</h1>
         <hr>
 
 
-        <div th:action="@{/property/filter}" method="post" class="flex-container">
+        <div class="flex-container">
             <div  class="form-floating">
             <form th:action="@{/property/filter}" method="post" class="flex-container">
                 <div class="container mt-5 d-flex align-items-center justify-content-center gap-3">

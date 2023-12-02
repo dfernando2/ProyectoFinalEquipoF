@@ -4,23 +4,19 @@ import com.Egg.Inmobiliaria.enums.PropertyStatus;
 import com.Egg.Inmobiliaria.enums.PropertyType;
 import com.Egg.Inmobiliaria.exceptions.MiException;
 import com.Egg.Inmobiliaria.models.ImageProperty;
-import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.Usuario;
 import com.Egg.Inmobiliaria.repositories.ImagePropertyRepository;
-
 import com.Egg.Inmobiliaria.repositories.PropertyRepository;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class PropertyService {
@@ -88,13 +84,14 @@ public class PropertyService {
     public List<Property> getAllProperties() {
         return propertyRepository.findAll();
     }
-
     public List<Property> list() {
         List<Property> properties = new ArrayList();
         properties = propertyRepository.findAll();
         return properties;
     }
-
+    public List<Property> getAllPropertiesByUserId(Long idUser) {
+        return propertyRepository.findByUserId(idUser);
+        }
     @Transactional
     public void update(Long id, String address, String province, String location, Integer surface,
                        Integer bathrooms, Integer bedrooms, Double price, String description,
