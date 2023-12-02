@@ -29,7 +29,7 @@ public class OfferService {
     private PropertyRepository propertyRepository;
 
 
-    public void createOffer(Long idProperty, Long idUser, Double price, int contact) {
+    public void createOffer(Long idProperty, Long idUser, Double price, Integer contact) {
 
         Optional<Property> answerProperty = propertyRepository.findById(idProperty);
         Optional<Usuario> answerUser = userRepository.findById(idUser);
@@ -48,14 +48,16 @@ public class OfferService {
         if (price != null) {
             offer.setPrice(price);
         }
-        if (contact != 0) {
+        if (contact != null) {
             offer.setContact(contact);
         }
         offer.setProperty(property);
-        offer.setOfferStatus(OfferStatus.CLIENT_OFFER);
+        offer.setOfferStatus(OfferStatus.valueOf("CLIENT_OFFER"));
 
         offerRepository.save(offer);
     }
+
+
 
 //    public void update(String id, String idProperty, Long idUser, Double price, int contact) {
 //

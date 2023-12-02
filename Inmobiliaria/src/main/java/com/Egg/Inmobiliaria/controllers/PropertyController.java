@@ -150,10 +150,11 @@ public class PropertyController {
                                  @RequestParam(required = false) int bedrooms,
                                  @RequestParam(required = false) Double minPrice,
                                  @RequestParam(required = false) Double maxPrice,
-                                 ModelMap model) throws Exception {
+                                 ModelMap modelo) throws Exception {
 
-        model.put("properties", propertyService.filteredProperties(province,
+        modelo.put("properties", propertyService.filteredProperties(province,
                 status, type, bedrooms, minPrice, maxPrice));
+
         return "home.html";
     }
 
@@ -164,16 +165,32 @@ public class PropertyController {
 
         modelo.addAttribute("usuario", userservice.getOne(idUser));
 
+        List<Property> properties = propertyService.getAllProperties();
+        modelo.addAttribute("properties", properties);
+
         return "offer.html";
     }
 
     @Transactional
     @PostMapping("/offer/{idUser}/{idProperty}")
     public String offerTransaction(@RequestParam Long idUser, @RequestParam Long idProperty,
-                                   @RequestParam Double price, @RequestParam int contact, ModelMap modelo) {
+                                   @RequestParam Double price, @RequestParam Integer contact, ModelMap modelo) {
 
         offerService.createOffer(idProperty, idUser, price, contact);
 
-        return "home.html";
+//        modelo.put("offers", offerService.getAll(idProperty));
+        List<Property> properties = propertyService.getAllProperties();
+
+        return "properties";
     }
+//    @GetMapping("/offer/transaction/{idUser}/{idProperty}")
+//    public String offerCompleted(@PathVariable Long idUser, @PathVariable Long idProperty, ModelMap modelo) {
+//
+//        modelo.put("property", propertyService.getOne(idProperty));
+//
+//        modelo.addAttribute("usuario", userservice.getOne(idUser));
+//
+//        return "offer.html";
+//    }
+
 }

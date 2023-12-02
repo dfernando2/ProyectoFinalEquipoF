@@ -109,24 +109,24 @@ public class PortalController {
 
     }
 
-    @GetMapping("/profile/{id}")
-    public String profile(ModelMap modelo, Long id) {
-        Optional<Usuario> usuarioAnswer = userRep.findById(id);
-        Usuario usuario = usuarioAnswer.get();
-        List <Offer> offers = offerRepo.findOfferByUserId(id);
-        List<Property> properties = propertyService.getAllPropertiesByUserId(id);
-        if (usuario.getRol().toString().equalsIgnoreCase("CLIENT")) {
-            modelo.addAttribute("properties", properties);
-            modelo.addAttribute("offers", offers);
-
-            return "profileCliente.html";
-        } else {
-            modelo.addAttribute("properties", properties);
-            modelo.addAttribute("offers", offers);
-
-            return "profilePropietario.html";
-        }
-    }
+//    @GetMapping("/profile/{id}")
+//    public String profile(ModelMap modelo, Long id) {
+//        Optional<Usuario> usuarioAnswer = userRep.findById(id);
+//        Usuario usuario = usuarioAnswer.get();
+//        List <Offer> offers = offerRepo.findOfferByUserId(id);
+//        List<Property> properties = propertyService.getAllPropertiesByUserId(id);
+//        if (usuario.getRol().toString().equalsIgnoreCase("CLIENT")) {
+//            modelo.addAttribute("properties", properties);
+//            modelo.addAttribute("offers", offers);
+//
+//            return "profileCliente.html";
+//        } else {
+//            modelo.addAttribute("properties", properties);
+//            modelo.addAttribute("offers", offers);
+//
+//            return "profilePropietario.html";
+//        }
+//    }
 
     @GetMapping("/contacto")
     public String contacto() {
