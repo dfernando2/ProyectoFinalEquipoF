@@ -1,52 +1,32 @@
 package com.Egg.Inmobiliaria.controllers;
 
-import com.Egg.Inmobiliaria.exceptions.MiException;
-import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.Usuario;
-import com.Egg.Inmobiliaria.repositories.OfferRepository;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
 import com.Egg.Inmobiliaria.services.PropertyService;
 import com.Egg.Inmobiliaria.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
-
-import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping("/")
 public class PortalController {
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private PropertyService propertyService;
-
     @Autowired
     private UserRepository userRep;
-
-    @Autowired
-    private OfferRepository offerRepo;
-
     @GetMapping("/")
     public String index(Model model) {
 
@@ -54,17 +34,14 @@ public class PortalController {
         model.addAttribute("properties", properties);
         return "home.html";
     }
-
     @GetMapping("/navbar")
     public String navbar() {
         return "home.html";
     }
-
     @GetMapping("/register")
     public String register() {
         return "register.html";
     }
-
     @PostMapping("/registration")
     public String registration(@RequestParam String name,
                                @RequestParam String email,
@@ -83,7 +60,6 @@ public class PortalController {
             return "register.html";
         }
     }
-
     @GetMapping("/login")
     public String login(@RequestParam(required = false) String error, ModelMap model) {
 
@@ -92,7 +68,6 @@ public class PortalController {
         }
         return "login";
     }
-
     @GetMapping("/home")
     public String home(HttpSession session, Model model) {
 
@@ -108,55 +83,9 @@ public class PortalController {
         }
 
     }
-
-//    @GetMapping("/profile/{id}")
-//    public String profile(ModelMap modelo, Long id) {
-//        Optional<Usuario> usuarioAnswer = userRep.findById(id);
-//        Usuario usuario = usuarioAnswer.get();
-//        List <Offer> offers = offerRepo.findOfferByUserId(id);
-//        List<Property> properties = propertyService.getAllPropertiesByUserId(id);
-//        if (usuario.getRol().toString().equalsIgnoreCase("CLIENT")) {
-//            modelo.addAttribute("properties", properties);
-//            modelo.addAttribute("offers", offers);
-//
-//            return "profileCliente.html";
-//        } else {
-//            modelo.addAttribute("properties", properties);
-//            modelo.addAttribute("offers", offers);
-//
-//            return "profilePropietario.html";
-//        }
-//    }
-
     @GetMapping("/contacto")
     public String contacto() {
 
         return "contacto.html";
     }
-
-
-//    @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'CLIENT', 'BOTHROLE')")
-//    @PostMapping("/profile/{id}")
-//    public String update(MultipartFile file,@PathVariable String id, @RequestParam Long dni, @RequestParam String name,@RequestParam String email,
-//            @RequestParam String password,@RequestParam String password2, ModelMap modelo) {
-//
-//        try {
-//            userService.update(file, id, dni, name, email,
-//                    password, password2);
-//
-//            modelo.put("exito", "Usuario actualizado correctamente!");
-//
-//            return "home.html";
-//        } catch (MiException ex) {
-//
-//            modelo.put("error", ex.getMessage());
-//            modelo.put("nombre", name);
-//            modelo.put("email", email);
-//
-//            return "usuario_update.html";
-//        }
-//
-//    }
-
-
 }

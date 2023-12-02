@@ -6,9 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
-
 @Repository
 public interface ImagePropertyRepository extends JpaRepository<ImageProperty, String> {
 
@@ -17,5 +14,8 @@ public interface ImagePropertyRepository extends JpaRepository<ImageProperty, St
 
     @Query ("DELETE FROM ImageProperty ip WHERE ip.property = ?1")
     void deleteByProperty(Property property);
+
+    @Query("SELECT ip FROM ImageProperty ip WHERE ip.property = ?1 AND ip.id = (SELECT MIN(ip2.id) FROM ImageProperty ip2 WHERE ip2.property = ?1)")
+    ImageProperty findFirstByProperty(Property property);
 
 }
