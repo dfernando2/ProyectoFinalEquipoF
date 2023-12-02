@@ -52,7 +52,7 @@ public class OfferService {
             offer.setContact(contact);
         }
         offer.setProperty(property);
-        offer.setOfferStatus(OfferStatus.valueOf("CLIENT_OFFER"));
+        offer.setOfferStatus(OfferStatus.CLIENT_OFFER);
 
         offerRepository.save(offer);
     }

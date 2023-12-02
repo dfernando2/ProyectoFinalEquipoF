@@ -6,6 +6,7 @@ import com.Egg.Inmobiliaria.models.ImageProperty;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.Usuario;
+import com.Egg.Inmobiliaria.services.ImagePropertyService;
 import com.Egg.Inmobiliaria.services.OfferService;
 import com.Egg.Inmobiliaria.services.PropertyService;
 import com.Egg.Inmobiliaria.services.UserService;
@@ -36,6 +37,8 @@ public class PropertyController {
     UserService userservice;
     @Autowired
     private OfferService offerService;
+    @Autowired
+    private ImagePropertyService imagePropertyService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -155,6 +158,7 @@ public class PropertyController {
         modelo.put("properties", propertyService.filteredProperties(province,
                 status, type, bedrooms, minPrice, maxPrice));
 
+
         return "home.html";
     }
 
@@ -165,32 +169,19 @@ public class PropertyController {
 
         modelo.addAttribute("usuario", userservice.getOne(idUser));
 
-        List<Property> properties = propertyService.getAllProperties();
-        modelo.addAttribute("properties", properties);
-
         return "offer.html";
     }
 
     @Transactional
     @PostMapping("/offer/{idUser}/{idProperty}")
-    public String offerTransaction(@RequestParam Long idUser, @RequestParam Long idProperty,
-                                   @RequestParam Double price, @RequestParam Integer contact, ModelMap modelo) {
+    public String offerTransaction(@PathVariable Long idUser, @PathVariable Long idProperty,
+                                   @RequestParam(required = false) Double price, @RequestParam(required = false) Integer contact, ModelMap modelo) {
 
         offerService.createOffer(idProperty, idUser, price, contact);
 
-//        modelo.put("offers", offerService.getAll(idProperty));
-        List<Property> properties = propertyService.getAllProperties();
+        modelo.addAttribute("properties", propertyService.getAllProperties());
 
-        return "properties";
+
+        return "home.html";
     }
-//    @GetMapping("/offer/transaction/{idUser}/{idProperty}")
-//    public String offerCompleted(@PathVariable Long idUser, @PathVariable Long idProperty, ModelMap modelo) {
-//
-//        modelo.put("property", propertyService.getOne(idProperty));
-//
-//        modelo.addAttribute("usuario", userservice.getOne(idUser));
-//
-//        return "offer.html";
-//    }
-
 }

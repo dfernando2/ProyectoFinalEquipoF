@@ -14,8 +14,7 @@
     <div id="card">
         <div class="cardfront">
             <div class="bodycard_front">
-                <img th:src="@{image/property/__${property.id}__}" style="width: 100%; height: 100%;"
-                     alt="Property Image">
+                <img th:src="@{image/property/__${property.id}__}" style="width: 100%; height: 100%;" alt="Property Image">
             </div>
         </div>
         <h4 th:text="${property.type}"></h4>
@@ -37,12 +36,10 @@
             <span class="texto-card"><b>Descripcion</b></span>
             <p th:text="${property.description}"></p>
         </div>
-        <form ref="home" method="POST" enctype="multipart/form-data">
+        <form th:ref="@{home}" method="POST" enctype="multipart/form-data">
             <div class="form-group my-3 me-5">
-                <input th:if="${property.status.toString() == 'FOR_RENT'}" type="number" class="form-control"
-                       name="contact" placeholder="Numero de contacto">
-                <input th:if="${property.status.toString() == 'FOR_SALE'}" type="number" class="form-control"
-                       name="price" placeholder="Precio Ofertado">
+                <input th:if="${property.status.toString() == 'FOR_RENT'}" type="number" class="form-control" name="contact" placeholder="Numero de contacto">
+                <input th:if="${property.status.toString() == 'FOR_SALE'}" type="number" class="form-control" name="price" placeholder="Precio ofertado">
             </div>
             <div class="w-25">
                 <button type="submit" class="btn btn-success">
