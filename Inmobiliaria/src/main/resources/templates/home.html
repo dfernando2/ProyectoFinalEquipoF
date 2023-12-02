@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="es">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 
 <head th:replace="/fragments/head :: head"></head>
 
@@ -47,6 +47,7 @@
 
 
         <div th:action="@{/property/filter}" method="post" class="flex-container">
+            <div  class="form-floating">
             <form th:action="@{/property/filter}" method="post" class="flex-container">
                 <div class="container mt-5 d-flex align-items-center justify-content-center gap-3">
                     <select name="province" class="w-25 form-select border border-success">
@@ -124,6 +125,7 @@
                     </div>
                 </div>
             </form>
+            </div>
             <div id="card" th:each="property : ${properties}">
                 <div class="cardfront">
                     <div class="bodycard_front">
