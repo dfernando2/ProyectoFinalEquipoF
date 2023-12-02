@@ -61,41 +61,65 @@ public class ImageController {
         }
     }
 
+    /*
+     * @GetMapping("/perfil/{id}")
+     * public ResponseEntity<byte[]> imagenUsuario (@PathVariable String id){
+     * Usuario usuario = usuarioServicio.getOne(id);
+     * 
+     * byte[] imagen= usuario.getImagen().getContenido();
+     * 
+     * HttpHeaders headers = new HttpHeaders();
+     * 
+     * headers.setContentType(MediaType.IMAGE_JPEG);
+     * 
+     * 
+     * 
+     * return new ResponseEntity<>(imagen,headers, HttpStatus.OK);
+     * 
+     * }
+     */
     @GetMapping("/property/{id}")
     public ResponseEntity<byte[]> propertyImage(@PathVariable Long id) {
         Property property = propertyService.getOne(id);
-
-        ImageProperty images = imagePropertyRepository.findByProperty(property);
-        
-
-        System.out.println(images);
-
-        if (images != null) {
-
-            byte[] image = images.getContainer();
-
-            HttpHeaders headers = new HttpHeaders();
-
-            headers.setContentType(MediaType.IMAGE_JPEG);
-
-            return new ResponseEntity<>(image, headers, HttpStatus.OK);
-        } else {
-
-            System.out.println("No hay imagenes");
-
-            HttpHeaders headers = new HttpHeaders();
-
-            headers.setContentType(MediaType.IMAGE_JPEG);
-
-            ResponseEntity<byte[]> response = new ResponseEntity<>(headers, HttpStatus.OK);
-
-            response.getBody();
-
-            System.out.println(response);
-
-            return null;
-
-        }
-
+        byte[] image = property.getImageProperty().getContainer();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return new ResponseEntity<>(image, headers, HttpStatus.OK);
     }
+    /*
+     * Property property = propertyService.getOne(id);
+     * 
+     * ImageProperty images = imagePropertyRepository.findByProperty(property);
+     * 
+     * 
+     * System.out.println(images);
+     * 
+     * if (images != null) {
+     * 
+     * byte[] image = images.getContainer();
+     * 
+     * HttpHeaders headers = new HttpHeaders();
+     * 
+     * headers.setContentType(MediaType.IMAGE_JPEG);
+     * 
+     * return new ResponseEntity<>(image, headers, HttpStatus.OK);
+     * } else {
+     * 
+     * System.out.println("No hay imagenes");
+     * 
+     * HttpHeaders headers = new HttpHeaders();
+     * 
+     * headers.setContentType(MediaType.IMAGE_JPEG);
+     * 
+     * ResponseEntity<byte[]> response = new ResponseEntity<>(headers,
+     * HttpStatus.OK);
+     * 
+     * response.getBody();
+     * 
+     * System.out.println(response);
+     * 
+     * return null;
+     * 
+     * }
+     */
 }
