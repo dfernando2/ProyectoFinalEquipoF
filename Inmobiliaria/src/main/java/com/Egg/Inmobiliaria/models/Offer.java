@@ -18,6 +18,7 @@ public class Offer {
     private Double price;
     private Integer contact;
     @Enumerated(EnumType.STRING)
+    @Column(name = "offer_status")
     private OfferStatus offerStatus;
 
     public Offer() {
