@@ -19,9 +19,11 @@
 <!--                       aria-expanded="false">Panel</a>-->
 
 <!--                </li>-->
-
+                <li th:if="${session.usuariosession} != null and (${session.usuariosession.getRol().toString()}  == 'ADMIN')" class="nav-item dropdown">
+                    <a id="link" class="nav-link" aria-current="page" th:href="@{/dashboard/panel}">Panel</a>
+                </li>
                 <li th:if="${session.usuariosession} != null" class="nav-item">
-                    <a id="link" class="nav-link" aria-current="page" th:href="@{/home}">Inicio</a>
+                    <a id="link" class="nav-link" aria-current="page" th:href="@{/}">Inicio</a>
                 </li>
 
                 <li class="nav-item">
