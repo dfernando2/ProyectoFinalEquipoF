@@ -129,7 +129,9 @@
                 <div class="cardfront">
                     <div class="bodycard_front">
                         <img th:src="@{image/property/__${property.id}__}" style="width: 100%; height: 100%;"
-                            alt="Property Image">
+                            alt="PROPIEDADES MR. HOUSE">
+<!--                        <img th:src="@{'/image/property/' + 'property.id'}" style="width: 100%; height: 100%;"-->
+<!--                             alt="Property Image">-->
                     </div>
                 </div>
                 <h4 th:text="${property.type}"></h4>
@@ -151,13 +153,13 @@
                     <span class="texto-card"><b>Descripcion</b></span>
                     <p th:text="${property.description}"></p>
                 </div>
-                <div th:if="${session.usuariosession == null}" class="button-card">
-                    <a th:href="@{/login}" class="btn btn-primary me-3 px-3">Ver Más Información</a>
+                <div th:if="${session.usuariosession == null}" class="btn btn-success">
+                    <a th:href="@{/login}" class="btn btn-success">Ver Más Información</a>
 
                 </div>
-                <div th:if="${session.usuariosession != null}" class="button-card">
+                <div th:if="${session.usuariosession != null}" class="btn btn-success">
                     <a th:href="@{/property/offer/__${session.usuariosession.id}__/__${property.id}__}"
-                       class="btn btn-primary me-3 px-3">Ver Más</a>
+                       class="btn btn-success">Ver Más</a>
                 </div>
 
 <!--                <div th:if="${(session.usuariosession.rol.toString() == 'CLIENT')}" class="button-card">-->
