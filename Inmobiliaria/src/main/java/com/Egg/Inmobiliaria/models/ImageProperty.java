@@ -16,9 +16,7 @@ public class ImageProperty {
     private String mime;
 
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "property_id")
-    private Property property;
+
     @Lob
     @Basic(fetch = FetchType.LAZY)
     private byte[] container;
@@ -26,13 +24,18 @@ public class ImageProperty {
     public ImageProperty() {
     }
 
-    public ImageProperty(String id, String mime, String name, Property property, byte[] container) {
+    public ImageProperty(String id, String mime, String name, byte[] container) {
         this.id = id;
         this.mime = mime;
         this.name = name;
-        this.property = property;
+
         this.container = container;
     }
+
+    public String getMime() {
+        return mime;
+    }
+
     public String getId() {
         return id;
     }
@@ -61,11 +64,4 @@ public class ImageProperty {
         this.container = container;
     }
 
-    public Property getProperty() {
-        return property;
-    }
-
-    public void setProperty(Property property) {
-        this.property = property;
-    }
 }

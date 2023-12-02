@@ -33,15 +33,13 @@ public class Property {
     private Usuario usuario;
     private boolean isRented;
     private boolean isActive;
+    @OneToOne
+    private ImageProperty imageProperty;
 
     public Property() {
     }
 
-    public Property(Long id, String address, String province, String location, Integer surface,
-                    Integer bathrooms, Integer bedrooms, Double price, String description,
-                    PropertyStatus status, Date createDate, PropertyType type,
-                    List<Offer> offers, Usuario usuario, boolean isRented, boolean isActive) {
-
+    public Property(Long id, String address, String province, String location, Integer surface, Integer bathrooms, Integer bedrooms, Double price, String description, PropertyStatus status, Date createDate, PropertyType type, List<Offer> offers, Usuario usuario, boolean isRented, boolean isActive, ImageProperty imageProperty) {
         this.id = id;
         this.address = address;
         this.province = province;
@@ -58,8 +56,42 @@ public class Property {
         this.usuario = usuario;
         this.isRented = isRented;
         this.isActive = isActive;
+        this.imageProperty = imageProperty;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public boolean isIsRented() {
+        return isRented;
+    }
+
+    public void setIsRented(boolean isRented) {
+        this.isRented = isRented;
+    }
+
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public ImageProperty getImageProperty() {
+        return imageProperty;
+    }
+
+    public void setImageProperty(ImageProperty imageProperty) {
+        this.imageProperty = imageProperty;
+    }
+
+   
     public Long getId() {
         return id;
     }

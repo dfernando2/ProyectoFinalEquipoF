@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +35,7 @@ public class ImageController {
     @Autowired
     UserService userService;
     @Autowired
-    ImagePropertyService  imagePropertyService;
+    ImagePropertyService imagePropertyService;
 
     @Autowired
     ImagePropertyRepository imagePropertyRepository;
@@ -43,7 +44,7 @@ public class ImageController {
     PropertyService propertyService;
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<byte[]> userImage (@PathVariable Long id) {
+    public ResponseEntity<byte[]> userImage(@PathVariable Long id) {
         ImageUser imageUser = userService.getOne(id).getImage();
 
         if (imageUser != null) {
@@ -60,42 +61,41 @@ public class ImageController {
         }
     }
 
-
-
-   @GetMapping("/property/{id}")
+    @GetMapping("/property/{id}")
     public ResponseEntity<byte[]> propertyImage(@PathVariable Long id) {
         Property property = propertyService.getOne(id);
 
         ImageProperty images = imagePropertyRepository.findByProperty(property);
+        
 
-            System.out.println(images);
+        System.out.println(images);
 
-            if (images != null) {
+        if (images != null) {
 
-                byte[] image = images.getContainer();
+            byte[] image = images.getContainer();
 
-                HttpHeaders headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
 
-                headers.setContentType(MediaType.IMAGE_JPEG);
+            headers.setContentType(MediaType.IMAGE_JPEG);
 
-                return new ResponseEntity<>(image, headers, HttpStatus.OK);
-            }else {
+            return new ResponseEntity<>(image, headers, HttpStatus.OK);
+        } else {
 
-                System.out.println("No hay imagenes");
+            System.out.println("No hay imagenes");
 
-                HttpHeaders headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
 
-                headers.setContentType(MediaType.IMAGE_JPEG);
+            headers.setContentType(MediaType.IMAGE_JPEG);
 
-                ResponseEntity<byte[]> response = new ResponseEntity<>(headers, HttpStatus.OK);
+            ResponseEntity<byte[]> response = new ResponseEntity<>(headers, HttpStatus.OK);
 
-                response.getBody();
+            response.getBody();
 
-                System.out.println(response);
+            System.out.println(response);
 
-                return null;
+            return null;
 
-            }
+        }
 
-}
+    }
 }

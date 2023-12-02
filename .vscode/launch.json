@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-InmobiliariaEquipoFApplication<Inmobiliaria>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.Egg.Inmobiliaria.InmobiliariaEquipoFApplication",
+            "projectName": "Inmobiliaria",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

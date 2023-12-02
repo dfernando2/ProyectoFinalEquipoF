@@ -29,7 +29,7 @@ public class ImagePropertyService {
                 image.setMime(file.getContentType());
                 image.setName(file.getName());
                 image.setContainer(file.getBytes());
-                image.setProperty(property);
+                
                 imagePropertyRepository.save(image);
             } catch (IOException e) {
                 System.out.println(e.getMessage());
@@ -38,7 +38,37 @@ public class ImagePropertyService {
     }
 
     @Transactional
-    public void update(MultipartFile file, Property property) {
+    public ImageProperty update(MultipartFile file, String IdImagen) {
+        if (file != null) {
+            try {
+                
+                ImageProperty imagen = new ImageProperty();
+                
+                if (IdImagen != null) {
+                    Optional<ImageProperty> respuesta = imagePropertyRepository.findById(IdImagen);
+                    
+                    if (respuesta.isPresent()) {
+                        imagen = respuesta.get();
+                    }
+                }
+                
+                imagen.setMime(file.getContentType());
+                
+                imagen.setName(file.getName());
+                
+                imagen.setContainer(file.getBytes());
+                
+                return imagePropertyRepository.save(imagen);
+                
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+        }
+        return null;
+       
+       
+       
+        /*
         Optional<ImageProperty> response = Optional.ofNullable(imagePropertyRepository.findByProperty(property));
         if (response.isPresent()) {
             imagePropertyRepository.deleteByProperty(property);
@@ -51,8 +81,8 @@ public class ImagePropertyService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        image.setProperty(property);
-        imagePropertyRepository.save(image);
+      
+        imagePropertyRepository.save(image); */
     }
 
 
@@ -83,6 +113,32 @@ public class ImagePropertyService {
 
     @Transactional
     public void deleteByIdProperty(ImageProperty imageProp) {
+
+    }
+    public ImageProperty save(MultipartFile archivo) throws MiException {
+
+        if (archivo != null) {
+
+            try {
+
+                ImageProperty image = new ImageProperty();
+
+                image.setMime(archivo.getContentType());
+
+                image.setName(archivo.getName());
+
+                image.setContainer(archivo.getBytes());
+
+                return imagePropertyRepository.save(image);
+
+            } catch (Exception e) {
+
+                System.err.println(e.getMessage());
+
+            }
+
+        }
+        return null;
 
     }
 }

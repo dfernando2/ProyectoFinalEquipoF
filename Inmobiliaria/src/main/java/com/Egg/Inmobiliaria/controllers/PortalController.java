@@ -1,9 +1,11 @@
 package com.Egg.Inmobiliaria.controllers;
 
 import com.Egg.Inmobiliaria.exceptions.MiException;
+import com.Egg.Inmobiliaria.models.ImageProperty;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.Usuario;
+import com.Egg.Inmobiliaria.repositories.ImagePropertyRepository;
 import com.Egg.Inmobiliaria.repositories.OfferRepository;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
 import com.Egg.Inmobiliaria.services.PropertyService;
@@ -46,12 +48,17 @@ public class PortalController {
 
     @Autowired
     private OfferRepository offerRepo;
+    @Autowired
+    private ImagePropertyRepository imagePropertyRepository;
 
     @GetMapping("/")
     public String index(Model model) {
 
         List<Property> properties = propertyService.getAllProperties();
+        List<ImageProperty> iproperties = imagePropertyRepository.findAll();
         model.addAttribute("properties", properties);
+        model.addAttribute("iproperties", iproperties);
+
         return "home.html";
     }
 
@@ -67,13 +74,13 @@ public class PortalController {
 
     @PostMapping("/registration")
     public String registration(@RequestParam String name,
-                               @RequestParam String email,
-                               @RequestParam String dni,
-                               @RequestParam String password,
-                               @RequestParam String password2,
-                               @RequestParam String rol,
-                               @RequestParam MultipartFile file,
-                               ModelMap modelo) {
+            @RequestParam String email,
+            @RequestParam String dni,
+            @RequestParam String password,
+            @RequestParam String password2,
+            @RequestParam String rol,
+            @RequestParam MultipartFile file,
+            ModelMap modelo) {
         try {
             userService.create(file, name, email, dni, password, password2, rol);
             modelo.put("exito", "Usuario cargado correctamente");
@@ -109,24 +116,24 @@ public class PortalController {
 
     }
 
-//    @GetMapping("/profile/{id}")
-//    public String profile(ModelMap modelo, Long id) {
-//        Optional<Usuario> usuarioAnswer = userRep.findById(id);
-//        Usuario usuario = usuarioAnswer.get();
-//        List <Offer> offers = offerRepo.findOfferByUserId(id);
-//        List<Property> properties = propertyService.getAllPropertiesByUserId(id);
-//        if (usuario.getRol().toString().equalsIgnoreCase("CLIENT")) {
-//            modelo.addAttribute("properties", properties);
-//            modelo.addAttribute("offers", offers);
-//
-//            return "profileCliente.html";
-//        } else {
-//            modelo.addAttribute("properties", properties);
-//            modelo.addAttribute("offers", offers);
-//
-//            return "profilePropietario.html";
-//        }
-//    }
+    // @GetMapping("/profile/{id}")
+    // public String profile(ModelMap modelo, Long id) {
+    // Optional<Usuario> usuarioAnswer = userRep.findById(id);
+    // Usuario usuario = usuarioAnswer.get();
+    // List <Offer> offers = offerRepo.findOfferByUserId(id);
+    // List<Property> properties = propertyService.getAllPropertiesByUserId(id);
+    // if (usuario.getRol().toString().equalsIgnoreCase("CLIENT")) {
+    // modelo.addAttribute("properties", properties);
+    // modelo.addAttribute("offers", offers);
+    //
+    // return "profileCliente.html";
+    // } else {
+    // modelo.addAttribute("properties", properties);
+    // modelo.addAttribute("offers", offers);
+    //
+    // return "profilePropietario.html";
+    // }
+    // }
 
     @GetMapping("/contacto")
     public String contacto() {
@@ -134,29 +141,29 @@ public class PortalController {
         return "contacto.html";
     }
 
-
-//    @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'CLIENT', 'BOTHROLE')")
-//    @PostMapping("/profile/{id}")
-//    public String update(MultipartFile file,@PathVariable String id, @RequestParam Long dni, @RequestParam String name,@RequestParam String email,
-//            @RequestParam String password,@RequestParam String password2, ModelMap modelo) {
-//
-//        try {
-//            userService.update(file, id, dni, name, email,
-//                    password, password2);
-//
-//            modelo.put("exito", "Usuario actualizado correctamente!");
-//
-//            return "home.html";
-//        } catch (MiException ex) {
-//
-//            modelo.put("error", ex.getMessage());
-//            modelo.put("nombre", name);
-//            modelo.put("email", email);
-//
-//            return "usuario_update.html";
-//        }
-//
-//    }
-
+    // @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'CLIENT', 'BOTHROLE')")
+    // @PostMapping("/profile/{id}")
+    // public String update(MultipartFile file,@PathVariable String id,
+    // @RequestParam Long dni, @RequestParam String name,@RequestParam String email,
+    // @RequestParam String password,@RequestParam String password2, ModelMap
+    // modelo) {
+    //
+    // try {
+    // userService.update(file, id, dni, name, email,
+    // password, password2);
+    //
+    // modelo.put("exito", "Usuario actualizado correctamente!");
+    //
+    // return "home.html";
+    // } catch (MiException ex) {
+    //
+    // modelo.put("error", ex.getMessage());
+    // modelo.put("nombre", name);
+    // modelo.put("email", email);
+    //
+    // return "usuario_update.html";
+    // }
+    //
+    // }
 
 }

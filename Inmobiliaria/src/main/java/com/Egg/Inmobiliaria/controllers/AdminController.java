@@ -145,12 +145,13 @@ public class AdminController {
                                    @RequestParam(value = "price", defaultValue = "0", required = false) Double price,
                                    @RequestParam(required = false) String description, @RequestParam(required = false) PropertyStatus status,
                                    @RequestParam(required = false) Date createDate, @RequestParam(required = false) PropertyType type,
+                                   MultipartFile file,
                                    ModelMap modelo) {
 
         try {
             ps.update(id, address, province, location, surface, bathrooms,
                     bedrooms, price, description, status, createDate,
-                    type);
+                    type, file);
             modelo.put("Exito", "La propiedad se ha modificado correctamente");
         } catch (Exception e) {
             modelo.put("Error", e.getMessage());
