@@ -236,9 +236,5 @@ public class PropertyService {
 
         }
 
-
-    public List<Property> getAllPropertiesByUserId(Long id) {
-        return propertyRepository.findAllByUserId(id);
-    }
 }
 

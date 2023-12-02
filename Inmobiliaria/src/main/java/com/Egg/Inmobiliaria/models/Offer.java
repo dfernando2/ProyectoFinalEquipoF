@@ -16,8 +16,8 @@ public class Offer {
     @ManyToOne
     private Usuario usuario;
     private Double price;
-
     private Integer contact;
+    @Enumerated(EnumType.STRING)
     private OfferStatus offerStatus;
 
     public Offer() {

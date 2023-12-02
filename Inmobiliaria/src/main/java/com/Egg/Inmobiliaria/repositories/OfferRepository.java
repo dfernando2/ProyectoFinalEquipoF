@@ -12,6 +12,6 @@ import java.util.List;
 public interface OfferRepository extends JpaRepository<Offer, Long>{
 
     //traer las ofertas desde el repositorio por id de usuario
-    @Query ("SELECT o FROM Offer o WHERE o.user.id = ?1")
+    @Query ("SELECT o FROM Offer o WHERE o.usuario.id = ?1")
     List<Offer> findOfferByUserId(Long id);
 }
