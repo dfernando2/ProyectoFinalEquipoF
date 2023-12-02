@@ -55,9 +55,9 @@ public class PortalController {
     public String index(Model model) {
 
         List<Property> properties = propertyService.getAllProperties();
-        List<ImageProperty> iproperties = imagePropertyRepository.findAll();
+       
         model.addAttribute("properties", properties);
-        model.addAttribute("iproperties", iproperties);
+       
 
         return "home.html";
     }

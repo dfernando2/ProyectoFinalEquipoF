@@ -21,7 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -98,7 +101,7 @@ public class PropertyService {
     @Transactional
     public void update(Long id, String address, String province, String location, Integer surface,
             Integer bathrooms, Integer bedrooms, Double price, String description,
-            PropertyStatus status, Date createDate, PropertyType type,MultipartFile file) {
+            PropertyStatus status, Date createDate, PropertyType type, MultipartFile file) {
 
         Optional<Property> propertyAnswer = propertyRepository.findById(id);
         if (propertyAnswer.isPresent()) {
@@ -119,12 +122,10 @@ public class PropertyService {
             if (property.getImageProperty() != null) {
                 idImagen = property.getImageProperty().getId();
             }
-            
+
             ImageProperty image = imagePropertyService.update(file, idImagen);
-            
-         
-            
-          property.setImageProperty(image);
+
+            property.setImageProperty(image);
             // property.setOffers(offers);
             // property.setRented(false);
             // property.setActive(true);
@@ -150,9 +151,9 @@ public class PropertyService {
             Double maxPrice, MultipartFile file) throws Exception {
 
         List<Property> properties = propertyRepository.findAll();
-        List<ImageProperty> iproperties = imagePropertyRepository.findAll();
-        System.out.println("Lista completa: " + properties.toString() + iproperties.toString());
-
+       
+        System.out.println("Lista completa: " + properties.toString());
+        // ipc.propertyImage();
         try {
             if (!province.equals("null")) {
                 List<Property> list1 = new ArrayList<>();
@@ -164,19 +165,9 @@ public class PropertyService {
 
                 }
                 properties = list1;
-                System.out.println("Por provincia:" + properties.toString() + iproperties.toString());
+                System.out.println("Por provincia:" + properties.toString());
             }
-            if (file != null) {
-                List<ImageProperty> iList = new ArrayList<>();
-
-                List<Property> listn = new ArrayList<>();
-                for (ImageProperty i : iproperties) {
-                    iList.add(i);
-                    iproperties = iList;
-                    properties = listn;
-                    System.out.println("Por iMAGEN:" + properties.toString());
-                }
-            }
+            
             if (!status.equals("null")) {
                 List<Property> list2 = new ArrayList<>();
                 for (Property p : properties) {
@@ -216,7 +207,7 @@ public class PropertyService {
                 System.out.println("Por precio:" + properties.toString());
             }
 
-            System.out.println("Final:" + properties.toString() + iproperties.toString());
+            System.out.println("Final:" + properties.toString());
             return properties;
         } catch (Exception e) {
             System.out.println(e.getMessage());

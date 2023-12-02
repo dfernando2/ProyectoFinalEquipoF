@@ -64,4 +64,9 @@ public class ImageProperty {
         this.container = container;
     }
 
+    @Override
+    public String toString() {
+        return "ImageProperty{" + "id=" + id + ", mime=" + mime + ", name=" + name + ", container=" + container + '}';
+    }
+
 }

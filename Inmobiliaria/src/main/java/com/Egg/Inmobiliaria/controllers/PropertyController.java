@@ -38,6 +38,8 @@ public class PropertyController {
     UserService userservice;
     @Autowired
     private OfferService offerService;
+    @Autowired
+    private ImageController ipc;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -90,33 +92,33 @@ public class PropertyController {
             modelo.put("exito", "La propiedad fue cargada correctamente! ");
 
         } catch (MiException ex) {
-           List<Usuario> usuarios = userservice.listUser();
-          modelo.addAttribute("usuarios", usuarios);
-          modelo.put("error", ex.getMessage());
-          return "property_form.html"; // volvemos a cargar el formulario.
+            List<Usuario> usuarios = userservice.listUser();
+            modelo.addAttribute("usuarios", usuarios);
+            modelo.put("error", ex.getMessage());
+            return "property_form.html"; // volvemos a cargar el formulario.
 
         }
         return "redirect:/home";
         /*
- modelo.put("error", ex.getMessage());
-            modelo.put("address", address);
-            modelo.put("province", province);
-            modelo.put("location", location);
-            modelo.put("surface", surface);
-            modelo.put("bathrooms", bathrooms);
-            modelo.put("bedrooms", bedrooms);
-            modelo.put("price", price);
-            modelo.put("description", description);
-            modelo.put("status", status);
-            modelo.put("createDate", createDate);
-            modelo.put("type", type);
-            modelo.put("file", file);
-            List<Usuario> usuarios = userservice.listUser();
-            modelo.addAttribute("usuarios", usuarios);
-            modelo.put("error", ex.getMessage());
-            return "property_form.html";
-
-
+         * modelo.put("error", ex.getMessage());
+         * modelo.put("address", address);
+         * modelo.put("province", province);
+         * modelo.put("location", location);
+         * modelo.put("surface", surface);
+         * modelo.put("bathrooms", bathrooms);
+         * modelo.put("bedrooms", bedrooms);
+         * modelo.put("price", price);
+         * modelo.put("description", description);
+         * modelo.put("status", status);
+         * modelo.put("createDate", createDate);
+         * modelo.put("type", type);
+         * modelo.put("file", file);
+         * List<Usuario> usuarios = userservice.listUser();
+         * modelo.addAttribute("usuarios", usuarios);
+         * modelo.put("error", ex.getMessage());
+         * return "property_form.html";
+         * 
+         * 
          * try {
          * 
          * // modelo.addAttribute("propertyType", type);
@@ -188,7 +190,7 @@ public class PropertyController {
 
         propertyService.update(id, address, province, location, surface, bathrooms,
                 bedrooms, price, description, status, createDate,
-                type,file);
+                type, file);
         return "redirect:../list";
 
     }
@@ -201,9 +203,10 @@ public class PropertyController {
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
             MultipartFile file,
-            ModelMap modelo) throws Exception {
+            ModelMap model) throws Exception {
+       
 
-        modelo.put("properties", propertyService.filteredProperties(province,
+        model.put("properties", propertyService.filteredProperties(province,
                 status, type, bedrooms, minPrice, maxPrice, file));
         // modelo.addAttribute("image", image);
 

@@ -125,24 +125,12 @@
                 </div>
             </form>
             <div id="card" th:each="property : ${properties}">
-                <!-- <div th:each="iproperties : ${iproperties}">  <div class="cardfront">
-                        <div class="bodycard_front">
-                            <img th:src="@{image/property/__${property.id}__}" style="width: 100%; height: 100%;"
-                                alt="Property Image">
-                        </div>
-                     
-                    </div>
-                    <td 
-                            <a><img th:if="${usuario.imagen != null}" class="logo" 
-                                th:src="@{/imagen/perfil/${usuario.id}}" ></a>
-                        </td>
-                    -->
                    <div>
                     <img th:src="@{image/property/__${property.id}__}" alt="Property image">
                    </div>
                     <h4 th:text="${property.type}"></h4>
                     <div class="a">
-
+                        
                         <div th:if="${session.usuariosession} != null">
                             <span class="texto-card"><b>Precio US$</b></span>
                             <p th:text="${property.price}"></p>
@@ -150,13 +138,13 @@
                         <div th:if="${session.usuariosession} != null">
                             <span class="texto-card"><b>Direccion</b></span>
                             <p th:text="${property.address}"></p>
-                        </div>
-                        <div th:if="${session.usuariosession} != null">
+                        </div>                        <div th:if="${session.usuariosession} != null">
                             <span class="texto-card"><b>Ciudad</b></span>
                             <p th:text="${property.location}"></p>
                         </div>
                         <span class="texto-card"><b>Provincia</b></span>
                         <p th:text="${property.province}"></p>
+                    
                         <span class="texto-card"><b>Descripcion</b></span>
                         <p th:text="${property.description}"></p>
                     </div>

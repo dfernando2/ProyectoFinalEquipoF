@@ -219,4 +219,10 @@ public class Property {
     public void setActive(boolean active) {
         isActive = active;
     }
+
+    @Override
+    public String toString() {
+        return "Property{" + "id=" + id + ", address=" + address + ", province=" + province + ", location=" + location + ", surface=" + surface + ", bathrooms=" + bathrooms + ", bedrooms=" + bedrooms + ", price=" + price + ", description=" + description + ", status=" + status + ", createDate=" + createDate + ", type=" + type + ", offers=" + offers + ", usuario=" + usuario + ", isRented=" + isRented + ", isActive=" + isActive + ", imageProperty=" + imageProperty + '}';
+    }
+    
 }
