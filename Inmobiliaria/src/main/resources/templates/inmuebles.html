@@ -38,15 +38,14 @@
             <th scope="col">Precio</th>
             <th scope="col">Descripcion</th>
             <th scope="col">Estado de la propiedad</th>
+            <th scope="col">Fecha de inicio</th>
             <th scope="col">Tipo de propiedad</th>
-            <th scope="col">Dormitorios</th>
-            <th scope="col">Precio</th>
         </tr>
         </thead>
         <tbody th:each="inmueble : ${inmuebles}">
         <tr>
-            <th scope="row" th:text="${inmueble.id}"></th>
-            <td th:text="${inmueble.address}"></td>
+
+            <th scope="row" th:text="${inmueble.address}"></th>
             <td th:text="${inmueble.province}"></td>
             <td th:text="${inmueble.location}"></td>
             <td th:text="${inmueble.surface}"></td>
@@ -57,7 +56,6 @@
             <td th:text="${inmueble.status}"></td>
             <td th:text="${inmueble.createDate}"></td>
             <td th:text="${inmueble.type}"></td>
-            <td th:text="${inmueble.status}"></td>
 
             <td class="nav-item dropdown">
 

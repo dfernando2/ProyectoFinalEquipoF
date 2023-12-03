@@ -2,10 +2,12 @@ package com.Egg.Inmobiliaria.controllers;
 
 import com.Egg.Inmobiliaria.enums.PropertyStatus;
 import com.Egg.Inmobiliaria.enums.PropertyType;
+import com.Egg.Inmobiliaria.exceptions.MiException;
 import com.Egg.Inmobiliaria.models.ImageProperty;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.Usuario;
+import com.Egg.Inmobiliaria.repositories.PropertyRepository;
 import com.Egg.Inmobiliaria.services.ImagePropertyService;
 import com.Egg.Inmobiliaria.services.OfferService;
 import com.Egg.Inmobiliaria.services.PropertyService;
@@ -27,6 +29,8 @@ import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/property")
 public class PropertyController {
@@ -39,6 +43,8 @@ public class PropertyController {
     private OfferService offerService;
     @Autowired
     private ImagePropertyService imagePropertyService;
+    @Autowired
+    private PropertyRepository  propertyRepository;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -107,6 +113,7 @@ public class PropertyController {
     public String propertyList(ModelMap model) {
         model.put("properties", propertyService.list());
         return "property_list.html";
+
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'BOTHROLE')")
@@ -184,4 +191,67 @@ public class PropertyController {
 
         return "home.html";
     }
+
+    @GetMapping("/inmuebles/{idUser}")
+    public String inmuebles(HttpSession session, ModelMap modelo) {
+
+        Usuario usuario = (Usuario) session.getAttribute("usuariosession");
+
+        List<Property> propertyList = propertyService.getAllPropertiesByUserId(usuario.getId());
+
+        modelo.addAttribute("inmuebles", propertyList);
+        modelo.addAttribute("usuario", usuario );
+
+        return "inmueblesPropietario.html";
+    }
+
+    @GetMapping("/inmuebles/editar/{id}")
+    public String modifyProperty(@PathVariable Long id, ModelMap modelo) {
+
+        modelo.put("inmueble", propertyService.getOne(id));
+        return "inmueblePropietario_update.html";
+    }
+    @PostMapping("/inmuebles/editar/{id}")
+    public String modifiedProperty(@PathVariable Long id, @RequestParam(required = false) String address,
+                                   @RequestParam(required = false) String province, @RequestParam(required = false) String location,
+                                   @RequestParam(value = "surface", defaultValue = "0", required = false) Integer surface,
+                                   @RequestParam(value = "bathrooms", defaultValue = "0", required = false) Integer bathrooms,
+                                   @RequestParam(value = "bedrooms", defaultValue = "0", required = false) Integer bedrooms,
+                                   @RequestParam(value = "price", defaultValue = "0", required = false) Double price,
+                                   @RequestParam(required = false) String description, @RequestParam(required = false) PropertyStatus status,
+                                   @RequestParam(required = false) Date createDate, @RequestParam(required = false) PropertyType type,
+                                   ModelMap modelo) {
+
+        try {
+            propertyService.update(id, address, province, location, surface, bathrooms,
+                    bedrooms, price, description, status, createDate,
+                    type);
+            modelo.put("Exito", "La propiedad se ha modificado correctamente");
+            Usuario  usuario = propertyRepository.getById(id).getUser();
+            modelo.put("inmuebles", propertyService.getAllPropertiesByUserId(usuario.getId()));
+        } catch (Exception e) {
+            System.out.println("no se pudo guargar la propiedad po: " + e.getMessage());
+            modelo.put("Error", e.getMessage());
+            return "inmueble_update.html";
+        }
+        System.out.println("Se pudo guargar la propiedad");
+        return "inmueblesPropietario.html";
+    }
+    @Transactional
+    @GetMapping("/inmuebles/remove/{id}")
+    public String delete(@PathVariable Long id, ModelMap modelo){
+
+        try {
+            propertyService.remove(id);
+            modelo.put("Exito", "La propiedad se ha eliminado correctamente");
+            Usuario  usuario = propertyRepository.getById(id).getUser();
+            modelo.put("inmuebles", propertyService.getAllPropertiesByUserId(usuario.getId()));
+            return "inmueblesPropietario.html";
+        } catch (MiException ex) {
+            modelo.put("Error", ex.getMessage());
+            return "inmueblesPropietario.html";
+        }
+
+    }
+
 }
