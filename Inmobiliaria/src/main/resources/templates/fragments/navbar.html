@@ -56,6 +56,11 @@
                         <img id="foto-perfil"  th:src="@{/image/user/__${session.usuariosession.id}__}">
                     </a>
                     <ul class="dropdown-menu">
+
+<!--                        <li>-->
+<!--                            <a id="link" th:if="${session.usuariosession} != null and ${session.usuariosession.getRol().toString()}  == 'CLIENT'" class="dropdown-item" th:href="@{/profile/client/__${session.usuariosession.id}__}">Perfil</a>-->
+<!--                        </li>-->
+
                         <li>
                            <a id="link" th:if="${session.usuariosession != null}" class="dropdown-item" th:href="@{/profile/__${session.usuariosession.id}__}">Perfil</a>
                         </li>                      

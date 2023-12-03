@@ -108,7 +108,11 @@ public class PortalController {
         modelo.addAttribute("inmuebles", propertyList);
         modelo.addAttribute("usuario", usuario );
 
-        return "profilePropietario.html";
+        if (usuario.getRol().toString().equals("CLIENT")) {
+            return "profileCliente.html";
+        }else {
+            return "profilePropietario.html";
+        }
     }
 
     @GetMapping("/profile/editar/{id}")
@@ -137,7 +141,7 @@ public class PortalController {
             }
     }
 
-    @GetMapping("/profile/{idClient}")
+    @GetMapping("/profile/client/{idClient}")
     public String profileClient (HttpSession session, ModelMap modelo, Long idClient){
 
         Usuario usuario = (Usuario) session.getAttribute("usuariosession");
@@ -153,7 +157,9 @@ public class PortalController {
         modelo.addAttribute("ofertas", offerList);
         modelo.addAttribute("usuario", usuario );
 
+
         return "profileCliente.html";
+
     }
 
 
