@@ -7,12 +7,19 @@ import com.Egg.Inmobiliaria.models.Usuario;
 import com.Egg.Inmobiliaria.repositories.ImageUserRepository;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -24,26 +31,63 @@ public class ImageUserService {
 
     @Transactional
     public ImageUser create(MultipartFile file, Usuario usuario) throws MiException {
-
-        if (file != null) {
+        if (file != null && !file.isEmpty()) {
             try {
-
                 ImageUser image = new ImageUser();
 
                 image.setMime(file.getContentType());
-
-                image.setName(file.getName());
-
+                image.setName(file.getOriginalFilename());
                 image.setContainer(file.getBytes());
 
                 return imageUserRepository.save(image);
+            } catch (IOException e) {
+                // Manejar la excepción de lectura del archivo
+                e.printStackTrace();
+                throw new MiException("Error al procesar el archivo de imagen", e);
+            }
+        } else {
+            System.out.println("No hay imagen");
 
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
+            try {
+                // Cargar la imagen predeterminada desde el directorio de recursos
+                ClassPathResource defaultImageResource = new ClassPathResource("static/image/userDefault.png");
+
+                ImageUser defaultImage = new ImageUser();
+                defaultImage.setMime(Files.probeContentType(defaultImageResource.getFile().toPath()));
+                defaultImage.setName("userDefault.png");
+                defaultImage.setContainer(Files.readAllBytes(defaultImageResource.getFile().toPath()));
+
+                return imageUserRepository.save(defaultImage);
+            } catch (IOException e) {
+                // Manejar la excepción de lectura de la imagen predeterminada
+                e.printStackTrace();
+                throw new MiException("Error al cargar la imagen predeterminada");
             }
         }
-        return null;
     }
+
+//        @Transactional
+//        public ImageUser create(MultipartFile file, Usuario usuario) throws MiException {
+//
+//        if (file != null) {
+//            try {
+//
+//                ImageUser image = new ImageUser();
+//
+//                image.setMime(file.getContentType());
+//
+//                image.setName(file.getName());
+//
+//                image.setContainer(file.getBytes());
+//
+//                return imageUserRepository.save(image);
+//
+//            } catch (Exception e) {
+//                System.err.println(e.getMessage());
+//            }
+//        }
+//        return null;
+//    }
 
     public List<ImageUser> list() {
         List<ImageUser> images = new ArrayList();
@@ -67,19 +111,19 @@ public class ImageUserService {
     @Transactional
     public ImageUser update(MultipartFile file, String idImageUser) throws MiException {
 
-            ImageUser image = new ImageUser();
+        ImageUser image = new ImageUser();
 
-            if (idImageUser != null) {
-                Optional<ImageUser> answer = imageUserRepository.findById(idImageUser);
+        if (idImageUser != null) {
+            Optional<ImageUser> answer = imageUserRepository.findById(idImageUser);
 
-                if (answer.isPresent()) {
-                    image = answer.get();
-                }
-
+            if (answer.isPresent()) {
+                image = answer.get();
             }
-            image.setMime(file.getContentType());
 
-            image.setName(file.getName());
+        }
+        image.setMime(file.getContentType());
+
+        image.setName(file.getName());
 
         try {
             image.setContainer(file.getBytes());
