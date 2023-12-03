@@ -20,4 +20,5 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
     @Query ("SELECT p FROM Property p WHERE p.usuario.id = ?1")
     List<Property> findByUserId(Long id);
 
+
 }

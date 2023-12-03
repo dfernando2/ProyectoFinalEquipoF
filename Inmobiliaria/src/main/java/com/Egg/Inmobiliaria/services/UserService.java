@@ -129,6 +129,58 @@ public class UserService implements UserDetailsService {
 
 
     @Transactional
+    public void updateUser(Long id, String name, String password, String password2, MultipartFile file) throws Exception {
+//TODO agarrar este try para mostrar en pantalla
+//        if (password.isEmpty() || password == null || password.length() <= 5) {
+//            throw new MiException("La contraseña no puede estar vacía y debe tener más de 5 dígitos");
+//        }
+//        if (!password.equals(password2)) {
+//            throw new MiException("Las contraseñas ingresadas deben ser iguales");
+//        }
+
+        Usuario answer = userRepository.findByIdUser(id);
+        System.out.println(answer);
+
+        String nameAnswer = answer.getName();
+        String dniAnswer = answer.getDni();
+
+
+//        validate(name, email, dni, password, password2);
+
+        if (nameAnswer.isEmpty() || nameAnswer == null) {
+            throw new MiException("El nombre no puede ser nulo o estar vacio");
+        }
+        if (dniAnswer == null || dniAnswer.isEmpty()) {
+            throw new MiException("El dni no puede ser nulo o estar vacio");
+        }
+        if (password.isEmpty() || password == null || password.length() <= 5) {
+            throw new MiException("La contraseña no puede estar vacía y debe tener más de 5 dígitos");
+        }
+        if (!password.equals(password2)) {
+            throw new MiException("Las contraseñas ingresadas deben ser iguales");
+        }
+
+        try {
+
+            Usuario usuario = answer;
+
+            usuario.setPassword(null);
+            usuario.setPassword(new BCryptPasswordEncoder().encode(password));
+
+            if (file != null) {
+                ImageUser imageUser = imageUserService.update(file, answer.getImage().getId());
+                usuario.setImage(imageUser);
+            }
+            userRepository.save(usuario);
+        }
+        catch (MiException e) {
+            throw new MiException(e.getMessage());
+
+        }
+    }
+
+
+    @Transactional
     public void changeRol(Long id) {
 
         Optional<Usuario> answer = userRepository.findById(id);
@@ -205,10 +257,10 @@ public class UserService implements UserDetailsService {
     public void darDeBaja(Long id) throws MiException {
 
         Optional<Usuario> answer = userRepository.findById(id);
-       // TODO condicional si no tiene propiedades se elimina sino cartel avisando que se debe eliminar las publicaciones de propiedades
-            if (answer.isPresent()) {
-                userRepository.deleteById(id);
-            }
+        // TODO condicional si no tiene propiedades se elimina sino cartel avisando que se debe eliminar las publicaciones de propiedades
+        if (answer.isPresent()) {
+            userRepository.deleteById(id);
+        }
 
 
     }

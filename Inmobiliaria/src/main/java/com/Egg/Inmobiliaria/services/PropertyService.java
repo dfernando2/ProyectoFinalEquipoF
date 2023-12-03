@@ -240,5 +240,8 @@ public class PropertyService {
 
     }
 
+    public Property getPropertyById(Long id) {
+        return propertyRepository.findById(id).orElse(null);
+    }
 }
 
