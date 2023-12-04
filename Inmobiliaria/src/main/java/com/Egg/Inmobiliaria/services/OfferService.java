@@ -1,6 +1,7 @@
 package com.Egg.Inmobiliaria.services;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 //import java.util.Optional;
 
@@ -57,6 +58,34 @@ public class OfferService {
         offerRepository.save(offer);
     }
 
+    public List<Offer> getAllOffersByUserId(Long idUser) {
+        return offerRepository.findByUsuarioId(idUser);
+    }
+
+    public Offer getOne(Long id) {
+        return offerRepository.getOne(id);
+    }
+
+    public void acceptOfferStatus(Long idOffer) {
+        System.out.println("Este es el id de la oferta a cambiar" + idOffer);
+        Offer offer = getOne(idOffer);
+        System.out.println("Esta es la oferta a cambiar" + offer);
+        offer.setOfferStatus(OfferStatus.ENTITY_ACCEPTED);
+        offerRepository.save(offer);
+
+    }
+    public void rejectOfferStatus(Long idOffer) {
+        System.out.println("Este es el id de la oferta a cambiar" + idOffer);
+        System.out.println("Este es el id de la oferta a cambiar" + idOffer);
+        Offer offer = getOne(idOffer);
+        System.out.println("Esta es la oferta a cambiar" + offer);
+            offer.setOfferStatus(OfferStatus.ENTITY_REJECTED);
+            offerRepository.save(offer);
+        }
+
+    public List<Offer> getAllOffersByProperty(Long id) {
+        return offerRepository.findByPropertyId(id);
+    }
 
 
 //    public void update(String id, String idProperty, Long idUser, Double price, int contact) {
