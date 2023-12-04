@@ -126,20 +126,18 @@ public class PropertyService {
 
     @Transactional
     public void remove(Long id) throws MiException {
-        Property property = propertyRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Property not found with id: " + id));
+        Optional<Property> propertyAnswer = propertyRepository.findById(id);
 
-        // Eliminar todas las ImageProperty asociadas
-
-        ImageProperty imageProperty = imagePropertyRepository.findByProperty(property);
-
-
-        imagePropertyRepository.delete(imageProperty);
-
-
-        // Eliminar la Property después de eliminar las ImageProperty
-        propertyRepository.delete(property);
-
+        if(propertyAnswer !=  null){
+            Property property = propertyAnswer.get();
+            // Eliminar todas las ImageProperty asociadas
+            ImageProperty imageProperty = imagePropertyRepository.findByProperty(property);
+            imagePropertyRepository.delete(imageProperty);
+            // Eliminar la Property después de eliminar las ImageProperty
+            propertyRepository.delete(property);
+        }else{
+            throw new MiException("No se encontró la propiedad con el id " + id);
+        }
     }
 
     public List<Property> filteredProperties(String province, String status, String type, int bedrooms, Double

@@ -16,8 +16,7 @@ public class ImageProperty {
     private String mime;
 
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "property_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Property property;
     @Lob
     @Basic(fetch = FetchType.LAZY)
