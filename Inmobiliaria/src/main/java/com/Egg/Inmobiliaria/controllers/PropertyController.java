@@ -25,6 +25,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -213,31 +214,51 @@ public class PropertyController {
                                    @RequestParam(required = false) Double price, @RequestParam(required = false) Integer contact, ModelMap modelo) {
 
         offerService.createOffer(idProperty, idUser, price, contact);
-
-        modelo.addAttribute("properties", propertyService.getAllProperties());
+        List<Offer> offers = offerService.getAllOffersByUserId(idUser);
+        modelo.put("inmuebles", propertyService.getOne(idUser));
+        modelo.put("offers", offers);
 
 
         return "home.html";
     }
 
-    @GetMapping("/offer/status/{idUser}")
-    public String offerStatus(@PathVariable Long idUser, ModelMap modelo) {
+    @GetMapping("/offer/status/cliente/{idUser}")
+    public String offerStatusClient(@PathVariable Long idUser, ModelMap modelo) {
+        List<Offer> offers = offerService.getAllOffersByUserId(idUser);
+        List<Property> inmueblesUser = new ArrayList<>();
+        for (Offer offer: offers
+             ) {
+            inmueblesUser = propertyService.getAllPropertiesByUserId(offer.getUsuario().getId());
+        }
+        System.out.println(inmueblesUser);
+        modelo.put("offers", offers);
+        return "solicitudesCliente.html";
+    }
+    @GetMapping("/offer/status/propietario/{idUser}")
+    public String offerStatusEntity(@PathVariable Long idUser, ModelMap modelo) {
+        List<Property> inmueblesUser = propertyService.getAllPropertiesByUserId(idUser);
+        List<Offer> offers = new ArrayList<>();
+        for (Property  inmueble: inmueblesUser
+             ) {
+            offers = offerService.getAllOffersByProperty(inmueble.getId());
+        }
 
-        modelo.put("inmuebles", propertyService.getOne(idUser));
-
-        return "offer.html";
+        System.out.println(inmueblesUser);
+        modelo.put("offers", offers);
+        return "solicitudesPropietario.html";
     }
 
-    @Transactional
-    @PostMapping("/offer/status{idUser}")
-    public String offerStatus(@PathVariable Long idUser, @PathVariable Long idProperty,
-                                   @RequestParam(required = false) Double price, @RequestParam(required = false) Integer contact, ModelMap modelo) {
 
-        offerService.createOffer(idProperty, idUser, price, contact);
-
-        modelo.addAttribute("properties", propertyService.getAllProperties());
+    @PostMapping("/offer/aceptar/{idOffer}")
+    public String offerAccepted(ModelMap modelo, @PathVariable Long idOffer) {
+        offerService.acceptOfferStatus(idOffer);
+        return "home.html";
+    }
 
 
+    @PostMapping("/offer/rechazar/{idOffer}")
+    public String offerRejected(ModelMap modelo, @PathVariable Long idOffer) {
+        offerService.rejectOfferStatus(idOffer);
         return "home.html";
     }
 
