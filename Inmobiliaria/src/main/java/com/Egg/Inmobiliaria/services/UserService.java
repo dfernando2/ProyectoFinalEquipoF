@@ -82,14 +82,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void update(MultipartFile file, Long id, String email,
-                         String password, String password2, String rol) throws Exception {
-//TODO agarrar este try para mostrar en pantalla
-//        if (password.isEmpty() || password == null || password.length() <= 5) {
-//            throw new MiException("La contraseña no puede estar vacía y debe tener más de 5 dígitos");
-//        }
-//        if (!password.equals(password2)) {
-//            throw new MiException("Las contraseñas ingresadas deben ser iguales");
-//        }
+                       String password, String password2, String rol) throws Exception {
 
         Optional<Usuario> answer = userRepository.findById(id);
 
@@ -120,10 +113,33 @@ public class UserService implements UserDetailsService {
                 usuario.setImage(imageUser);
             }
             userRepository.save(usuario);
-            }
-        catch (MiException e) {
+        } catch (MiException e) {
             throw new MiException(e.getMessage());
 
+        }
+    }
+
+    @Transactional
+    public void updateProfile(MultipartFile file, Long id, String email,
+                       String password, String password2, String rol) throws Exception {
+        Optional<Usuario> answer = userRepository.findById(id);
+        String name = answer.get().getName();
+        String dni = answer.get().getDni();
+        validate(name, email, dni, password, password2, rol);
+        try {
+            Usuario usuario = answer.get();
+            if (!email.isEmpty()) {
+                usuario.setEmail(email);
+            }
+            usuario.setPassword(null);
+            usuario.setPassword(new BCryptPasswordEncoder().encode(password));
+            if (file != null) {
+                ImageUser imageUser = imageUserService.update(file, answer.get().getImage().getId());
+                usuario.setImage(imageUser);
+            }
+            userRepository.save(usuario);
+        } catch (MiException e) {
+            throw new MiException(e.getMessage());
         }
     }
 
@@ -205,11 +221,43 @@ public class UserService implements UserDetailsService {
     public void darDeBaja(Long id) throws MiException {
 
         Optional<Usuario> answer = userRepository.findById(id);
-       // TODO condicional si no tiene propiedades se elimina sino cartel avisando que se debe eliminar las publicaciones de propiedades
-            if (answer.isPresent()) {
-                userRepository.deleteById(id);
+        // TODO condicional si no tiene propiedades se elimina sino cartel avisando que se debe eliminar las publicaciones de propiedades
+        if (answer.isPresent()) {
+            userRepository.deleteById(id);
+        }
+
+
+    }
+
+    @Transactional
+    public void updateUser(Long id, String name, String password, String password2, MultipartFile file) throws MiException {
+
+
+        if (name.isEmpty()) {
+            throw new MiException("El nombre no puede ser nulo o estar vacio");
+        }
+        if (password.isEmpty() || password == null || password.length() <= 5) {
+            throw new MiException("La contraseña no puede estar vacía y debe tener más de 5 dígitos");
+        }
+        if (!password.equals(password2)) {
+            throw new MiException("Las contraseñas ingresadas deben ser iguales");
+        }
+
+        Optional<Usuario> answer = userRepository.findById(id);
+
+        if (answer != null) {
+            try {
+                Usuario usuario = answer.get();
+                usuario.setPassword(null);
+                usuario.setPassword(new BCryptPasswordEncoder().encode(password));
+                if (file != null) {
+                    ImageUser imageUser = imageUserService.update(file, usuario.getImage().getId());
+                    usuario.setImage(imageUser);
+                }
+                userRepository.save(usuario);
+            } catch (MiException e) {
+                throw new MiException(e.getMessage());
             }
-
-
+        }
     }
 }

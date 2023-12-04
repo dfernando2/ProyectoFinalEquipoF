@@ -78,7 +78,7 @@ public class AdminController {
             u.update(file, id, email, password, password2, rol);
             String mensaje = "El usuario fue modificado con exito";
             modelo.put("Exito", mensaje);
-            return "redirect:/dashboard/usuario/inquilinos";
+            return "dashboard.html";
         }catch (Exception e) {
             String mensaje = "El usuario no fue modificado";
             modelo.put("Error", mensaje);
