@@ -8,6 +8,7 @@ import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.Usuario;
 import com.Egg.Inmobiliaria.repositories.PropertyRepository;
+import com.Egg.Inmobiliaria.repositories.UserRepository;
 import com.Egg.Inmobiliaria.services.ImagePropertyService;
 import com.Egg.Inmobiliaria.services.OfferService;
 import com.Egg.Inmobiliaria.services.PropertyService;
@@ -26,6 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 
@@ -45,6 +48,8 @@ public class PropertyController {
     private ImagePropertyService imagePropertyService;
     @Autowired
     private PropertyRepository  propertyRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -191,6 +196,29 @@ public class PropertyController {
 
         return "home.html";
     }
+//    @Transactional
+//    @PostMapping("/offer/{idUser}/{idProperty}")
+//    public String offerTransaction(@PathVariable Long idUser, @PathVariable Long idProperty,
+//                                   @RequestParam(required = false) Double price, @RequestParam(required = false) Integer contact, ModelMap modelo) {
+//        Optional<Usuario> usuarioAnswer = userRepository.findById(idUser);
+//
+//        Usuario usuario = usuarioAnswer.get();
+//
+//        if(usuario.getRol().toString().equals("CLIENT")){
+//            offerService.createOffer(idProperty, idUser, price, contact);
+//            String mensaje = "La oferta se realizo con exito";
+//            modelo.addAttribute("mensajeExito", mensaje);
+//            return "offer.html";
+//        }else if (usuario.getRol().toString().equals("ENTITY")){
+//            String mensaje= "Solo los clientes pueden realizar esta accion";
+//            modelo.addAttribute("mensajeError", mensaje);
+//            return "offer.html";
+//        }else {
+//            String mensaje= "No se pudo cargar la oferta, pongase en contacto con el Staff de Mr House";
+//            modelo.addAttribute("mensajeError", mensaje);
+//            return "offer.html";
+//        }
+//    }
 
     @GetMapping("/inmuebles/{idUser}")
     public String inmuebles(HttpSession session, ModelMap modelo) {
@@ -241,15 +269,14 @@ public class PropertyController {
     @GetMapping("/inmuebles/remove/{id}")
     public String delete(@PathVariable Long id, ModelMap modelo){
 
+
         try {
             propertyService.remove(id);
             modelo.put("Exito", "La propiedad se ha eliminado correctamente");
-            Usuario  usuario = propertyRepository.getById(id).getUser();
-            modelo.put("inmuebles", propertyService.getAllPropertiesByUserId(usuario.getId()));
-            return "inmueblesPropietario.html";
+            return "redirect:/property/inmuebles/" + id;
         } catch (MiException ex) {
             modelo.put("Error", ex.getMessage());
-            return "inmueblesPropietario.html";
+            return "redirect:/property/inmuebles/" + id;
         }
 
     }
