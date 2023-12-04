@@ -131,7 +131,7 @@ public class PropertyController {
 
         modelo.addAttribute("usuarios", usuarios);
 
-        return "property_modify.html";
+        return "inmueble_update.html";
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ENTITY', 'BOTHROLE')")
@@ -184,18 +184,6 @@ public class PropertyController {
         return "offer.html";
     }
 
-    @Transactional
-    @PostMapping("/offer/{idUser}/{idProperty}")
-    public String offerTransaction(@PathVariable Long idUser, @PathVariable Long idProperty,
-                                   @RequestParam(required = false) Double price, @RequestParam(required = false) Integer contact, ModelMap modelo) {
-
-        offerService.createOffer(idProperty, idUser, price, contact);
-
-        modelo.addAttribute("properties", propertyService.getAllProperties());
-
-
-        return "home.html";
-    }
 //    @Transactional
 //    @PostMapping("/offer/{idUser}/{idProperty}")
 //    public String offerTransaction(@PathVariable Long idUser, @PathVariable Long idProperty,
@@ -208,17 +196,52 @@ public class PropertyController {
 //            offerService.createOffer(idProperty, idUser, price, contact);
 //            String mensaje = "La oferta se realizo con exito";
 //            modelo.addAttribute("mensajeExito", mensaje);
-//            return "offer.html";
 //        }else if (usuario.getRol().toString().equals("ENTITY")){
 //            String mensaje= "Solo los clientes pueden realizar esta accion";
 //            modelo.addAttribute("mensajeError", mensaje);
-//            return "offer.html";
-//        }else {
+//         }else {
 //            String mensaje= "No se pudo cargar la oferta, pongase en contacto con el Staff de Mr House";
 //            modelo.addAttribute("mensajeError", mensaje);
-//            return "offer.html";
 //        }
+//        return "offer.html";
 //    }
+
+
+    @Transactional
+    @PostMapping("/offer/{idUser}/{idProperty}")
+    public String offerTransaction(@PathVariable Long idUser, @PathVariable Long idProperty,
+                                   @RequestParam(required = false) Double price, @RequestParam(required = false) Integer contact, ModelMap modelo) {
+
+        offerService.createOffer(idProperty, idUser, price, contact);
+
+        modelo.addAttribute("properties", propertyService.getAllProperties());
+
+
+        return "home.html";
+    }
+
+    @GetMapping("/offer/status/{idUser}")
+    public String offerStatus(@PathVariable Long idUser, ModelMap modelo) {
+
+        modelo.put("inmuebles", propertyService.getOne(idUser));
+
+        return "offer.html";
+    }
+
+    @Transactional
+    @PostMapping("/offer/status{idUser}")
+    public String offerStatus(@PathVariable Long idUser, @PathVariable Long idProperty,
+                                   @RequestParam(required = false) Double price, @RequestParam(required = false) Integer contact, ModelMap modelo) {
+
+        offerService.createOffer(idProperty, idUser, price, contact);
+
+        modelo.addAttribute("properties", propertyService.getAllProperties());
+
+
+        return "home.html";
+    }
+
+
 
     @GetMapping("/inmuebles/{idUser}")
     public String inmuebles(HttpSession session, ModelMap modelo) {

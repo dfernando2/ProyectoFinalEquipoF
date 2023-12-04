@@ -16,7 +16,7 @@
 
 <div class="container-fluid m-5 contenedor">
 
-    <form class="formulario" th:action="@{'/dashboard/usuario/editar/' + ${id}}" method="POST" enctype="multipart/form-data">
+    <form class="formulario" th:action="@{/dashboard/usuario/editar/__${usuario.id}__}" method="POST" enctype="multipart/form-data">
 
 
 
@@ -56,14 +56,16 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary mt-3 botones">Modificar</button>
+        <div>
+            <input type="submit" value="Enviar" class="btn btn-primary me-5"></input>
+        </div>
     </form>
 
 
     <section class=" text-center container">
         <div class="row mt-3">
             <div class="divVolver">
-                <a th:href="@{/dashboard/inmuebles}" class="btn btn-secondary my-2 botonVolver botones">Volver</a>
+                <a th:href="@{/dashboard}" class="btn btn-secondary my-2 botonVolver botones">Volver</a>
             </div>
         </div>
     </section>
