@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.Egg.Inmobiliaria.enums.OfferStatus;
+import com.Egg.Inmobiliaria.exceptions.MiException;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
 
@@ -29,8 +30,9 @@ public class OfferService {
     private PropertyRepository propertyRepository;
 
 
-    public void createOffer(Long idProperty, Long idUser, Double price, Integer contact) {
+    public void createOffer(Long idProperty, Long idUser, Double price, Integer contact) throws MiException {
 
+        validate(price, contact);
         Optional<Property> answerProperty = propertyRepository.findById(idProperty);
         Optional<Usuario> answerUser = userRepository.findById(idUser);
         Property property = new Property();
@@ -57,7 +59,18 @@ public class OfferService {
         offerRepository.save(offer);
     }
 
+    public void validate(Double price, Integer contact) throws MiException {
 
+        if (price == 0 || price == null) {
+            throw new MiException("La oferta no puede ser nula o estar vacia");
+
+        }
+        if (contact == 0 || contact == null) {
+            throw new MiException("El número de teléfono no puede ser nulo o estar vacio");
+
+        }
+        
+    }
 
 //    public void update(String id, String idProperty, Long idUser, Double price, int contact) {
 //

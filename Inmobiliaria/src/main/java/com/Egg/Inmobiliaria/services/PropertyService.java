@@ -44,9 +44,9 @@ public class PropertyService {
     public void create(String address, String province, String location, Integer surface,
                        Integer bathrooms, Integer bedrooms, Double price, String description,
                        PropertyStatus status, Date createDate, PropertyType type,
-                       List<MultipartFile> files, String emailUsuario) {
+                       List<MultipartFile> files, String emailUsuario) throws MiException {
 
-        //falta validar
+        validate(address, province, location, surface, price, description,type);
 
         Optional<Usuario> userAnswer = Optional.ofNullable(userRepository.findByEmail(emailUsuario));
 
@@ -98,8 +98,9 @@ public class PropertyService {
     @Transactional
     public void update(Long id, String address, String province, String location, Integer surface,
                        Integer bathrooms, Integer bedrooms, Double price, String description,
-                       PropertyStatus status, Date createDate, PropertyType type) {
-
+                       PropertyStatus status, Date createDate, PropertyType type) throws MiException {
+        
+        validate(address, province, location, surface, price, description,type);
         Optional<Property> propertyAnswer = propertyRepository.findById(id);
 
         if (propertyAnswer.isPresent()) {
@@ -122,7 +123,36 @@ public class PropertyService {
             propertyRepository.save(property);
         }
     }
+    
+    public void validate(String address, String province, String location, Integer surface,
+                       Double price, String description,
+                       PropertyType type) throws MiException {
 
+        if (address.isEmpty() || address == null) {
+            throw new MiException("La dirección no puede ser nulo o estar vacia");
+
+        }
+        if (province == null || province.isEmpty()) {
+            throw new MiException("Por favor seleccione una provincia");
+        }
+        if (location.isEmpty() || location == null) {
+            throw new MiException("Por favor escriba una ciudad");
+        }
+        if (surface == null || surface == 0) {
+            throw new MiException("La superficie no puede ser nula");
+        }
+        if (price == 0 || price == null) {
+            throw new MiException("El precio no puede ser nulo");
+        }
+        if (description.isEmpty()|| description == null) {
+            throw new MiException("La descripcion no puede estar vacia");
+        }
+        
+        if (type == null) {
+            throw new MiException("El tipo de vivienda no puede ser nulo");
+        }
+        
+    }
 
     @Transactional
     public void remove(Long id) throws MiException {

@@ -53,7 +53,7 @@ public class PortalController {
                                ModelMap modelo) {
         try {
             userService.create(file, name, email, dni, password, password2, rol);
-            modelo.put("exito", "Usuario cargado correctamente");
+            modelo.put("exito", "Usuario registrado correctamente!");
             return "login.html";
         } catch (Exception e) {
             modelo.put("error", e.getMessage());

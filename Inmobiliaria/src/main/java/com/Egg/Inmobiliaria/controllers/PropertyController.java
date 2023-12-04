@@ -47,7 +47,7 @@ public class PropertyController {
     @Autowired
     private ImagePropertyService imagePropertyService;
     @Autowired
-    private PropertyRepository  propertyRepository;
+    private PropertyRepository propertyRepository;
     @Autowired
     private UserRepository userRepository;
 
@@ -60,7 +60,6 @@ public class PropertyController {
     // pueda manejar de manera personalizada el formato de las fechas, utilizando
     // "yyyy-MM-dd"
     // como formato para las fechas de tipo Date.
-
 
     @GetMapping("/record") // localhost:8080/property/record
     public String record(ModelMap modelo) {
@@ -82,12 +81,9 @@ public class PropertyController {
             @RequestParam(value = "price", defaultValue = "0") Double price,
             @RequestParam String description, @RequestParam PropertyStatus status,
             @RequestParam Date createDate, @RequestParam PropertyType type, List<MultipartFile> files,
-            ModelMap modelo) {
+            ModelMap modelo) throws MiException {
         try {
 
-            // modelo.addAttribute("propertyType", type);
-            // System.out.println(type);
-            // traer el usuario que esta logueado
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
             String emailUser = auth.getName();
@@ -98,14 +94,27 @@ public class PropertyController {
 
             modelo.put("exito", "La propiedad fue cargada correctamente! ");
 
-        } catch (Exception ex) {
+            return "redirect:/home";
 
-            List<Usuario> usuarios = userservice.listUser();
-            modelo.addAttribute("usuarios", usuarios);
+        } catch (MiException ex) {
+
+            modelo.put("address", address);
+            modelo.put("location", location);
+            modelo.put("province", province);
+            modelo.put("surface", surface);
+            modelo.put("bathrooms", bathrooms);
+            modelo.put("bedrooms", bedrooms);
+            modelo.put("price", price);
+            modelo.put("description", description);
+            modelo.put("status", status);
+            modelo.put("type", type);
+            modelo.put("files", files);
+
             modelo.put("error", ex.getMessage());
-//            return "property_form.html"; // volvemos a cargar el formulario.
+
+            return "property_form.html";
         }
-        return "redirect:/home";
+
     }
 
     @GetMapping("/list")
@@ -145,31 +154,46 @@ public class PropertyController {
             @RequestParam String description, @RequestParam PropertyStatus status,
             @RequestParam Date createDate, @RequestParam PropertyType type,
             @RequestParam(required = false) List<Offer> offers, @RequestParam(required = false) String idUser,
-            @RequestParam boolean isRented, @RequestParam boolean isActive, ModelMap modelo) {
+            @RequestParam boolean isRented, @RequestParam boolean isActive, ModelMap modelo) throws MiException {
 
-        List<Usuario> usuarios = userservice.listUser();
+        try {
 
-        modelo.addAttribute("usuarios", usuarios);
+            List<Usuario> usuarios = userservice.listUser();
 
-        propertyService.update(id, address, province, location, surface, bathrooms,
-                bedrooms, price, description, status, createDate,
-                type);
+            modelo.addAttribute("usuarios", usuarios);
+
+            propertyService.update(id, address, province, location, surface, bathrooms,
+                    bedrooms, price, description, status, createDate,
+                    type);
+
+            modelo.put("exito", "La propiedad fue modificada correctamente! ");
+
+        } catch (MiException ex) {
+
+            List<Usuario> usuarios = userservice.listUser();
+            modelo.addAttribute("usuarios", usuarios);
+
+            modelo.put("error", ex.getMessage());
+
+            return "inmueble_update.html";
+//           
+        }
+
         return "redirect:../list";
 
     }
 
-        @PostMapping("/filter")
+    @PostMapping("/filter")
     public String filterProperty(@RequestParam(required = false) String province,
-                                 @RequestParam(required = false) String status,
-                                 @RequestParam(required = false) String type,
-                                 @RequestParam(required = false) int bedrooms,
-                                 @RequestParam(required = false) Double minPrice,
-                                 @RequestParam(required = false) Double maxPrice,
-                                 ModelMap modelo) throws Exception {
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) int bedrooms,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            ModelMap modelo) throws Exception {
 
         modelo.put("properties", propertyService.filteredProperties(province,
                 status, type, bedrooms, minPrice, maxPrice));
-
 
         return "home.html";
     }
@@ -187,14 +211,22 @@ public class PropertyController {
     @Transactional
     @PostMapping("/offer/{idUser}/{idProperty}")
     public String offerTransaction(@PathVariable Long idUser, @PathVariable Long idProperty,
-                                   @RequestParam(required = false) Double price, @RequestParam(required = false) Integer contact, ModelMap modelo) {
+            @RequestParam(required = false) Double price, @RequestParam(required = false) Integer contact, ModelMap modelo) throws MiException {
 
-        offerService.createOffer(idProperty, idUser, price, contact);
+        try {
+            offerService.createOffer(idProperty, idUser, price, contact);
+            modelo.addAttribute("properties", propertyService.getAllProperties());
+            modelo.put("exito", "Oferta enviada correctamente!");
+            return "home.html";
+        } catch (MiException e) {
+            
+            modelo.put("price", price);
+            modelo.put("contact", contact);
+            
+            modelo.put("error", e.getMessage());
+            return "offer.html";
+        }
 
-        modelo.addAttribute("properties", propertyService.getAllProperties());
-
-
-        return "home.html";
     }
 //    @Transactional
 //    @PostMapping("/offer/{idUser}/{idProperty}")
@@ -228,7 +260,7 @@ public class PropertyController {
         List<Property> propertyList = propertyService.getAllPropertiesByUserId(usuario.getId());
 
         modelo.addAttribute("inmuebles", propertyList);
-        modelo.addAttribute("usuario", usuario );
+        modelo.addAttribute("usuario", usuario);
 
         return "inmueblesPropietario.html";
     }
@@ -239,23 +271,24 @@ public class PropertyController {
         modelo.put("inmueble", propertyService.getOne(id));
         return "inmueblePropietario_update.html";
     }
+
     @PostMapping("/inmuebles/editar/{id}")
     public String modifiedProperty(@PathVariable Long id, @RequestParam(required = false) String address,
-                                   @RequestParam(required = false) String province, @RequestParam(required = false) String location,
-                                   @RequestParam(value = "surface", defaultValue = "0", required = false) Integer surface,
-                                   @RequestParam(value = "bathrooms", defaultValue = "0", required = false) Integer bathrooms,
-                                   @RequestParam(value = "bedrooms", defaultValue = "0", required = false) Integer bedrooms,
-                                   @RequestParam(value = "price", defaultValue = "0", required = false) Double price,
-                                   @RequestParam(required = false) String description, @RequestParam(required = false) PropertyStatus status,
-                                   @RequestParam(required = false) Date createDate, @RequestParam(required = false) PropertyType type,
-                                   ModelMap modelo) {
+            @RequestParam(required = false) String province, @RequestParam(required = false) String location,
+            @RequestParam(value = "surface", defaultValue = "0", required = false) Integer surface,
+            @RequestParam(value = "bathrooms", defaultValue = "0", required = false) Integer bathrooms,
+            @RequestParam(value = "bedrooms", defaultValue = "0", required = false) Integer bedrooms,
+            @RequestParam(value = "price", defaultValue = "0", required = false) Double price,
+            @RequestParam(required = false) String description, @RequestParam(required = false) PropertyStatus status,
+            @RequestParam(required = false) Date createDate, @RequestParam(required = false) PropertyType type,
+            ModelMap modelo) {
 
         try {
             propertyService.update(id, address, province, location, surface, bathrooms,
                     bedrooms, price, description, status, createDate,
                     type);
             modelo.put("Exito", "La propiedad se ha modificado correctamente");
-            Usuario  usuario = propertyRepository.getById(id).getUser();
+            Usuario usuario = propertyRepository.getById(id).getUser();
             modelo.put("inmuebles", propertyService.getAllPropertiesByUserId(usuario.getId()));
         } catch (Exception e) {
             System.out.println("no se pudo guargar la propiedad po: " + e.getMessage());
@@ -265,10 +298,10 @@ public class PropertyController {
         System.out.println("Se pudo guargar la propiedad");
         return "inmueblesPropietario.html";
     }
+
     @Transactional
     @GetMapping("/inmuebles/remove/{id}")
-    public String delete(@PathVariable Long id, ModelMap modelo){
-
+    public String delete(@PathVariable Long id, ModelMap modelo) {
 
         try {
             propertyService.remove(id);

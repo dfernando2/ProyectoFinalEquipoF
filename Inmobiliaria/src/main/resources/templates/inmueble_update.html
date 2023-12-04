@@ -1,91 +1,133 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="/fragments/head :: head"></head>
+    <head th:replace="/fragments/head :: head"></head>
 
-<body>
+    <body>
 
-    <nav th:replace="/fragments/navbar :: nav"></nav>
+        <nav th:replace="/fragments/navbar :: nav"></nav>
+        
+        <div th:if="${error!=null}" class="card text-white bg-danger mb-3 mensajeError">
+            <div class="card-body">
+                <h5 class="card-title">Error 👎</h5>
+                <p class="card-text" th:text="${error}"></p>
+            </div>
+        </div>
+        <div th:if="${exito}!=null" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+            <div class="card-body">
+                <h5 class="card-title">Exito</h5>
+                <p class="card-text" th:text="${exito}"></p>
+            </div>
+        </div>
+        
+        <div class="container">
+            <form class="formulario" th:action="@{'/dashboard/inmuebles/editar/' + ${id}}" method="POST" enctype="multipart/form-data">
+                <!--            <div th:if="${error!=null}" class="card text-white bg-danger mb-3 mensajeError">-->
+                <!--                <div class="card-body">-->
+                <!--                    <h5 class="card-title">Error 👎</h5>-->
+                <!--                    <p class="card-text" th:text="${error}"></p>-->
+                <!--                </div>-->
+                <!--            </div>-->
+                <!--            <div class="card text-white bg-success mb-3 mt-3 mensajeExito" th:if="${exito != null}">-->
+                <!--                <div class="card-body">-->
+                <!--                    <h5 class="card-title">Exito!</h5>-->
+                <!--                    <p class="card-text" th:text="${exito}"></p>-->
+                <!--                </div>-->
+                <!--            </div>-->
 
-    <div class="container">
-        <form class="formulario" th:action="@{'/dashboard/inmuebles/editar/' + ${id}}" method="POST" enctype="multipart/form-data">
-<!--            <div th:if="${error!=null}" class="card text-white bg-danger mb-3 mensajeError">-->
-<!--                <div class="card-body">-->
-<!--                    <h5 class="card-title">Error 👎</h5>-->
-<!--                    <p class="card-text" th:text="${error}"></p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="card text-white bg-success mb-3 mt-3 mensajeExito" th:if="${exito != null}">-->
-<!--                <div class="card-body">-->
-<!--                    <h5 class="card-title">Exito!</h5>-->
-<!--                    <p class="card-text" th:text="${exito}"></p>-->
-<!--                </div>-->
-<!--            </div>-->
-
-            <div class="form-group my-3">
-                <label class="mb-2">Modificacion de Propiedades</label>
-            </div>
-            <div class="form-group my-3">
-                <input type="text" class="form-control" name="address" th:placeholder="${inmueble.address}">
-            </div>
-            <div class="form-group my-3">
-                <input type="text" class="form-control" name="province" th:placeholder="${inmueble.province}">
-            </div>
-            <div class="form-group my-3">
-                <input type="text" class="form-control" name="location" th:placeholder="${inmueble.location}">
-            </div>
-            <div class="form-group my-3">
-                <input type="number" class="form-control" name="surface" th:placeholder="${inmueble.surface}">
-            </div>
-            <div class="form-group my-3">
-                <input type="number" class="form-control" name="bathrooms" th:placeholder="${inmueble.bathrooms}">
-            </div>
-            <div class="form-group my-3">
-                <input type="number" class="form-control" name="bedrooms" th:placeholder="${inmueble.bedrooms}">
-            </div>
-            <div class="form-group my-3">
-                <input type="number" class="form-control" name="price" th:placeholder="${inmueble.price}">
-            </div>
-            <div class="form-group my-3">
-                <input type="text" class="form-control" name="description" th:placeholder="${inmueble.description}">
-            </div>
-            <div class="form-group my-3">
-                <label for="status">Estado de la propiedad:</label>
-                <select class="form-control" id="status" name="status">
-                    <option value="FOR_SALE">Venta</option>
-                    <option value="FOR_RENT">Alquiler</option>
-                </select>
-            </div>
-            <div class="form-group my-3">
-                <input type="date" class="form-control" name="createDate" th:placeholder="${inmueble.createDate}">
-            </div>
-            <div class="form-group my-3">
-                <label for="status">Tipo de propiedad:</label>
-                <select class="form-control" id="type" name="type">
-                    <option value="CASA">CASA</option>
-                    <option value="DEPARTAMENTO">DEPARTAMENTO</option>
-                    <option value="CABAÑA">CABAÑA</option>
-                    <option value="DUPLEX">DUPLEX</option>
-                    <option value="TRIPLEX">TRIPLEX</option>
-                    <option value="PH">PH</option>
-                    <option value="COCHERA">COCHERA</option>
-                    <option value="DEPOSITO">DEPOSITO</option>
-                    <option value="PISO">PISO</option>
-                    <option value="TERRENO">TERRENO</option>
-                    <option value="OFICINA">OFICINA</option>
-                    <option value="LOTE">LOTE</option>
-                    <option value="COMERCIO">COMERCIO</option>
-                    <option value="CAMPO">CAMPO</option>
-                </select>
+                <div class="form-group my-3">
+                    <label class="mb-2">Modificacion de Propiedades</label>
                 </div>
 
-            <div class="form-group my-3">
-                <button type="submit" class="btn btn-primary mt-3 botones">Guardar</button>
-            </div>
-        </form>
-    </div>
-    <footer th:replace="/fragments/footer :: footer"></footer>
+                
+                
+                <div class="form-group my-3">
+                    <input type="text" class="form-control" name="address" placeholder= "Dirección y número" th:value="${address}">
+                </div>
+                <div class="form-group my-3">
+                    <label for="province">Provincia de la propiedad:</label>
+                    <select name="province" id="Provincia" class="form-control" >
+                        <option selected th:text="${province}"></option>
+                        <option value="Buenos Aires">Buenos Aires</option>
+                        <option value="Catamarca">Catamarca</option>
+                        <option value="Chaco">Chaco</option>
+                        <option value="Chubut">Chubut</option>
+                        <option value="Córdoba">Córdoba</option>
+                        <option value="Corrientes">Corrientes</option>
+                        <option value="Entre Ríos">Entre Ríos</option>
+                        <option value="Formosa">Formosa</option>
+                        <option value="Jujuy">Jujuy</option>
+                        <option value="La Pampa">La Pampa</option>
+                        <option value="La Rioja">La Rioja</option>
+                        <option value="Mendoza">Mendoza</option>
+                        <option value="Misiones">Misiones</option>
+                        <option value="Neuquén">Neuquén</option>
+                        <option value="Río Negro">Río Negro</option>
+                        <option value="Salta">Salta</option>
+                        <option value="San Juan">San Juan</option>
+                        <option value="San Luis">San Luis</option>
+                        <option value="Santa Cruz">Santa Cruz</option>
+                        <option value="Santa Fe">Santa Fe</option>
+                        <option value="Santiago del Estero">Santiago del Estero</option>
+                        <option value="Tierra del Fuego">Tierra del Fuego</option>
+                        <option value="Tucumán">Tucumán</option>
+                    </select>
+                </div>
+                <div class="form-group my-3">
+                    <input type="text" class="form-control" name="location" th:value="${location}" placeholder="Ciudad">
+                </div>
+                <div class="form-group my-3">
+                    <input type="number" class="form-control" name="surface" th:value="${surface}" placeholder="Superficie">
+                </div>
+                <div class="form-group my-3">
+                    <input type="number" class="form-control" name="bathrooms" th:value="${bathrooms}" placeholder="Baños">
+                </div>
+                <div class="form-group my-3">
+                    <input type="number" class="form-control" name="bedrooms" th:value="${bedrooms}" placeholder="Habitaciones">
+                </div>
+                <div class="form-group my-3">
+                    <input type="number" class="form-control" name="price" th:value="${price}" placeholder="Precio">
+                </div>
+                <div class="form-group my-3">
+                    <input type="text" class="form-control" name="description" th:value="${description}" placeholder="Descripción">
+                </div>
+                <div class="form-group my-3">
+                    <label for="status">Estado de la propiedad:</label>
+                    <select class="form-control" id="status" name="status">
+                        <option value="FOR_SALE">Venta</option>
+                        <option value="FOR_RENT">Alquiler</option>
+                    </select>
+                </div>
+                <div class="form-group my-3">
+                    <input type="date" class="form-control" name="createDate" th:value="${createDate}" required>
+                </div>
+                <div class="form-group my-3">
+                    <label for="status">Tipo de propiedad:</label>
+                    <select class="form-control" id="type" name="type">
+                        <option value="CASA">CASA</option>
+                        <option value="DEPARTAMENTO">DEPARTAMENTO</option>
+                        <option value="CABAÑA">CABAÑA</option>
+                        <option value="DUPLEX">DUPLEX</option>
+                        <option value="TRIPLEX">TRIPLEX</option>
+                        <option value="PH">PH</option>
+                        <option value="COCHERA">COCHERA</option>
+                        <option value="DEPOSITO">DEPOSITO</option>
+                        <option value="PISO">PISO</option>
+                        <option value="TERRENO">TERRENO</option>
+                        <option value="OFICINA">OFICINA</option>
+                        <option value="LOTE">LOTE</option>
+                        <option value="COMERCIO">COMERCIO</option>
+                        <option value="CAMPO">CAMPO</option>
+                    </select>
+                </div>
 
-</body>
+                <div class="form-group my-3">
+                    <button type="submit" class="btn btn-primary mt-3 botones">Guardar</button>
+                </div>
+            </form>
+        </div>
+        <footer th:replace="/fragments/footer :: footer"></footer>
+
+    </body>
 
 </html>

@@ -77,11 +77,11 @@ public class AdminController {
         try {
             u.update(file, id, email, password, password2, rol);
             String mensaje = "El usuario fue modificado con exito";
-            modelo.put("Exito", mensaje);
+            modelo.put("Exito", "Usuario modificado con exito!");
             return "redirect:/dashboard/usuario/inquilinos";
         }catch (Exception e) {
             String mensaje = "El usuario no fue modificado";
-            modelo.put("Error", mensaje);
+            modelo.put("Error", e.getMessage());
             return "usuario_update.html";
         }
 
@@ -138,18 +138,33 @@ public class AdminController {
                                    @RequestParam(value = "price", defaultValue = "0", required = false) Double price,
                                    @RequestParam(required = false) String description, @RequestParam(required = false) PropertyStatus status,
                                    @RequestParam(required = false) Date createDate, @RequestParam(required = false) PropertyType type,
-                                   ModelMap modelo) {
+                                   ModelMap modelo) throws MiException {
 
         try {
             ps.update(id, address, province, location, surface, bathrooms,
                     bedrooms, price, description, status, createDate,
                     type);
-            modelo.put("Exito", "La propiedad se ha modificado correctamente");
-        } catch (Exception e) {
-            modelo.put("Error", e.getMessage());
+            
+            modelo.put("exito", "La propiedad se ha modificado correctamente");
+            return "redirect:/dashboard/inmuebles";
+        } catch (MiException e) {
+            
+            modelo.put("address", address);
+            modelo.put("location", location);
+            modelo.put("province", province);
+            modelo.put("surface", surface);
+            modelo.put("bathrooms", bathrooms);
+            modelo.put("bedrooms", bedrooms);
+            modelo.put("price", price);
+            modelo.put("description", description);
+            modelo.put("status", status);
+            modelo.put("type", type);
+            
+            modelo.put("error", e.getMessage());
+            
             return "inmueble_update.html";
         }
-        return "redirect:/dashboard/inmuebles";
+        
     }
 
     @GetMapping("/usuario/remove/{id}")
