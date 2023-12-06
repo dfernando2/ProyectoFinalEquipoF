@@ -1,10 +1,190 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="/fragments/head :: head"></head>
-<nav th:replace="/fragments/navbar :: nav" ></nav>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+<body id="home-body">
 
+    <header>
+        <nav th:replace="/fragments/navbar :: nav"></nav>
+
+    </header>
+    <main>
+
+        <div data-bs-ride="carousel" data-ride="carousel" class="carousel slide carousel-fade" data-interval="1000"
+            id="myCarousel">
+
+            <div class="carousel-inner" data-bs-ride="carousel" data-interval="1000">
+                <div class="carousel-item active slide" id="first">
+                    <img src="https://casasenventahermosillo.com.mx/wp-content/uploads/2022/08/Diferencia-entre-apartamento-y-departamento-1024x683.webp"
+                        class="d-block w-100" alt="...">
+
+                </div>
+                <div class="carousel-item slide" id="second" data-interval="1000">
+                    <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/297259472.jpg?k=cbf10a90594d0452a07e0d7cfd81f8514a590e8eba311c34fb6efd6115f97fbc&o=&hp=1"
+                        class="d-block w-100" alt="...">
+
+
+                </div>
+                <div class="carousel-item slide" id="third" data-interval="1000">
+                    <img src="https://vsd.mx/wp-content/uploads/2022/10/Ventajas-de-vivir-en-Departamento-1024x683.jpg"
+                        class="d-block w-100" alt="...">
+
+                </div>
+                <div class="carousel-item slide" id="forth" data-interval="1000">
+                    <img src="https://www.ingenal.com.co/wp-content/uploads/2022/10/Z8A4974-min-scaled-1-1024x683-1.jpg"
+                        class="d-block w-100" alt="...">
+
+                </div>
+
+            </div>
+
+        </div>
+        <hr>
+
+        <h1 class="subti">Lista de Propiedades</h1>
+        <hr>
+
+
+        <div class="flex-container">
+            <div  class="form-floating">
+            <form th:action="@{/property/filter}" method="post" class="flex-container">
+                <div class="container mt-5 d-flex align-items-center justify-content-center gap-3">
+                    <select name="province" class="w-25 form-select border border-success">
+                        <option hidden selected value=null>Provincia</option>
+                        <option value="Buenos Aires">Buenos Aires</option>
+                        <option value="Catamarca">Catamarca</option>
+                        <option value="Chaco">Chaco</option>
+                        <option value="Chubut">Chubut</option>
+                        <option value="Córdoba">Córdoba</option>
+                        <option value="Corrientes">Corrientes</option>
+                        <option value="Entre Ríos">Entre Ríos</option>
+                        <option value="Formosa">Formosa</option>
+                        <option value="Jujuy">Jujuy</option>
+                        <option value="La Pampa">La Pampa</option>
+                        <option value="La Rioja">La Rioja</option>
+                        <option value="Mendoza">Mendoza</option>
+                        <option value="Misiones">Misiones</option>
+                        <option value="Neuquén">Neuquén</option>
+                        <option value="Río Negro">Río Negro</option>
+                        <option value="Salta">Salta</option>
+                        <option value="San Juan">San Juan</option>
+                        <option value="San Luis">San Luis</option>
+                        <option value="Santa Cruz">Santa Cruz</option>
+                        <option value="Santa Fe">Santa Fe</option>
+                        <option value="Santiago del Estero">Santiago del Estero</option>
+                        <option value="Tierra del Fuego">Tierra del Fuego</option>
+                        <option value="Tucumán">Tucumán</option>
+                    </select>
+
+                    <select name="status" class="w-25 form-select border border-success">
+                        <option hidden value="null">Comprar/Alquilar</option>
+                        <option value="FOR_SALE">Compra</option>
+                        <option value="FOR_RENT">Alquiler</option>
+                    </select>
+
+                    <select name="type" class="w-25 form-select border border-success">
+                        <option hidden value="null">Tipo de propiedad</option>
+                        <option value="CASA">CASA</option>
+                        <option value="DEPARTAMENTO">DEPARTAMENTO</option>
+                        <option value="CABAÑA">CABAÑA</option>
+                        <option value="DUPLEX">DUPLEX</option>
+                        <option value="TRIPLEX">TRIPLEX</option>
+                        <option value="PH">PH</option>
+                        <option value="COCHERA">COCHERA</option>
+                        <option value="DEPOSITO">DEPOSITO</option>
+                        <option value="PISO">PISO</option>
+                        <option value="TERRENO">TERRENO</option>
+                        <option value="OFICINA">OFICINA</option>
+                        <option value="LOTE">LOTE</option>
+                        <option value="COMERCIO">COMERCIO</option>
+                        <option value="CAMPO">CAMPO</option>
+                    </select>
+
+                    <select name="bedrooms" class="w-25 form-select border border-success">
+                        <option hidden value="0">Dormitorios</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="6">5+</option>
+                    </select>
+
+                    <div class="w-50 d-flex align-items-center justify-content-center gap-3">
+                        <input name="minPrice" type="number" min="0" class="form-control border border-success"
+                               placeholder="Precio Minimo">
+                        <input name="maxPrice" type="number" max="999999999" class="form-control border border-success"
+                               placeholder="Precio Maximo">
+                    </div>
+
+                    <div class="w-25">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-filter"></i>
+                            Filtrar
+                        </button>
+                    </div>
+                </div>
+            </form>
+            </div>
+            <div id="card" th:each="property : ${properties}">
+                <div class="cardfront">
+                    <div class="bodycard_front">
+                        <img th:src="@{image/property/__${property.id}__}" style="width: 100%; height: 100%;"
+                             alt="🙂🏠🙂🏠PROPIEDADES MR. HOUSE🏠🙂🏠🙂">
+<!--                        <img th:src="@{'/image/property/' + 'property.id'}" style="width: 100%; height: 100%;"-->
+<!--                             alt="Property Image">-->
+                    </div>
+                </div>
+                <h4 th:text="${property.type}"></h4>
+                <div class="a">
+                    <div th:if="${session.usuariosession} != null" >
+                    <span class="texto-card"><b>Precio US$</b></span>
+                    <p th:text="${property.price}"></p>
+                    </div>
+                     <div th:if="${session.usuariosession} != null" >
+                    <span class="texto-card"><b>Direccion</b></span>
+                    <p th:text="${property.address}"></p>
+                     </div>
+                     <div th:if="${session.usuariosession} != null" >
+                    <span class="texto-card"><b>Ciudad</b></span>
+                    <p th:text="${property.location}"></p>
+                     </div>
+                    <span class="texto-card"><b>Provincia</b></span>
+                    <p th:text="${property.province}"></p>
+                    <span class="texto-card"><b>Descripcion</b></span>
+                    <p th:text="${property.description}"></p>
+                </div>
+                <div th:if="${session.usuariosession == null}" class="btn btn-success">
+                    <a th:href="@{/login}" class="btn btn-success">Ver Más Información</a>
+
+                </div>
+                <div th:if="${session.usuariosession != null}" class="btn btn-success">
+                    <a th:href="@{/property/offer/__${session.usuariosession.id}__/__${property.id}__}"
+                       class="btn btn-success">Ver Más</a>
+                </div>
+
+<!--                <div th:if="${(session.usuariosession.rol.toString() == 'CLIENT')}" class="button-card">-->
+<!--                    <a th:href="@{/property/offer/__${session.usuariosession.id}__/__${property.id}__}"-->
+<!--                       class="btn btn-primary me-3 px-3">Ver Más</a>-->
+<!--                </div>-->
+            </div>
+        </div>
+
+    </main>
+    <section>
+
+        <div>
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d209978.73240512074!2d-59.3274479132813!3d-34.682026699999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bc8946a9fb7043%3A0x28084c95ef32c251!2sMr%20House%20Club!5e0!3m2!1ses-419!2sar!4v1700011540539!5m2!1ses-419!2sar"
+                class="iframe" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+    </section>
+    <footer th:replace="/fragments/footer :: footer"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>

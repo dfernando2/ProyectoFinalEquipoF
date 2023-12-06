@@ -1,166 +1,129 @@
 <!DOCTYPE html>
-<html lang="es">
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <link rel="stylesheet" href="cssform.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario</title>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
+<head th:replace="/fragments/head :: head"></head>
 
-    <style>
-        body {
-          font-family: Arial, sans-serif;
-          background-color: #f4f4f4;
-          margin: 0;
-          padding: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-        }
-          .container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-
-        form {
-          background-image: url('FondoForm.jpg');
-          background-size: cover;
-          background-position: center;
-          background-repeat: no-repeat;
-          background-color: rgba(255, 255, 255, 0.8);
-          padding: 35px;
-          border-radius: 10px;
-          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-          width: 400px;
-          text-align: center;
-        }
-
-        label, input {
-          margin-bottom: 10px;
-        }
-
-        input[type="submit"] {
-          background-color: #4caf50;
-          color: #fff;
-          border: none;
-          padding: 10px 20px;
-          border-radius: 5px;
-          cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-          background-color: #45a049;
-        }
-        .cartel {
-          background-color: #ffffff;
-          padding: 20px;
-          border-radius: 10px;
-          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-          text-align: center;
-          width: 300px;
-        }
-    </style>
-</head>
 <body>
 
-<div class="container">
-    <form action="/property/register" method="POST" enctype="multipart/form-data">
-        <div th:if="${error!=null}" class="card text-white bg-danger mb-3 mensajeError" >
-            <div class="card-body">
-                <h5 class="card-title">Error 👎</h5>
-                <p class="card-text" th:text="${error}"></p>
-            </div>
-        </div>
-        <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
-            <div class="card-body">
-                <h5 class="card-title">Exito!</h5>
-                <p class="card-text" th:text="${exito}"></p>
-            </div>
-        </div>
+    <nav th:replace="/fragments/navbar :: nav"></nav>
 
-        <div class="form-group my-3">
-            <label class="mb-2">Carga de Propiedades</label>
-        </div>
-        <div class="form-group my-3">
-            <input type="text" class="form-control" name="address" placeholder="Calle y numero">
-        </div>
-        <div class="form-group my-3">
-            <input type="text" class="form-control" name="province" placeholder="Provincia">
-        </div>
-        <div class="form-group my-3">
-            <input type="text" class="form-control" name="location" placeholder="Ciudad">
-        </div>
-        <div class="form-group my-3">
-            <input type="number" class="form-control" name="surface" placeholder="Superficie total">
-        </div>
-        <div class="form-group my-3">
-            <input type="number" class="form-control" name="bathrooms" placeholder="Baños">
-        </div>
-        <div class="form-group my-3">
-            <input type="number" class="form-control" name="bedrooms" placeholder="Dormitorios">
-        </div>
-        <div class="form-group my-3">
-            <input type="number" class="form-control" name="price" placeholder="Precio">
-        </div>
-        <div class="form-group my-3">
-            <input type="text" class="form-control" name="description" placeholder="Descripcion">
-        </div>
-        <div class="form-group my-3">
-            <label for="status">Estado de la propiedad:</label>
-            <select class="form-control" id="status" name="status">
-                <option value="FOR_SALE">Venta</option>
-                <option value="FOR_RENT">Alquiler</option>
-            </select>
-        </div>
-        <div class="form-group my-3">
-            <input type="date" class="form-control" name="createDate" placeholder="Fecha de inicio">
-        </div>
-        <div class="form-group my-3">
-            <label for="status">Tipo de propiedad:</label>
-            <select class="form-control" id="type" name="type">
-                <option value="CASA">CASA</option>
-                <option value="DEPARTAMENTO">DEPARTAMENTO</option>
-                <option value="CABAÑA">CABAÑA</option>
-                <option value="DUPLEX">DUPLEX</option>
-                <option value="TRIPLEX">TRIPLEX</option>
-                <option value="PH">PH</option>
-                <option value="COCHERA">COCHERA</option>
-                <option value="DEPOSITO">DEPOSITO</option>
-                <option value="PISO">PISO</option>
-                <option value="TERRENO">TERRENO</option>
-                <option value="OFICINA">OFICINA</option>
-                <option value="LOTE">LOTE</option>
-                <option value="COMERCIO">COMERCIO</option>
-                <option value="CAMPO">CAMPO</option>
-            </select>
-        </div>
+    <div class="container">
+        <form action="/property/register" method="POST" enctype="multipart/form-data">
+            <div th:if="${error!=null}" class="card text-white bg-danger mb-3 mensajeError">
+                <div class="card-body">
+                    <h5 class="card-title">Error 👎</h5>
+                    <p class="card-text" th:text="${error}"></p>
+                </div>
+            </div>
 
-        <div class="form-group my-3">
-            <button type="submit" class="btn btn-primary mt-3 botones">Guardar</button>
-        </div>
-    </form>
+            <div class="form-group my-3">
+                <label class="mb-2">Carga de Propiedades</label>
+            </div>
+            <div class="form-group my-3">
+                <input type="text" class="form-control" name="address" placeholder="Calle y numero">
+            </div>
+            <div class="form-group my-3">
+                <select name="province" id="Provincia" class="form-control">
+                    <option hidden selected>Provincia</option>
+                    <option value="Buenos Aires">Buenos Aires</option>
+                    <option value="Catamarca">Catamarca</option>
+                    <option value="Chaco">Chaco</option>
+                    <option value="Chubut">Chubut</option>
+                    <option value="Córdoba">Córdoba</option>
+                    <option value="Corrientes">Corrientes</option>
+                    <option value="Entre Ríos">Entre Ríos</option>
+                    <option value="Formosa">Formosa</option>
+                    <option value="Jujuy">Jujuy</option>
+                    <option value="La Pampa">La Pampa</option>
+                    <option value="La Rioja">La Rioja</option>
+                    <option value="Mendoza">Mendoza</option>
+                    <option value="Misiones">Misiones</option>
+                    <option value="Neuquén">Neuquén</option>
+                    <option value="Río Negro">Río Negro</option>
+                    <option value="Salta">Salta</option>
+                    <option value="San Juan">San Juan</option>
+                    <option value="San Luis">San Luis</option>
+                    <option value="Santa Cruz">Santa Cruz</option>
+                    <option value="Santa Fe">Santa Fe</option>
+                    <option value="Santiago del Estero">Santiago del Estero</option>
+                    <option value="Tierra del Fuego">Tierra del Fuego</option>
+                    <option value="Tucumán">Tucumán</option>
+                </select>
+            </div>
+            <div class="form-group my-3">
+                <input type="text" class="form-control" name="location" placeholder="Ciudad">
+            </div>
+            <div class="form-group my-3">
+                <input type="number" class="form-control" name="surface" placeholder="Superficie total">
+            </div>
+            <div class="form-group my-3">
+                <input type="number" class="form-control" name="bathrooms" placeholder="Baños">
+            </div>
+            <div class="form-group my-3">
+                <input type="number" class="form-control" name="bedrooms" placeholder="Dormitorios">
+            </div>
+            <div class="form-group my-3">
+                <input type="number" class="form-control" name="price" placeholder="Precio">
+            </div>
+            <div class="form-group my-3">
+                <input type="text" class="form-control" name="description" placeholder="Descripcion">
+            </div>
+            <div class="form-group my-3">
+                <label for="status">Estado de la propiedad:</label>
+                <select class="form-control" id="status" name="status">
+                    <option value="FOR_SALE">Venta</option>
+                    <option value="FOR_RENT">Alquiler</option>
+                </select>
+            </div>
+            <div class="form-group my-3">
+                <input type="date" class="form-control" name="createDate" placeholder="Fecha de inicio">
+            </div>
+            <div class="form-group my-3">
+                <label for="status">Tipo de propiedad:</label>
+                <select class="form-control" id="type" name="type">
+                    <option value="CASA">CASA</option>
+                    <option value="DEPARTAMENTO">DEPARTAMENTO</option>
+                    <option value="CABAÑA">CABAÑA</option>
+                    <option value="DUPLEX">DUPLEX</option>
+                    <option value="TRIPLEX">TRIPLEX</option>
+                    <option value="PH">PH</option>
+                    <option value="COCHERA">COCHERA</option>
+                    <option value="DEPOSITO">DEPOSITO</option>
+                    <option value="PISO">PISO</option>
+                    <option value="TERRENO">TERRENO</option>
+                    <option value="OFICINA">OFICINA</option>
+                    <option value="LOTE">LOTE</option>
+                    <option value="COMERCIO">COMERCIO</option>
+                    <option value="CAMPO">CAMPO</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <label for="files" class="form-label">Elegir imagenes</label>
+                <input type="file" multiple name="files" class="form-control" id="files" accept="image/*" required>
+            </div>
+
+            <div class="form-group my-3">
+                <button type="submit" class="btn btn-primary mt-3 botones">Guardar</button>
+            </div>
+        </form>
+    </div>
+    <footer th:replace="/fragments/footer :: footer"></footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-          const formulario = document.querySelector("form");
-          formulario.addEventListener("submit", function(event) {
-            const contrasena = document.getElementById("contrasena").value;
-            const confirmarContrasena = document.getElementById("confirmar-contrasena").value;
+        document.addEventListener("DOMContentLoaded", function () {
+            const formulario = document.querySelector("form");
+            formulario.addEventListener("submit", function (event) {
+                const contrasena = document.getElementById("contrasena").value;
+                const confirmarContrasena = document.getElementById("confirmar-contrasena").value;
 
-            if (contrasena !== confirmarContrasena) {
-              alert("Las contraseñas no coinciden. Por favor, inténtalo de nuevo.");
-              event.preventDefault(); // Evitar que el formulario se envíe
-            }
-          });
+                if (contrasena !== confirmarContrasena) {
+                    alert("Las contraseñas no coinciden. Por favor, inténtalo de nuevo.");
+                    event.preventDefault(); // Evitar que el formulario se envíe
+                }
+            });
         });
     </script>
-    <div class="cartel">
-        <h2>Eventos y Beneficios</h2>
-        <p>Descubre eventos exclusivos y beneficios especiales al registrarte en nuestro sitio.</p>
-    </div>
-</div>
+
 </body>
+
 </html>

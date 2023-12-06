@@ -9,6 +9,7 @@ class User {
     private String password;
     private Long dni;
     private Role role;
+    private List <Property> userProperties;
        }
 class Property {
         private Long id;
@@ -22,8 +23,6 @@ class Property {
         private String description;
         private PropertyStatus status;
         private PropertyType type;
-        @OneToMany
-        private List<ImageProperty> images;
         @OneToMany
         private List<Offer> offers;
         @ManyToOne
@@ -57,8 +56,7 @@ class ImageProperty {
     }
 
 enum PropertyStatus {
-    FOR_SALE, FOR_RENT,
-    BOTH_STATUS, NONE;
+    , FOR_RENT;
 }
 enum PropertyType {
     CASA, DEPARTAMENTO, CABAÑA, DUPLEX,

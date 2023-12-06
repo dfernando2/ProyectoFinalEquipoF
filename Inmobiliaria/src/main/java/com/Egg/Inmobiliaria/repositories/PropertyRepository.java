@@ -14,4 +14,10 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
     @Query("SELECT p FROM Property p WHERE p.type = ?1")
     List<Property> findByType(PropertyType type);
 
+    @Query ("SELECT p FROM Property p")
+    List<Property> findProperty();
+
+    @Query ("SELECT p FROM Property p WHERE p.usuario.id = ?1")
+    List<Property> findByUserId(Long id);
+
 }

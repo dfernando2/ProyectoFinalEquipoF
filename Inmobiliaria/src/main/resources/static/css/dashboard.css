@@ -1,0 +1,30 @@
+#titulo {
+    background-color: #D79028;
+    color: #EEE9E6;
+}
+
+.card-footer {
+    background-color: #809638;
+}
+
+.card-body {
+    container: #809638;
+    max-width: 100%;
+    padding: 10px;
+}
+
+.col-md-4 {
+    max-width: 600px;
+}
+
+#barras {
+    width: 70%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.text-end {
+    background: #EEE9E6;
+    color: black;
+}
+

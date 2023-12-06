@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/fragments/head :: head"></head>
+<
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<body id="body-contacto">
+<header>
+    <nav th:replace="/fragments/navbar :: nav"></nav>
+</header>
+<main>
+    <h3>Sobre nosotros!</h3>
+    <div class="top-div">
+        <div class="text-div">
+            <p>
+                "En Mr House, no simplemente vendemos propiedades; construimos sueños y creamos
+                hogares donde cada cliente encuentra su espacio perfecto.
+                Con una dedicación inquebrantable hacia la excelencia y el servicio personalizado,
+                nos enorgullece ser más que una simple inmobiliaria. Somos guardianes de tus aspiraciones, guiándote a través del emocionante viaje de encontrar la casa ideal.
+                Nuestro equipo de profesionales apasionados no solo posee un profundo conocimiento del mercado inmobiliario,
+                sino que también comprende la importancia de cada hogar en la vida de nuestros clientes. En Mr House,
+                creemos que cada casa cuenta una historia única, y estamos aquí para ayudarte a comenzar el próximo capítulo de
+                tu vida en el lugar que siempre has soñado llamar hogar."
+            </p>
+        </div>
+    </div>
+
+
+    <section class="section-contacto">
+        <div class="ig-image">
+
+            <a href="https://www.instagram.com/mrhouseinmob/" target="_blank"><img class="img-ig" src="/image/instagram.png"></a>
+
+        </div>
+
+        <div class="fb-image">
+
+            <a href="https://www.facebook.com/profile.php?id=100093276137604&locale=es_LA" target="_blank"><img class="img-fb" src="/image/facebook.png"></a>
+
+        </div>
+
+        <div class="wsp-image">
+
+            <a href="https://api.whatsapp.com/send?phone=000000000" target="_blank"><img class="img-wsp" src="/image/whatsapp.png"></a>
+
+        </div>
+    </section>
+
+    <button class="btn btn-primary me-3 px-3 button-volver">
+        <a href="/">Volver</a>
+    </button>
+
+</main>
+
+
+<footer class="footer-contacto">
+
+    <ul class="nav justify-content-center border-bottom pb-3">
+        <li class="nav-item"><a href="">
+            <img id="logo-footer"
+                 src="https://res.cloudinary.com/ddbif6hp5/image/upload/v1700094591/Inmobiliria/zgq73pinlq6sjdhmg61g.png"
+                 alt="Mr House Logo"></a>
+        </li>
+        <li class="nav-item"><a href="https://api.whatsapp.com/send?phone=" class="nav-link px-2 text-body-secondary">
+            <img src="/static/image/whatsapp.png" alt="" width="50px">
+        </a></li>
+        <li class="nav-item"><a href="https://www.instagram.com/" class="nav-link px-2 text-body-secondary">
+            <img src="/static/image/instagram.png" alt="" width="50px">
+        </a></li>
+        <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">
+            <img src="/static/image/correo-electronico.png" alt="" width="50px">
+        </a></li>
+        <li class="nav-item"><a href="#">
+            <img id="logo-footer"
+                 src="https://res.cloudinary.com/ddbif6hp5/image/upload/v1700094591/Inmobiliria/zgq73pinlq6sjdhmg61g.png"
+                 alt="Mr House logo"></a>
+
+            </a>
+        </li>
+    </ul>
+    <p class="text-center text-body-secondary"> Mr House Propiedades </p>
+    <p class="text-center text-body-secondary mb-0"> © Copyright 2023 - Matricula 0000 </p>
+</footer>
+
+
+</body>
+
+
+
+</html>

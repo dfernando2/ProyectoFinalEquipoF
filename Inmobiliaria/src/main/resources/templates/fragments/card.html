@@ -1,0 +1,11 @@
+<div id="card">
+    <ul th:each="property : ${properties}">
+        <img id="" th:src="@{image/property/__${property.id}__}" alt="foto">
+        <li th:text="${property.price}"> <span>US$</span></li>
+        <li th:text="${property.type}"> <span> Tipo de Propiedad:</span></li>
+        <li th:text="${property.province}"> <span>Provincia:</span></li>
+        <li th:text="${property.location}"><span>Localidad:</span> </li>
+        <li th:text="${property.address}"><span>Direccion:</span></li>
+        <li th:text="${property.bathrooms}"><span>Baños:</span></li>
+    </ul>
+</div>
