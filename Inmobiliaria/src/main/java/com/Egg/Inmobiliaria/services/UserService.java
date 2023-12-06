@@ -6,14 +6,12 @@ import com.Egg.Inmobiliaria.exceptions.MiException;
 import com.Egg.Inmobiliaria.models.Property;
 import com.Egg.Inmobiliaria.models.Usuario;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -73,12 +71,11 @@ public class UserService implements UserDetailsService {
     }
 
     public List<Usuario> listUser() {
-
         List<Usuario> users = new ArrayList<>();
         users = userRepository.findAll();
-
         return users;
     }
+
 
     @Transactional
     public void update(MultipartFile file, Long id, String email,
@@ -170,10 +167,12 @@ public class UserService implements UserDetailsService {
         }
         if (rol == null || rol.isEmpty()) {
             throw new MiException("El rol no puede ser nulo o estar vacio");
+
         }
         if (email.isEmpty() || email == null) {
             throw new MiException("El email no puede ser nulo o estar vacio");
         }
+
         if (dni == null || dni.isEmpty()) {
             throw new MiException("El dni no puede ser nulo o estar vacio");
         }

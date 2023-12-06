@@ -3,19 +3,15 @@ package com.Egg.Inmobiliaria.services;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-//import java.util.Optional;
-
 import com.Egg.Inmobiliaria.models.Usuario;
 import com.Egg.Inmobiliaria.repositories.OfferRepository;
 import com.Egg.Inmobiliaria.repositories.PropertyRepository;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.Egg.Inmobiliaria.enums.OfferStatus;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
-
 
 @Service
 public class OfferService {
@@ -28,7 +24,6 @@ public class OfferService {
 
     @Autowired
     private PropertyRepository propertyRepository;
-
 
     public void createOffer(Long idProperty, Long idUser, Double price, Integer contact) {
 
@@ -87,7 +82,7 @@ public class OfferService {
         return offerRepository.findByPropertyId(id);
     }
 
-
+      TODO esta es la ultima funcionalidad que no esta funcionando
 //    public void update(String id, String idProperty, Long idUser, Double price, int contact) {
 //
 //        Optional<Property> answerProperty = propertyRepository.findById(Long.valueOf(idProperty));

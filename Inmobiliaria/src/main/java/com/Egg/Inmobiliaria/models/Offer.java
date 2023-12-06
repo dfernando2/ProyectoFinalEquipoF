@@ -2,6 +2,8 @@ package com.Egg.Inmobiliaria.models;
 import java.util.Date;
 import javax.persistence.*;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import com.Egg.Inmobiliaria.enums.OfferStatus;
 
 @Entity
@@ -81,12 +83,14 @@ public class Offer {
     public void setContact(Integer contact) {
         this.contact = contact;
     }
-
     public OfferStatus getOfferStatus() {
         return offerStatus;
     }
 
     public void setOfferStatus(OfferStatus offerStatus) {
         this.offerStatus = offerStatus;
+
     }
+
+    } 
 }

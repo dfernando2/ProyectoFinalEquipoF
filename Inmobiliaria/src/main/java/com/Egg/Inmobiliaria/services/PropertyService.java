@@ -12,7 +12,6 @@ import com.Egg.Inmobiliaria.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -49,7 +48,6 @@ public class PropertyService {
         //falta validar
 
         Optional<Usuario> userAnswer = Optional.ofNullable(userRepository.findByEmail(emailUsuario));
-
         Property property = new Property();
         property.setAddress(address);
         property.setProvince(province);
@@ -239,4 +237,3 @@ public class PropertyService {
     }
 
 }
-

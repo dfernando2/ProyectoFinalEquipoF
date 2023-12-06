@@ -6,11 +6,13 @@ import com.Egg.Inmobiliaria.exceptions.MiException;
 import com.Egg.Inmobiliaria.models.ImageProperty;
 import com.Egg.Inmobiliaria.models.Offer;
 import com.Egg.Inmobiliaria.models.Property;
+
 import com.Egg.Inmobiliaria.models.Usuario;
 import com.Egg.Inmobiliaria.repositories.PropertyRepository;
 import com.Egg.Inmobiliaria.repositories.UserRepository;
 import com.Egg.Inmobiliaria.services.ImagePropertyService;
 import com.Egg.Inmobiliaria.services.OfferService;
+
 import com.Egg.Inmobiliaria.services.PropertyService;
 import com.Egg.Inmobiliaria.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +31,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
-
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -65,11 +65,8 @@ public class PropertyController {
 
     @GetMapping("/record") // localhost:8080/property/record
     public String record(ModelMap modelo) {
-
         List<Usuario> users = userservice.listUser();
-
         modelo.addAttribute("users", users);
-
         return "property_form.html";
     }
 

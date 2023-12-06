@@ -1,8 +1,8 @@
 package com.Egg.Inmobiliaria.models;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 
 @Entity
@@ -16,8 +16,10 @@ public class ImageProperty {
     private String mime;
 
     private String name;
+  
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Property property;
+  
     @Lob
     @Basic(fetch = FetchType.LAZY)
     private byte[] container;
@@ -32,6 +34,7 @@ public class ImageProperty {
         this.property = property;
         this.container = container;
     }
+
     public String getId() {
         return id;
     }
@@ -40,6 +43,9 @@ public class ImageProperty {
         this.id = id;
     }
 
+    public String getMime() {
+        return mime;
+    }
     public void setMime(String mime) {
         this.mime = mime;
     }
@@ -52,6 +58,14 @@ public class ImageProperty {
         this.name = name;
     }
 
+    public Property getProperty() {
+        return property;
+    }
+
+    public void setProperty(Property property) {
+        this.property = property;
+    }
+
     public byte[] getContainer() {
         return container;
     }
@@ -60,11 +74,4 @@ public class ImageProperty {
         this.container = container;
     }
 
-    public Property getProperty() {
-        return property;
-    }
-
-    public void setProperty(Property property) {
-        this.property = property;
-    }
 }
